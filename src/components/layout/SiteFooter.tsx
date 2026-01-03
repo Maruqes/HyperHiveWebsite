@@ -1,0 +1,73 @@
+import Link from "next/link";
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Architecture", href: "/architecture" },
+  { label: "512rede", href: "/512rede" },
+  { label: "Features", href: "/features" },
+  { label: "Roadmap / Docs", href: "/roadmap" },
+];
+
+export function SiteFooter() {
+  return (
+    <footer className="border-t border-border/70 bg-[rgba(5,8,16,0.85)]">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-start md:justify-between">
+        <div className="flex max-w-sm flex-col gap-4">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[rgba(14,21,36,0.8)] text-sm font-semibold text-foreground">
+              HH
+            </span>
+            <div>
+              <p className="font-display text-lg font-semibold text-foreground">
+                HyperHive
+              </p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Infra/DevOps Fabric
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Operational fabric for teams that need to connect signals, decisions,
+            and execution in a single narrative.
+          </p>
+        </div>
+        <div className="grid gap-6 text-sm text-muted-foreground sm:grid-cols-2">
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
+              Navigation
+            </p>
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="transition-colors hover:text-foreground"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
+              Contact
+            </p>
+            <a
+              href="mailto:hello@hyperhive.io"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              hello@hyperhive.io
+            </a>
+            <span className="text-sm text-muted-foreground">
+              Porto / Lisbon / Remote
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-border/70">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <span>(c) 2025 HyperHive. All rights reserved.</span>
+          <span>Architecture, network, and features aligned in one fabric.</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
