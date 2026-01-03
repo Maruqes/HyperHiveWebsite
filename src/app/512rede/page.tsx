@@ -1,425 +1,367 @@
 import {
-  Boxes,
+  Activity,
   HardDrive,
-  Monitor,
-  Router,
-  Server,
-  ShieldCheck,
+  Network,
+  Zap,
 } from "lucide-react";
 
 import { ExplainerCallout } from "@/components/ui/ExplainerCallout";
 import { Section } from "@/components/ui/Section";
-
-const flows = {
-  wireguard:
-    "What: WireGuard tunnel\nWhy: Secure remote entry path\nHow: Terminates at the router and feeds Nginx routing",
-  spa:
-    "What: SPA trigger\nWhy: Opens access only when needed\nHow: Works with WireGuard to unlock routes for a limited window",
-  nfs:
-    "What: NFS traffic\nWhy: Shares storage across nodes\nHow: Feeds compute workloads and internal services",
-  compute:
-    "What: VM/Docker traffic\nWhy: Moves workloads between nodes and services\nHow: Uses shared storage and the 512rede fabric",
-  nginx:
-    "What: Nginx routing\nWhy: Single entry point for internal services\nHow: Receives traffic from the router and distributes requests",
-};
 
 export default function NetworkPage() {
   return (
     <div>
       <Section
         eyebrow="512rede"
-        title="The glue that connects nodes and services"
-        description="512rede ties clients, routers, cluster nodes, and internal services into a single fabric. It isolates traffic by zone and keeps access organized and explicit."
+        title="Isolated high-speed cluster network"
+        description="Dedicated trust domain for the cluster, separating management and storage traffic from the home LAN. The master routes and assigns IPs for the fabric."
       >
-        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="flex flex-col gap-5 text-sm text-muted-foreground">
-              <p>
-                Think of 512rede as a map and a contract. It separates LAN,
-                512rede, and management traffic so storage and compute
-                remain predictable while access stays controlled.
-              </p>
-              <div className="grid gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border/80 bg-[rgba(14,21,36,0.8)] text-accent">
-                    <Monitor className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">
-                      Clients stay in LAN
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Access moves through explicit tunnels and gates.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border/80 bg-[rgba(14,21,36,0.8)] text-accent">
-                    <Server className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">
-                      Nodes stay consistent
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Storage and compute share the same trusted paths.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border/80 bg-[rgba(14,21,36,0.8)] text-accent">
-                    <ShieldCheck className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">
-                      Access stays deliberate
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Routing only opens when WireGuard + SPA allow it.
-                    </p>
-                  </div>
-                </div>
-              </div>
-          </div>
-          <div className="flex flex-col gap-6">
-            <div className="glass-panel rounded-2xl border border-border/80 p-6 shadow-[0_18px_38px_rgba(5,8,16,0.35)]">
-              <div className="flex flex-col gap-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                  Visual map
-                </p>
-                <div className="overflow-x-auto">
+        <div className="flex flex-col gap-8 items-center">
+          <div className="w-full max-w-4xl">
+            <div className="glass-panel rounded-2xl border border-border/80 p-8 shadow-[0_18px_38px_rgba(5,8,16,0.35)]">
+              <div className="flex flex-col gap-6">
+                <div className="overflow-hidden">
                   <svg
-                    viewBox="0 0 900 460"
-                    className="h-auto min-w-[860px] w-full"
+                    viewBox="0 0 700 600"
+                    className="h-auto w-full"
                     role="img"
-                    aria-label="512rede map"
+                    aria-label="512rede network diagram"
                   >
                     <defs>
                       <marker
-                        id="arrow-teal"
+                        id="arrow-512"
                         viewBox="0 0 10 10"
-                        refX="8"
+                        refX="9"
                         refY="5"
-                        markerWidth="6"
-                        markerHeight="6"
+                        markerWidth="7"
+                        markerHeight="7"
                         orient="auto-start-reverse"
                       >
                         <path d="M 0 0 L 10 5 L 0 10 z" fill="#389088" />
                       </marker>
-                      <marker
-                        id="arrow-danger"
-                        viewBox="0 0 10 10"
-                        refX="8"
-                        refY="5"
-                        markerWidth="6"
-                        markerHeight="6"
-                        orient="auto-start-reverse"
-                      >
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#803030" />
-                      </marker>
+
+                      <linearGradient id="internetGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="rgba(143, 163, 191, 0.3)" />
+                        <stop offset="100%" stopColor="rgba(143, 163, 191, 0.05)" />
+                      </linearGradient>
+
+                      <linearGradient id="masterGlow512" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="rgba(56, 144, 136, 0.25)" />
+                        <stop offset="100%" stopColor="rgba(56, 144, 136, 0.08)" />
+                      </linearGradient>
+
+                      {/* Internet/Globe Icon */}
+                      <g id="icon-internet">
+                        <circle cx="12" cy="12" r="10" fill="none" stroke="#8FA3BF" strokeWidth="2" />
+                        <ellipse cx="12" cy="12" rx="4" ry="10" fill="none" stroke="#8FA3BF" strokeWidth="1.5" />
+                        <line x1="2" y1="12" x2="22" y2="12" stroke="#8FA3BF" strokeWidth="1.5" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                          fill="none" stroke="#8FA3BF" strokeWidth="1.5" />
+                      </g>
+
+                      {/* Router Icon */}
+                      <g id="icon-router">
+                        <rect x="4" y="8" width="16" height="10" rx="2" fill="none" stroke="#389088" strokeWidth="2" />
+                        <circle cx="8" cy="13" r="1" fill="#389088" />
+                        <circle cx="12" cy="13" r="1" fill="#389088" />
+                        <circle cx="16" cy="13" r="1" fill="#389088" />
+                        <line x1="7" y1="5" x2="7" y2="8" stroke="#389088" strokeWidth="1.5" />
+                        <line x1="12" y1="4" x2="12" y2="8" stroke="#389088" strokeWidth="1.5" />
+                        <line x1="17" y1="5" x2="17" y2="8" stroke="#389088" strokeWidth="1.5" />
+                      </g>
+
+                      {/* Switch Icon */}
+                      <g id="icon-switch">
+                        <rect x="2" y="9" width="20" height="6" rx="1" fill="none" stroke="#389088" strokeWidth="2" />
+                        <line x1="5" y1="12" x2="5" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="8" y1="12" x2="8" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="11" y1="12" x2="11" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="14" y1="12" x2="14" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="17" y1="12" x2="17" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="19" y1="12" x2="19" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                      </g>
+
+                      {/* Server/Node Icon */}
+                      <g id="icon-server">
+                        <rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="#389088" strokeWidth="2" />
+                        <line x1="4" y1="9" x2="20" y2="9" stroke="#389088" strokeWidth="2" />
+                        <line x1="4" y1="14" x2="20" y2="14" stroke="#389088" strokeWidth="2" />
+                        <circle cx="7" cy="6.5" r="0.8" fill="#389088" />
+                        <circle cx="7" cy="11.5" r="0.8" fill="#389088" />
+                        <circle cx="7" cy="16.5" r="0.8" fill="#389088" />
+                      </g>
                     </defs>
 
+                    {/* Home Network Zone */}
                     <rect
                       x="40"
-                      y="60"
-                      width="360"
-                      height="320"
-                      rx="24"
-                      fill="rgba(14, 21, 36, 0.45)"
-                      stroke="rgba(56, 144, 136, 0.25)"
-                      strokeWidth="2"
-                      strokeDasharray="6 6"
-                    />
-                    <text x="64" y="92" fill="#8FA3BF" fontSize="12">
-                      LAN
-                    </text>
-
-                    <rect
-                      x="240"
-                      y="120"
-                      width="620"
-                      height="300"
-                      rx="26"
-                      fill="rgba(11, 19, 34, 0.45)"
-                      stroke="rgba(56, 144, 136, 0.25)"
-                      strokeWidth="2"
-                      strokeDasharray="6 6"
-                    />
-                    <text x="264" y="152" fill="#8FA3BF" fontSize="12">
-                      512rede
-                    </text>
-
-                    <rect
-                      x="560"
-                      y="40"
-                      width="300"
+                      y="50"
+                      width="250"
                       height="140"
-                      rx="22"
-                      fill="rgba(11, 19, 34, 0.4)"
-                      stroke="rgba(143, 163, 191, 0.35)"
+                      rx="16"
+                      fill="rgba(143, 163, 191, 0.08)"
+                      stroke="rgba(143, 163, 191, 0.4)"
                       strokeWidth="2"
-                      strokeDasharray="6 6"
+                      strokeDasharray="6 4"
                     />
-                    <text x="584" y="74" fill="#8FA3BF" fontSize="12">
-                      management
+                    <text x="60" y="80" fill="#8FA3BF" fontSize="13" fontWeight="600">
+                      Home Network
+                    </text>
+                    <text x="60" y="98" fill="#8FA3BF" fontSize="10" opacity="0.7">
+                      (separated from cluster)
                     </text>
 
+                    {/* 512rede Zone */}
+                    <rect
+                      x="40"
+                      y="240"
+                      width="620"
+                      height="320"
+                      rx="20"
+                      fill="rgba(56, 144, 136, 0.06)"
+                      stroke="rgba(56, 144, 136, 0.5)"
+                      strokeWidth="3"
+                    />
+                    <text x="220" y="270" fill="#389088" fontSize="14" fontWeight="700">
+                      512rede (Cluster Trust Domain)
+                    </text>
+                    <text x="220" y="288" fill="#389088" fontSize="10" opacity="0.8">
+                      2.5G / 10G · DHCP: 192.168.76.0/24
+                    </text>
+
+                    {/* Internet */}
+                    <g>
+                      <rect
+                        x="100"
+                        y="120"
+                        width="130"
+                        height="50"
+                        rx="12"
+                        fill="url(#internetGlow)"
+                        stroke="#8FA3BF"
+                        strokeWidth="2"
+                      />
+                      <use href="#icon-internet" transform="translate(110 133) scale(1.1)" />
+                      <text x="145" y="150" fill="#E6EDF7" fontSize="13" fontWeight="600">
+                        Internet
+                      </text>
+                    </g>
+
+                    {/* Master Node (Router + DHCP) */}
                     <g>
                       <rect
                         x="80"
-                        y="210"
-                        width="140"
-                        height="70"
+                        y="310"
+                        width="200"
+                        height="110"
                         rx="14"
-                        fill="rgba(14, 21, 36, 0.8)"
-                        stroke="#1A2637"
-                        strokeWidth="2"
-                      />
-                      <Monitor
-                        x="94"
-                        y="228"
-                        width="20"
-                        height="20"
-                        color="#8FA3BF"
-                      />
-                      <text x="122" y="244" fill="#E6EDF7" fontSize="12" fontWeight="600">
-                        Client
-                      </text>
-                      <text x="122" y="262" fill="#8FA3BF" fontSize="10">
-                        Your PC
-                      </text>
-                    </g>
-
-                    <g>
-                      <rect
-                        x="250"
-                        y="210"
-                        width="140"
-                        height="70"
-                        rx="14"
-                        fill="rgba(14, 21, 36, 0.8)"
-                        stroke="#1A2637"
-                        strokeWidth="2"
-                      />
-                      <Router
-                        x="264"
-                        y="228"
-                        width="20"
-                        height="20"
-                        color="#8FA3BF"
-                      />
-                      <text x="292" y="244" fill="#E6EDF7" fontSize="12" fontWeight="600">
-                        Router/Switch
-                      </text>
-                      <text x="292" y="262" fill="#8FA3BF" fontSize="10">
-                        Edge gateway
-                      </text>
-                    </g>
-
-                    <g>
-                      <rect
-                        x="420"
-                        y="140"
-                        width="140"
-                        height="60"
-                        rx="12"
-                        fill="rgba(14, 21, 36, 0.8)"
-                        stroke="#1A2637"
-                        strokeWidth="2"
-                      />
-                      <Server
-                        x="434"
-                        y="158"
-                        width="20"
-                        height="20"
-                        color="#8FA3BF"
-                      />
-                      <text x="462" y="174" fill="#E6EDF7" fontSize="12" fontWeight="600">
-                        NODE_A
-                      </text>
-                    </g>
-
-                    <g>
-                      <rect
-                        x="420"
-                        y="220"
-                        width="140"
-                        height="60"
-                        rx="12"
-                        fill="rgba(14, 21, 36, 0.8)"
-                        stroke="#1A2637"
-                        strokeWidth="2"
-                      />
-                      <Server
-                        x="434"
-                        y="238"
-                        width="20"
-                        height="20"
-                        color="#8FA3BF"
-                      />
-                      <text x="462" y="254" fill="#E6EDF7" fontSize="12" fontWeight="600">
-                        NODE_B
-                      </text>
-                    </g>
-
-                    <g>
-                      <rect
-                        x="420"
-                        y="300"
-                        width="140"
-                        height="60"
-                        rx="12"
-                        fill="rgba(14, 21, 36, 0.8)"
-                        stroke="#1A2637"
-                        strokeWidth="2"
-                      />
-                      <Server
-                        x="434"
-                        y="318"
-                        width="20"
-                        height="20"
-                        color="#8FA3BF"
-                      />
-                      <text x="462" y="334" fill="#E6EDF7" fontSize="12" fontWeight="600">
-                        NODE_C
-                      </text>
-                    </g>
-
-                    <g>
-                      <rect
-                        x="620"
-                        y="130"
-                        width="180"
-                        height="60"
-                        rx="12"
-                        fill="rgba(14, 21, 36, 0.8)"
-                        stroke="#1A2637"
-                        strokeWidth="2"
-                      />
-                      <HardDrive
-                        x="636"
-                        y="148"
-                        width="20"
-                        height="20"
-                        color="#8FA3BF"
-                      />
-                      <text x="666" y="166" fill="#E6EDF7" fontSize="12" fontWeight="600">
-                        Storage pool
-                      </text>
-                    </g>
-
-                    <g>
-                      <rect
-                        x="620"
-                        y="230"
-                        width="180"
-                        height="90"
-                        rx="14"
-                        fill="rgba(14, 21, 36, 0.8)"
-                        stroke="#1A2637"
-                        strokeWidth="2"
-                      />
-                      <Boxes
-                        x="636"
-                        y="252"
-                        width="20"
-                        height="20"
-                        color="#8FA3BF"
-                      />
-                      <text x="666" y="268" fill="#E6EDF7" fontSize="12" fontWeight="600">
-                        Internal services
-                      </text>
-                      <text x="666" y="286" fill="#8FA3BF" fontSize="10">
-                        Apps / APIs
-                      </text>
-                    </g>
-
-                    <g className="transition-opacity hover:opacity-100" opacity="0.7">
-                      <title>{flows.wireguard}</title>
-                      <path
-                        d="M 220 245 L 250 245"
+                        fill="url(#masterGlow512)"
                         stroke="#389088"
                         strokeWidth="3"
-                        markerEnd="url(#arrow-teal)"
-                        pointerEvents="stroke"
                       />
-                      <text x="228" y="232" fill="#8FA3BF" fontSize="10">
-                        WireGuard tunnel
+                      <use href="#icon-router" transform="translate(100 325) scale(1.4)" />
+                      <text x="145" y="345" fill="#E6EDF7" fontSize="15" fontWeight="700">
+                        Master Node
+                      </text>
+                      <text x="100" y="365" fill="#8FA3BF" fontSize="11">
+                        • Router & DHCP Server
+                      </text>
+                      <text x="100" y="380" fill="#8FA3BF" fontSize="11">
+                        • Nginx + Compute
+                      </text>
+                      <text x="100" y="395" fill="#8FA3BF" fontSize="11">
+                        • 192.168.76.1
                       </text>
                     </g>
 
-                    <g className="transition-opacity hover:opacity-100" opacity="0.75">
-                      <title>{flows.spa}</title>
-                      <path
-                        d="M 220 272 L 250 272"
-                        stroke="#803030"
+                    {/* Switch */}
+                    <g>
+                      <rect
+                        x="370"
+                        y="330"
+                        width="180"
+                        height="70"
+                        rx="12"
+                        fill="rgba(14, 21, 36, 0.9)"
+                        stroke="#389088"
                         strokeWidth="2.5"
-                        strokeDasharray="6 6"
-                        markerEnd="url(#arrow-danger)"
-                        pointerEvents="stroke"
                       />
-                      <text x="230" y="290" fill="#803030" fontSize="10">
-                        SPA trigger
+                      <use href="#icon-switch" transform="translate(390 348) scale(1.5)" />
+                      <text x="455" y="368" fill="#E6EDF7" fontSize="14" fontWeight="600">
+                        Switch
+                      </text>
+                      <text x="455" y="385" fill="#8FA3BF" fontSize="10">
+                        2.5G or 10G
                       </text>
                     </g>
 
-                    <g className="transition-opacity hover:opacity-100" opacity="0.7">
-                      <title>{flows.nginx}</title>
-                      <path
-                        d="M 390 245 L 620 270"
+                    {/* Slave Nodes */}
+                    <g>
+                      <rect
+                        x="370"
+                        y="450"
+                        width="130"
+                        height="70"
+                        rx="10"
+                        fill="rgba(14, 21, 36, 0.85)"
                         stroke="#389088"
-                        strokeWidth="3"
-                        markerEnd="url(#arrow-teal)"
-                        pointerEvents="stroke"
+                        strokeWidth="2"
                       />
-                      <text x="430" y="232" fill="#8FA3BF" fontSize="10">
-                        Nginx routing
+                      <use href="#icon-server" transform="translate(380 460) scale(0.9)" />
+                      <text x="420" y="480" fill="#E6EDF7" fontSize="12" fontWeight="600">
+                        Node B
+                      </text>
+                      <text x="420" y="495" fill="#8FA3BF" fontSize="9">
+                        Slave
+                      </text>
+                      <text x="420" y="508" fill="#8FA3BF" fontSize="9">
+                        192.168.76.2
                       </text>
                     </g>
 
-                    <g className="transition-opacity hover:opacity-100" opacity="0.7">
-                      <title>{flows.nfs}</title>
-                      <path
-                        d="M 620 160 L 560 175"
+                    <g>
+                      <rect
+                        x="520"
+                        y="450"
+                        width="130"
+                        height="70"
+                        rx="10"
+                        fill="rgba(14, 21, 36, 0.85)"
                         stroke="#389088"
-                        strokeWidth="3"
-                        markerEnd="url(#arrow-teal)"
-                        pointerEvents="stroke"
+                        strokeWidth="2"
                       />
-                      <text x="560" y="150" fill="#8FA3BF" fontSize="10">
-                        NFS traffic
+                      <use href="#icon-server" transform="translate(530 460) scale(0.9)" />
+                      <text x="570" y="480" fill="#E6EDF7" fontSize="12" fontWeight="600">
+                        Node C
+                      </text>
+                      <text x="570" y="495" fill="#8FA3BF" fontSize="9">
+                        Slave
+                      </text>
+                      <text x="570" y="508" fill="#8FA3BF" fontSize="9">
+                        192.168.76.3
                       </text>
                     </g>
 
-                    <g className="transition-opacity hover:opacity-100" opacity="0.7">
-                      <title>{flows.compute}</title>
-                      <path
-                        d="M 560 260 L 620 275"
-                        stroke="#389088"
-                        strokeWidth="3"
-                        markerEnd="url(#arrow-teal)"
-                        pointerEvents="stroke"
-                      />
-                      <text x="520" y="290" fill="#8FA3BF" fontSize="10">
-                        VM/Docker traffic
+                    {/* Connection Lines */}
+
+                    {/* Internet to Master (crosses boundary) */}
+                    <line
+                      x1="165"
+                      y1="170"
+                      x2="165"
+                      y2="310"
+                      stroke="#8FA3BF"
+                      strokeWidth="3"
+                      markerEnd="url(#arrow-512)"
+                    />
+                    <text x="175" y="230" fill="#8FA3BF" fontSize="10" fontWeight="600">
+                      WAN
+                    </text>
+
+                    {/* Master to Switch */}
+                    <line
+                      x1="280"
+                      y1="365"
+                      x2="370"
+                      y2="365"
+                      stroke="#389088"
+                      strokeWidth="4"
+                      markerEnd="url(#arrow-512)"
+                    />
+                    <text x="295" y="355" fill="#389088" fontSize="10" fontWeight="600">
+                      2.5G/10G
+                    </text>
+
+                    {/* Switch to Node B */}
+                    <line
+                      x1="435"
+                      y1="400"
+                      x2="435"
+                      y2="450"
+                      stroke="#389088"
+                      strokeWidth="3.5"
+                      markerEnd="url(#arrow-512)"
+                    />
+
+                    {/* Switch to Node C */}
+                    <line
+                      x1="495"
+                      y1="400"
+                      x2="585"
+                      y2="450"
+                      stroke="#389088"
+                      strokeWidth="3.5"
+                      markerEnd="url(#arrow-512)"
+                    />
+
+                    {/* Bidirectional indicators */}
+                    <line
+                      x1="370"
+                      y1="372"
+                      x2="280"
+                      y2="372"
+                      stroke="#389088"
+                      strokeWidth="2"
+                      markerEnd="url(#arrow-512)"
+                      opacity="0.4"
+                      strokeDasharray="3 3"
+                    />
+
+                    {/* Labels for traffic types */}
+                    <g opacity="0.85">
+                      <rect x="60" y="505" width="140" height="48" rx="8" fill="rgba(14, 21, 36, 0.95)"
+                        stroke="#389088" strokeWidth="1.5" />
+                      <text x="70" y="523" fill="#389088" fontSize="9" fontWeight="600">
+                        High-speed fabric:
+                      </text>
+                      <text x="70" y="536" fill="#8FA3BF" fontSize="8">
+                        • NFS storage traffic
+                      </text>
+                      <text x="70" y="547" fill="#8FA3BF" fontSize="8">
+                        • Backups & observability
                       </text>
                     </g>
                   </svg>
                 </div>
-                <div className="flex flex-wrap gap-4 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <span className="h-[2px] w-6 rounded-full bg-accent" />
-                    <span>Normal flow</span>
+
+                <div className="grid gap-3 sm:grid-cols-2 text-xs">
+                  <div className="flex items-start gap-2">
+                    <Network className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-foreground">Cluster trust domain</p>
+                      <p className="text-muted-foreground">Separated from home LAN</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="h-[2px] w-6 rounded-full bg-[#803030]" />
-                    <span>Blocked / closed</span>
+                  <div className="flex items-start gap-2">
+                    <Zap className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-foreground">High-speed fabric</p>
+                      <p className="text-muted-foreground">2.5G or 10G for cluster traffic</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Activity className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-foreground">DHCP server</p>
+                      <p className="text-muted-foreground">Master manages IPs</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <HardDrive className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-foreground">Storage backbone</p>
+                      <p className="text-muted-foreground">NFS and sync traffic stay local</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="w-full max-w-2xl">
             <ExplainerCallout
-              title="Why isolate the zones?"
-              why="The map keeps storage, compute, and access on deliberate paths so each flow stays predictable and auditable."
+              title="Why is 512rede more than a subnet?"
+              why="512rede is the trust domain where HyperHive traffic lives: NFS, node sync, migrations, and observability. The master bridges the home LAN and the cluster fabric, running DHCP and routing so the cluster stays isolated but reachable by intent."
               links={[
                 { label: "Architecture", href: "/architecture" },
                 { label: "Features", href: "/features" },

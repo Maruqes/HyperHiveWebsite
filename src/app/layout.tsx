@@ -31,7 +31,25 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "HyperHive",
   description:
-    "HyperHive is the operating layer that connects observability, control, and automation for distributed infrastructure.",
+    "HyperHive is a layered orchestration system for homelab clusters, unifying storage, network, compute, access, and operations.",
+  icons: {
+    icon: [
+      { url: "/static/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/static/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/static/favicon.ico", sizes: "any" },
+    ],
+    apple: "/static/apple-touch-icon.png",
+    other: [
+      {
+        rel: "android-chrome-192x192",
+        url: "/static/android-chrome-192x192.png",
+      },
+      {
+        rel: "android-chrome-512x512",
+        url: "/static/android-chrome-512x512.png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -40,7 +58,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-PT">
+    <html lang="en">
+      <head>
+        <link rel="manifest" href="/site.webmanifest" />
+      </head>
       <body
         className={`${plexSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
       >

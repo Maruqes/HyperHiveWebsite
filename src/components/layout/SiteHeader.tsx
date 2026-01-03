@@ -6,7 +6,7 @@ const navItems = [
   { label: "Architecture", href: "/architecture" },
   { label: "512rede", href: "/512rede" },
   { label: "Features", href: "/features" },
-  { label: "Roadmap / Docs", href: "/roadmap" },
+  { label: "Installation", href: "/installation" },
 ];
 
 export function SiteHeader() {
@@ -22,7 +22,7 @@ export function SiteHeader() {
               HyperHive
             </span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              Infra/DevOps Fabric
+              Homelab Orchestration
             </span>
           </div>
         </Link>

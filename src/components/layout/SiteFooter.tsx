@@ -5,7 +5,7 @@ const navItems = [
   { label: "Architecture", href: "/architecture" },
   { label: "512rede", href: "/512rede" },
   { label: "Features", href: "/features" },
-  { label: "Roadmap / Docs", href: "/roadmap" },
+  { label: "Installation", href: "/installation" },
 ];
 
 export function SiteFooter() {
@@ -22,13 +22,13 @@ export function SiteFooter() {
                 HyperHive
               </p>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                Infra/DevOps Fabric
+                Homelab Orchestration
               </p>
             </div>
           </div>
           <p className="text-sm text-muted-foreground">
-            Operational fabric for teams that need to connect signals, decisions,
-            and execution in a single narrative.
+            Connective layer for homelab clusters that keeps storage, network,
+            compute, access, and operations aligned.
           </p>
         </div>
         <div className="grid gap-6 text-sm text-muted-foreground sm:grid-cols-2">
@@ -65,7 +65,7 @@ export function SiteFooter() {
       <div className="border-t border-border/70">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>(c) 2025 HyperHive. All rights reserved.</span>
-          <span>Architecture, network, and features aligned in one fabric.</span>
+          <span>Architecture, network, and operations aligned in one system.</span>
         </div>
       </div>
     </footer>
