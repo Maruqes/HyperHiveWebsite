@@ -16,6 +16,7 @@ import {
 import { Card } from "@/components/ui/Card";
 import { IconBadge } from "@/components/ui/IconBadge";
 import { Section } from "@/components/ui/Section";
+import { features as featureList, layerInfo } from "@/lib/features";
 
 const principles = [
   {
@@ -53,10 +54,13 @@ const features = [
   "Central logs and disk health signals",
 ];
 
+const layerCount = Object.keys(layerInfo).length;
+const featureCount = featureList.length;
+
 const stats = [
-  { value: "7", label: "Architectural Layers" },
-  { value: "20", label: "Core Features" },
-  { value: "1", label: "Cluster Trust Domain" },
+  { value: `${layerCount}`, label: "Architectural Layers" },
+  { value: `${featureCount}`, label: "Core Features" },
+  { value: "1", label: "Dedicated Fabric (512rede)" },
   { value: "0", label: "Cloud Dependencies" },
 ];
 
@@ -94,9 +98,10 @@ export default function Home() {
           </div>
 
           <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            A connective orchestration layer that turns a pile of machines into a coherent system.
-            Storage, network, compute, access, and operations work as one. Built for homelabs and
-            small clusters that need consistency as they grow.
+            A simple, direct orchestration layer that turns a pile of machines into a coherent system.
+            Storage, network, compute, access, and operations work as one to keep data consistent through
+            RAID and backups. Built for homelabs and small clusters, prioritizing clarity and reliability
+            over complex availability topologies.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">

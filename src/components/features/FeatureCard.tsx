@@ -25,9 +25,9 @@ export function FeatureCard({
 	return (
 		<div
 			onClick={onClick}
-			className="group relative bg-[#0B1322] border border-[#1A2637] rounded-lg p-5 
-                 hover:border-[#2A3647] transition-all duration-300 cursor-pointer
-                 hover:shadow-lg hover:shadow-teal-500/5 hover:-translate-y-1"
+			className="group relative flex h-full flex-col rounded-lg border border-[#1A2637] bg-[#0B1322] p-5
+                 transition-all duration-300 hover:-translate-y-1 hover:border-[#2A3647]
+                 hover:shadow-lg hover:shadow-teal-500/5 cursor-pointer"
 		>
 			{/* Layer indicator */}
 			<div
@@ -180,7 +180,7 @@ export function FeatureCard({
 			)}
 
 			{/* View more button */}
-			<div className="mt-4 pt-4 border-t border-[#1A2637] flex items-center justify-between">
+			<div className="mt-auto pt-4 border-t border-[#1A2637] flex items-center justify-between">
 				<div className="flex gap-2">
 					{feature.links.slice(0, 2).map((link, idx) => (
 						<a

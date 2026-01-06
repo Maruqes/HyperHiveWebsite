@@ -454,7 +454,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						markerEnd="url(#arrowhead)"
 					/>
 					<text x="360" y="855" fill="#8FA3BF" fontSize="11">
-						Logs / observability
+						Logs
 					</text>
 					<text x="550" y="855" fill="#8FA3BF" fontSize="11">
 						Hover to highlight, click for details

@@ -42,6 +42,9 @@ export interface Feature {
 	keywords: string[];
 	links: { label: string; href: string }[];
 }
+// =======================================================
+// Layers
+// =======================================================
 
 export const layerInfo: Record<
 	FeatureLayer,
@@ -49,62 +52,68 @@ export const layerInfo: Record<
 > = {
 	layer0: {
 		label: 'Layer 0 - Storage Foundation',
-		description: 'Where storage becomes reliable',
+		description: 'Local storage reliability: RAID pools, mounts, disk health',
 		color: '#803030',
 	},
 	layer1: {
 		label: 'Layer 1 - Network Storage',
-		description: 'How storage reaches the cluster',
+		description: 'How storage is shared and reached across the cluster',
 		color: '#389088',
 	},
 	layer2: {
 		label: 'Layer 2 - Compute',
-		description: 'Where workloads run',
+		description: 'Where workloads run: VMs, Docker, Kubernetes',
 		color: '#4A90E2',
 	},
 	edge: {
 		label: 'Edge - Routing',
-		description: 'How services are exposed',
+		description: 'How services are exposed (HTTP/HTTPS + TCP/UDP)',
 		color: '#9B59B6',
 	},
 	access: {
 		label: 'Secure Access',
-		description: 'How access is protected',
+		description: 'How access is protected before reaching the Edge',
 		color: '#E67E22',
 	},
 	operations: {
 		label: 'Operations',
-		description: 'How the stack is maintained and recovered',
+		description: 'Maintenance, recovery, backups, updates, logs',
 		color: '#95A5A6',
 	},
 	assets: {
 		label: 'Assets',
-		description: 'Resources that power compute',
+		description: 'Reusable resources that support deployments and compute',
 		color: '#F39C12',
 	},
 };
 
+// =======================================================
+// Features (ONLY your existing ones, corrected)
+// =======================================================
+
 export const features: Feature[] = [
+	// -------------------------------------------------------
 	// Layer 0 - Storage Foundation
+	// -------------------------------------------------------
 	{
 		id: 'btrfs-raids',
 		name: 'BTRFS / RAIDs',
 		layer: 'layer0',
 		icon: HardDrive,
-		shortDescription: 'Redundant filesystem foundation with snapshots',
+		shortDescription: 'BTRFS used to create and manage RAID storage pools',
 		whatItIs:
-			'BTRFS configured with RAID profiles, subvolumes, and snapshots to keep storage consistent',
+			'BTRFS configured mainly to create and manage RAID storage pools on local disks.',
 		whyExists:
-			'Protect against disk failures and silent corruption while keeping fast recovery points',
+			'Provide redundancy and keep storage available even when a disk degrades or fails.',
 		howItFits:
-			'Foundation of all storage. Everything above assumes storage is healthy and consistent',
+			'This is the storage baseline. Everything above assumes storage pools exist and remain healthy.',
 		capabilities: [
-			'Copy-on-write snapshots and subvolumes',
-			'RAID profiles (single/raid0/raid1/raid5/raid6)',
-			'Scrub, balance, and replace workflows for maintenance',
+			'Create and manage BTRFS RAID pools',
+			'Add/replace disks and keep the pool consistent',
+			'Run maintenance workflows when needed (e.g., scrub/balance)',
 		],
 		dependsOn: [],
-		feedsInto: ['nfs', 'backups', 'virtual-machines', 'docker', 'k8-cluster'],
+		feedsInto: ['auto-mounts', 'nfs', 'backups'],
 		keywords: ['btrfs', 'raid', 'storage', 'filesystem', 'redundancy'],
 		links: [
 			{ label: 'View Architecture', href: '/architecture' },
@@ -118,18 +127,18 @@ export const features: Feature[] = [
 		icon: ArrowLeftRight,
 		shortDescription: 'Automatic mounting of volumes and devices',
 		whatItIs:
-			'Automation that ensures all BTRFS volumes and storage devices are mounted at boot',
+			'Automation that ensures BTRFS volumes and required storage paths are mounted at boot.',
 		whyExists:
-			'Remove manual steps and keep storage ready for NFS and compute',
+			'Remove manual steps and keep storage ready before network exports and workloads rely on it.',
 		howItFits:
-			'Lets NFS and compute assume storage is available',
+			'Ensures the storage foundation is present before NFS exports are served.',
 		capabilities: [
 			'Automatic mounts at system boot',
-			'Detects newly added volumes',
+			'Consistent mount paths used by other services',
 			'Retries on transient failures',
 		],
-		dependsOn: ['btrfs-raids', 'virtual-machines'],
-		feedsInto: ['nfs', 'virtual-machines', 'docker', 'k8-cluster'],
+		dependsOn: ['btrfs-raids'],
+		feedsInto: ['nfs'],
 		keywords: ['mount', 'automation', 'boot', 'volumes'],
 		links: [{ label: 'View Architecture', href: '/architecture' }],
 	},
@@ -138,44 +147,45 @@ export const features: Feature[] = [
 		name: 'SmartDisk',
 		layer: 'layer0',
 		icon: AlertCircle,
-		shortDescription: 'Disk health monitoring and tests',
+		shortDescription: 'Disk health monitoring + remediation routines',
 		whatItIs:
-			'S.M.A.R.T. monitoring with scheduled health checks for each disk',
+			'S.M.A.R.T. monitoring with health checks and routines to detect issues early and attempt to extend disk life.',
 		whyExists:
-			'Spot degradation early and plan replacements before data is at risk',
+			'Spot degradation early and act before the storage pool is at risk.',
 		howItFits:
-			'Feeds Logs and informs maintenance decisions for Layer 0 reliability',
+			'Supports Layer 0 reliability and feeds operational visibility through Logs.',
 		capabilities: [
 			'S.M.A.R.T. metrics and temperature tracking',
 			'Short and long tests with history',
-			'Alerts when disks degrade or fail',
+			'Remediation routine to trigger/encourage sector remapping (“realloc/remap”) when applicable',
 		],
 		dependsOn: ['btrfs-raids'],
 		feedsInto: ['logs'],
-		keywords: ['smart', 'health', 'disks', 'monitoring', 'prevention'],
+		keywords: ['smart', 'health', 'disks', 'monitoring', 'realloc', 'prevention'],
 		links: [{ label: 'View Logs', href: '/features#logs' }],
 	},
 
+	// -------------------------------------------------------
 	// Layer 1 - Network Storage
+	// -------------------------------------------------------
 	{
 		id: 'nfs',
 		name: 'NFS',
 		layer: 'layer1',
 		icon: Network,
 		shortDescription: 'Shared storage over the network for the cluster',
-		whatItIs:
-			'NFS server exporting BTRFS storage across the 512rede fabric',
+		whatItIs: 'NFS server exporting storage across the 512rede network.',
 		whyExists:
-			'Let VMs, containers, and workloads access the same storage consistently',
+			'Let VMs, containers, and workloads access the same storage consistently from any node.',
 		howItFits:
-			'Bridges Layer 0 (physical storage) and Layer 2 (compute), making data available on any node',
+			'Bridges Layer 0 (local storage pools) and Layer 2 (compute) by making data reachable over the network.',
 		capabilities: [
-			'NFSv4 exports with IP allowlists on 512rede',
-			'Predictable mount paths for VMs and containers',
-			'Centralized export definitions and permissions',
+			'NFS exports across the cluster network (512rede)',
+			'Predictable mount paths for workloads',
+			'Export permissions/allowlists based on your network layout',
 		],
 		dependsOn: ['btrfs-raids', 'auto-mounts'],
-		feedsInto: ['virtual-machines', 'docker', 'k8-cluster'],
+		feedsInto: ['isos', 'docker-images', 'virtual-machines', 'docker', 'k8-cluster'],
 		keywords: ['nfs', 'network storage', 'shared storage', 'cluster'],
 		links: [
 			{ label: 'View Architecture', href: '/architecture' },
@@ -183,7 +193,9 @@ export const features: Feature[] = [
 		],
 	},
 
+	// -------------------------------------------------------
 	// Assets
+	// -------------------------------------------------------
 	{
 		id: 'isos',
 		name: 'ISOs',
@@ -191,15 +203,15 @@ export const features: Feature[] = [
 		icon: Disc,
 		shortDescription: 'Centralized ISO image library',
 		whatItIs:
-			'Repository of ISO images (operating systems, installers, rescue disks)',
+			'Repository of ISO images (operating systems, installers, rescue disks).',
 		whyExists:
-			'Provide ready images for virtual machine creation and installation',
+			'Provide ready images for virtual machine creation and installation.',
 		howItFits:
-			'Feeds VM creation, ensuring base systems are always available',
+			'Feeds VM creation by keeping installation media available via shared storage.',
 		capabilities: [
-			'Catalog of ISOs across multiple operating systems',
-			'Integrity verification with checksums',
-			'Fast access over NFS for direct boot',
+			'Catalog of ISO images',
+			'Integrity verification (when you store checksums)',
+			'Fast access over NFS for VM installs/boots',
 		],
 		dependsOn: ['nfs'],
 		feedsInto: ['virtual-machines'],
@@ -211,45 +223,47 @@ export const features: Feature[] = [
 		name: 'Docker Images',
 		layer: 'assets',
 		icon: Box,
-		shortDescription: 'Local registry for container images',
+		shortDescription: 'Central place to store/provide container images',
 		whatItIs:
-			'Private Docker registry with caching of public images and storage for custom builds',
+			'Storage/service used to keep container images available to your Docker/Kubernetes workflows.',
 		whyExists:
-			'Speed up deployments, ensure offline availability, and version internal images',
+			'Speed up deployments and keep image versions controlled and consistent.',
 		howItFits:
-			'Feeds Docker and Kubernetes workloads, reducing reliance on external registries',
+			'Feeds Docker and Kubernetes workloads by providing the images they run.',
 		capabilities: [
-			'Automatic caching of public images',
-			'Storage for internal builds',
-			'Versioned tags with retention policies',
+			'Store and serve container images for internal use',
+			'Version images with tags according to your workflow',
+			'Retention/cleanup policies if you apply them',
 		],
 		dependsOn: ['nfs'],
 		feedsInto: ['docker', 'k8-cluster'],
-		keywords: ['docker', 'registry', 'containers', 'images', 'cache'],
+		keywords: ['docker', 'images', 'containers', 'registry'],
 		links: [],
 	},
 
+	// -------------------------------------------------------
 	// Layer 2 - Compute
+	// -------------------------------------------------------
 	{
 		id: 'virtual-machines',
 		name: 'Virtual Machines',
 		layer: 'layer2',
 		icon: Server,
-		shortDescription: 'Virtual machine orchestration (KVM/QEMU)',
+		shortDescription: 'Virtual machine orchestration (KVM/QEMU) using NFS storage',
 		whatItIs:
-			'VM management using KVM/QEMU with NFS storage and ISO boot',
+			'VM management using KVM/QEMU where VM disks live on NFS shares and installation media comes from the ISO library.',
 		whyExists:
-			'Run full isolated systems with consistent storage paths and predictable recovery',
+			'Run isolated full systems while keeping storage paths consistent through shared network storage.',
 		howItFits:
-			'Consumes shared storage (NFS) and ISOs, exposes services via Nginx, and logs events',
+			'VM hosts/hypervisors interact with NFS paths — VMs do not directly see BTRFS.',
 		capabilities: [
-			'VM creation and lifecycle management with templates',
-			'Shared storage paths for planned moves between hosts',
-			'Fast snapshots and cloning via BTRFS',
+			'VM creation and lifecycle management',
+			'VM disks stored on NFS shares',
+			'Installation from the ISO library',
 		],
 		dependsOn: ['nfs', 'isos'],
-		feedsInto: ['nginx-proxy', 'logs'],
-		keywords: ['vm', 'kvm', 'qemu', 'virtualization'],
+		feedsInto: ['nginx-proxy', 'logs', 'backups', 'auto-backups'],
+		keywords: ['vm', 'kvm', 'qemu', 'virtualization', 'nfs'],
 		links: [{ label: 'View Architecture', href: '/architecture' }],
 	},
 	{
@@ -259,14 +273,14 @@ export const features: Feature[] = [
 		icon: Container,
 		shortDescription: 'Container runtime for lightweight workloads',
 		whatItIs:
-			'Docker Engine for standalone stacks (Compose), backed by NFS storage',
+			'Docker Engine for standalone stacks (Compose), backed by NFS storage.',
 		whyExists:
-			'Run containerized apps with fast deployment and lightweight isolation without Kubernetes',
+			'Run containerized apps with fast deployment and lightweight isolation without Kubernetes.',
 		howItFits:
-			'Consumes NFS and Docker Images, exposes services via Nginx, and integrates with Logs',
+			'Consumes NFS for persistent data and uses the Docker Images asset to source container images.',
 		capabilities: [
 			'Deploy Docker Compose stacks',
-			'Service and container networking',
+			'Container networking',
 			'Persistent volumes on NFS',
 		],
 		dependsOn: ['nfs', 'docker-images'],
@@ -281,15 +295,15 @@ export const features: Feature[] = [
 		icon: Boxes,
 		shortDescription: 'Kubernetes orchestration for scalable workloads',
 		whatItIs:
-			'Automated provisioning of a Kubernetes cluster (K3s/K8s) on HyperHive nodes with NFS storage classes',
+			'Provisioning and operation of a Kubernetes cluster (K3s/K8s) on HyperHive nodes with NFS-backed storage.',
 		whyExists:
-			'Orchestrate containers at scale when Docker Compose is not enough',
+			'Orchestrate containers across nodes when a single-host Docker setup is not enough.',
 		howItFits:
-			'Consumes NFS and Docker Images, exposes services via Nginx Ingress, and integrates centralized Logs',
+			'Consumes NFS for persistent volumes and uses Docker Images for container images.',
 		capabilities: [
-			'Cluster bootstrap with baseline manifests',
+			'Cluster setup and node participation',
 			'Workload scheduling across multiple nodes',
-			'NFS-backed persistent volumes',
+			'NFS-backed persistent storage',
 		],
 		dependsOn: ['nfs', 'docker-images'],
 		feedsInto: ['nginx-proxy', 'logs'],
@@ -297,27 +311,28 @@ export const features: Feature[] = [
 		links: [{ label: 'About 512rede', href: '/512rede' }],
 	},
 
+	// -------------------------------------------------------
 	// Edge - Nginx
+	// -------------------------------------------------------
 	{
 		id: 'nginx-proxy',
 		name: 'Nginx Proxy',
 		layer: 'edge',
 		icon: Globe,
-		shortDescription: 'Reverse proxy and load balancing for services',
+		shortDescription: 'Reverse proxy for exposing services',
 		whatItIs:
-			'Nginx as a reverse proxy routing HTTP/HTTPS traffic to backends (VMs, Docker, K8)',
+			'Nginx as a reverse proxy routing HTTP/HTTPS traffic to backends (VMs, Docker, K8).',
 		whyExists:
-			'Centralize external access, apply routing rules, and distribute load',
+			'Centralize external access and keep routing rules in one place.',
 		howItFits:
-			'Receives external requests (via WireGuard/SPA), forwards to Layer 2 services, and applies Certificates',
+			'Routes incoming traffic to Layer 2 services and produces access/error data for Logs.',
 		capabilities: [
-			'Hostname and path-based routing',
-			'Load balancing across multiple backends',
-			'WebSocket and HTTP/2 support',
+			'Hostname-based routing (and path routing if you use it)',
+			'Proxy to internal services (VMs/containers/cluster services)',
 		],
 		dependsOn: ['virtual-machines', 'docker', 'k8-cluster'],
-		feedsInto: ['logs'],
-		keywords: ['nginx', 'proxy', 'reverse proxy', 'load balancer', 'routing'],
+		feedsInto: ['nginx-certificates', 'nginx-streams', 'nginx-redirection', 'nginx-404', 'logs'],
+		keywords: ['nginx', 'proxy', 'reverse proxy', 'routing'],
 		links: [],
 	},
 	{
@@ -325,21 +340,20 @@ export const features: Feature[] = [
 		name: 'Certificates',
 		layer: 'edge',
 		icon: Lock,
-		shortDescription: 'Automated SSL/TLS certificate management',
+		shortDescription: 'TLS certificate management for HTTPS',
 		whatItIs:
-			'Automatic renewal of Let\'s Encrypt certificates and TLS management',
+			'Certificate handling used by the proxy to serve HTTPS endpoints.',
 		whyExists:
-			'Ensure secure HTTPS communications without manual work',
+			'Provide encrypted HTTPS access for exposed services.',
 		howItFits:
-			'Integrates with the proxy for TLS termination and protects traffic between clients and services',
+			'Works together with Nginx Proxy to terminate TLS and serve HTTPS.',
 		capabilities: [
-			'Automatic renewal via the ACME protocol',
-			'Wildcard certificate support',
-			'TLS 1.3 and modern cipher suites',
+			'Attach/manage certificates per domain/service',
+			'Renewal/rotation according to your setup',
 		],
 		dependsOn: ['nginx-proxy'],
 		feedsInto: [],
-		keywords: ['ssl', 'tls', 'certificates', 'letsencrypt', 'https', 'acme'],
+		keywords: ['ssl', 'tls', 'certificates', 'https'],
 		links: [],
 	},
 	{
@@ -349,19 +363,18 @@ export const features: Feature[] = [
 		icon: ArrowLeftRight,
 		shortDescription: 'TCP/UDP proxy for non-HTTP protocols',
 		whatItIs:
-			'Nginx stream module for TCP/UDP proxy (databases, SSH, custom protocols)',
+			'Nginx stream support for TCP/UDP proxying (non-HTTP services).',
 		whyExists:
-			'Extend proxy capabilities beyond HTTP to any protocol',
+			'Expose non-web services through the same Edge layer when needed.',
 		howItFits:
-			'Exposes non-web services (PostgreSQL, Redis, etc.) through the Edge with consistent controls',
+			'Complements HTTP proxying by handling raw TCP/UDP forwarding when you use it.',
 		capabilities: [
-			'TCP/UDP routing for non-HTTP services',
-			'Upstream mapping for internal services',
-			'Optional TLS pass-through or termination',
+			'TCP/UDP forwarding to internal targets',
+			'Central place to manage edge exposure for non-HTTP ports',
 		],
 		dependsOn: ['nginx-proxy'],
-		feedsInto: [],
-		keywords: ['tcp', 'udp', 'stream', 'proxy', 'database'],
+		feedsInto: ['logs'],
+		keywords: ['tcp', 'udp', 'stream', 'proxy'],
 		links: [],
 	},
 	{
@@ -369,21 +382,20 @@ export const features: Feature[] = [
 		name: 'Redirection',
 		layer: 'edge',
 		icon: ArrowLeftRight,
-		shortDescription: 'Redirection rules and rewrites',
+		shortDescription: 'Redirect rules and URL normalization',
 		whatItIs:
-			'HTTP redirects (301/302) and URL rewrites',
+			'HTTP redirects (301/302) and basic URL normalization rules.',
 		whyExists:
-			'Manage URL changes, force HTTPS, and apply canonical URLs',
+			'Keep URLs consistent and enforce the expected entry points.',
 		howItFits:
-			'Normalization layer before routing to backends, ensuring URL consistency',
+			'Normalizes requests before they reach backend services.',
 		capabilities: [
-			'Permanent and temporary redirects',
-			'Regex-based URL rewriting',
-			'Force HTTPS and canonical domains',
+			'Permanent and temporary redirects (301/302)',
+			'Force HTTPS / canonical host rules if you configured them',
 		],
 		dependsOn: ['nginx-proxy'],
 		feedsInto: [],
-		keywords: ['redirect', 'rewrite', 'url', 'canonical', 'http'],
+		keywords: ['redirect', 'canonical', 'https', 'http'],
 		links: [],
 	},
 	{
@@ -393,41 +405,42 @@ export const features: Feature[] = [
 		icon: AlertCircle,
 		shortDescription: 'Custom error handling and 404 pages',
 		whatItIs:
-			'Custom error pages and logging of invalid access attempts',
+			'Custom error pages and logging of unmatched/invalid requests.',
 		whyExists:
-			'Improve UX on errors, detect scans, and provide consistent feedback',
+			'Improve UX on errors and detect noise/scans through log visibility.',
 		howItFits:
-			'Last line of the Edge: when nothing matches, respond with useful info and log suspicious activity',
+			'When nothing matches, respond consistently and record the event.',
 		capabilities: [
-			'Custom error pages per domain',
-			'404 logging for analysis and audit',
-			'Consistent error responses across services',
+			'Custom error pages per domain/service (if configured)',
+			'Logging of 404/invalid requests for analysis',
 		],
 		dependsOn: ['nginx-proxy'],
 		feedsInto: ['logs'],
-		keywords: ['404', 'error', 'error pages', 'logging', 'security'],
+		keywords: ['404', 'error', 'error pages', 'logging'],
 		links: [],
 	},
 
+	// -------------------------------------------------------
 	// Secure Access
+	// -------------------------------------------------------
 	{
 		id: 'wireguard',
 		name: 'WireGuard VPN',
 		layer: 'access',
 		icon: Shield,
-		shortDescription: 'Modern VPN for secure infrastructure access',
+		shortDescription: 'VPN for secure infrastructure access',
 		whatItIs:
-			'WireGuard VPN server to create encrypted tunnels and control who can access the 512rede network',
+			'WireGuard VPN to create encrypted tunnels and control who can access internal services.',
 		whyExists:
-			'Ensure only authorized users can access internal services',
+			'Ensure only authorized users can reach internal infrastructure endpoints.',
 		howItFits:
-			'First barrier: without an active VPN, there is no access to Edge or services, reducing attack surface',
+			'Provides a secure entry channel for management and access to internal services.',
 		capabilities: [
 			'Encrypted tunnels with minimal overhead',
 			'Peer and public key management',
 			'Allowed IPs and routes per peer',
 		],
-		dependsOn: [],
+		dependsOn: ['spa'],
 		feedsInto: ['nginx-proxy', 'logs'],
 		keywords: ['vpn', 'wireguard', 'encryption', 'secure access', 'tunnel'],
 		links: [{ label: 'About 512rede', href: '/512rede' }],
@@ -437,25 +450,28 @@ export const features: Feature[] = [
 		name: 'SPA',
 		layer: 'access',
 		icon: KeyRound,
-		shortDescription: 'Single Packet Authorization for modern port knocking',
+		shortDescription: 'Link + password opens a specific port for an IP (or multiple IPs)',
 		whatItIs:
-			'Single-packet authorization: ports stay closed until an authenticated packet opens them for a specific IP',
+			'A HyperHive feature where a link + password triggers a rule that opens a specific port for the requester IP (or a defined set of IPs), typically for a limited time.',
 		whyExists:
-			'Make services invisible to scans and attacks, opening access only after identity proof',
+			'Keep ports closed by default and only grant access when the user proves knowledge of the secret.',
 		howItFits:
-			'Extra layer before WireGuard: even the VPN is reachable only after SPA, further reducing exposure',
+			'Acts as a gate before reaching sensitive entry points (like VPN/management ports), reducing exposure to scans.',
 		capabilities: [
-			'Password-protected SPA packets triggered via a link',
-			'Opens a port only for the requesting IP (and other authorized SPA users)',
-			'Protection against port scanning with audit logs',
+			'Link + password authorization flow',
+			'Open a specific port only after successful authentication',
+			'Target the requester IP or an allowed set of IPs',
+			'Feed access events into Logs for visibility',
 		],
 		dependsOn: [],
 		feedsInto: ['wireguard', 'logs'],
-		keywords: ['spa', 'port knocking', 'security', 'firewall', 'access control'],
+		keywords: ['spa', 'security', 'port', 'access control'],
 		links: [],
 	},
 
+	// -------------------------------------------------------
 	// Operations
+	// -------------------------------------------------------
 	{
 		id: 'backups',
 		name: 'Backups',
@@ -463,19 +479,19 @@ export const features: Feature[] = [
 		icon: Database,
 		shortDescription: 'On-demand VM backup system',
 		whatItIs:
-			'Tools to create manual backups of virtual machines (VM disks and configs)',
+			'Tools to create manual backups of virtual machines (VM disks and configs).',
 		whyExists:
-			'Allow controlled recovery points for VMs before critical operations (updates, migrations)',
+			'Allow controlled recovery points before critical operations (updates, migrations).',
 		howItFits:
-			'Protects VM workloads by keeping recovery points available',
+			'Protects VM workloads by keeping recovery points available through your backup workflow.',
 		capabilities: [
-			'Full and incremental VM backups',
-			'Export VM images for restore or migration',
-			'Snapshot VM volumes before changes',
+			'Backup VM disks and configuration',
+			'Restore workflow based on your stored backup format',
+			'Execution logging/status reporting into Logs',
 		],
-		dependsOn: ['btrfs-raids'],
-		feedsInto: ['logs'],
-		keywords: ['backup', 'snapshot', 'recovery', 'restore', 'vm'],
+		dependsOn: ['virtual-machines', 'btrfs-raids'],
+		feedsInto: ['auto-backups', 'updates', 'logs'],
+		keywords: ['backup', 'recovery', 'restore', 'vm'],
 		links: [],
 	},
 	{
@@ -485,17 +501,17 @@ export const features: Feature[] = [
 		icon: RefreshCw,
 		shortDescription: 'Scheduled automatic VM backups',
 		whatItIs:
-			'Scheduling system (cron/systemd timers) for periodic VM backups without manual work',
+			'Scheduling system (cron/systemd timers) for periodic VM backups without manual work.',
 		whyExists:
-			'Ensure continuous VM protection with retention and rotation',
+			'Ensure continuous VM protection with retention/rotation according to your policy.',
 		howItFits:
-			'Complements Backups: on-demand vs scheduled, keeping recent VM history available',
+			'Complements Backups: on-demand vs scheduled, keeping recent recovery points available.',
 		capabilities: [
-			'Flexible scheduling (daily, weekly)',
-			'Configurable retention policy',
-			'Job logs and status tracking',
+			'Schedules (daily/weekly/etc.) based on your configuration',
+			'Retention/rotation if you configured it',
+			'Job logs and status tracking via Logs',
 		],
-		dependsOn: ['btrfs-raids', 'virtual-machines', 'backups'],
+		dependsOn: ['backups', 'virtual-machines', 'btrfs-raids'],
 		feedsInto: ['logs'],
 		keywords: ['automatic backups', 'schedule', 'retention', 'rotation', 'vm'],
 		links: [],
@@ -507,15 +523,15 @@ export const features: Feature[] = [
 		icon: RefreshCw,
 		shortDescription: 'Controlled system update management',
 		whatItIs:
-			'Patching and updates for OS, kernel, applications, and services with a controlled cadence',
+			'Patching and updates for OS/services with a controlled process.',
 		whyExists:
-			'Keep security and stability without breaking workloads, with backups and checks before changes',
+			'Keep security and stability without breaking workloads.',
 		howItFits:
-			'Controlled maintenance of the stack: plans updates, validates health, and uses VM Backups as a safety net',
+			'Operational practice: backup → update → verify → log.',
 		capabilities: [
-			'Planned maintenance windows and update checklists',
-			'Pre-update health checks and backup reminders',
-			'Tracking of applied versions and changes',
+			'Controlled update process',
+			'Pre-update backups as a safety net',
+			'Log the outcome for auditing/troubleshooting',
 		],
 		dependsOn: ['backups'],
 		feedsInto: ['logs'],
@@ -529,20 +545,21 @@ export const features: Feature[] = [
 		icon: FileText,
 		shortDescription: 'Centralized log aggregation and analysis',
 		whatItIs:
-			'Central logging system that collects and aggregates events across the stack',
+			'Central logging that collects and aggregates events across the stack.',
 		whyExists:
-			'Understand what happened, where, and why with audit-ready context',
+			'Understand what happened, where, and why with operational context.',
 		howItFits:
-			'Collects events from every layer (SmartDisk, Nginx, SPA, VMs, K8, Backups) and closes the operational loop',
+			'Collects events from storage, edge, access, compute, and operations to support troubleshooting and auditing.',
 		capabilities: [
-			'Aggregate logs across the infrastructure',
-			'Search and filter by service or node',
-			'Highlight critical failures and security events',
+			'Aggregate logs across services/nodes',
+			'Search and filter by component',
+			'Keep operational history for troubleshooting',
 		],
 		dependsOn: [
 			'smartdisk',
 			'nginx-proxy',
 			'nginx-404',
+			'nginx-streams',
 			'wireguard',
 			'spa',
 			'virtual-machines',
@@ -553,10 +570,11 @@ export const features: Feature[] = [
 			'updates',
 		],
 		feedsInto: [],
-		keywords: ['logs', 'logging', 'observability', 'audit', 'troubleshooting'],
+		keywords: ['logs', 'logging', 'audit', 'troubleshooting'],
 		links: [],
 	},
 ];
+
 
 // Helper function to get feature by ID
 export function getFeatureById(id: string): Feature | undefined {

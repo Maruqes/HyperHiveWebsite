@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const navItems = [
@@ -9,20 +10,28 @@ const navItems = [
 ];
 
 export function SiteFooter() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="border-t border-border/70 bg-[rgba(5,8,16,0.85)]">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-start md:justify-between">
         <div className="flex max-w-sm flex-col gap-4">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[rgba(14,21,36,0.8)] text-sm font-semibold text-foreground">
-              HH
+              <Image
+                src="/static/android-chrome-192x192.png"
+                alt="HyperHive"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
             </span>
             <div>
               <p className="font-display text-lg font-semibold text-foreground">
                 HyperHive
               </p>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                Homelab Orchestration
+                Homelab Cloud Orchestration
               </p>
             </div>
           </div>
@@ -48,23 +57,22 @@ export function SiteFooter() {
           </div>
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
-              Contact
+              GitHub
             </p>
             <a
-              href="mailto:hello@hyperhive.io"
+              href="https://github.com/Maruqes/HyperHive"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              rel="noreferrer"
+              target="_blank"
             >
-              hello@hyperhive.io
+              View HyperHive on GitHub
             </a>
-            <span className="text-sm text-muted-foreground">
-              Porto / Lisbon / Remote
-            </span>
           </div>
         </div>
       </div>
       <div className="border-t border-border/70">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <span>(c) 2025 HyperHive. All rights reserved.</span>
+          <span>© {currentYear} HyperHive. All rights reserved.</span>
           <span>Architecture, network, and operations aligned in one system.</span>
         </div>
       </div>

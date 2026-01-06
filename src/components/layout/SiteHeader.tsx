@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -15,14 +16,21 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between">
         <Link href="/" className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[rgba(14,21,36,0.8)] text-sm font-semibold text-foreground">
-            HH
+            <Image
+              src="/static/android-chrome-192x192.png"
+              alt="HyperHive"
+              width={32}
+              height={32}
+              className="h-8 w-8"
+              priority
+            />
           </span>
           <div className="flex flex-col">
             <span className="font-display text-lg font-semibold tracking-tight text-foreground">
               HyperHive
             </span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              Homelab Orchestration
+              Homelab Cloud Orchestration
             </span>
           </div>
         </Link>
@@ -39,10 +47,12 @@ export function SiteHeader() {
             ))}
           </nav>
           <a
-            href="mailto:hello@hyperhive.io"
+            href="https://github.com/Maruqes/HyperHive"
             className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-[rgba(14,21,36,0.8)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground transition hover:border-accent/60"
+            rel="noreferrer"
+            target="_blank"
           >
-            Talk to us
+            GitHub
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>

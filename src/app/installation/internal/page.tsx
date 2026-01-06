@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { InstallStepCard } from "@/components/installation/InstallStepCard";
 import type { InstallStep } from "@/components/installation/InstallStepCard";
+import { ScrollProgressBar } from "@/components/installation/ScrollProgressBar";
 
 const internalSteps: InstallStep[] = [
   {
@@ -162,42 +163,45 @@ const internalSteps: InstallStep[] = [
 
 export default function InstallationInternalPage() {
   return (
-    <section className="py-20 sm:py-24">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6">
-        <div className="flex flex-col gap-4">
-          <Link href="/installation" className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Back to choices
-          </Link>
-          <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Internal 512rede installation
-          </h2>
-          <p className="text-base text-muted-foreground sm:text-lg">
-            Dedicated fabric separated from the home LAN. The master routes and serves DHCP for 512rede.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/512rede"
-              className="rounded-full border border-border/70 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent"
-            >
-              View 512rede diagram
+    <>
+      <ScrollProgressBar />
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6">
+          <div className="flex flex-col gap-4">
+            <Link href="/installation" className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Back to choices
             </Link>
-            <Link
-              href="/installation/external"
-              className="rounded-full border border-border/70 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground"
-            >
-              Switch to external
-            </Link>
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              Internal 512rede installation
+            </h1>
+            <p className="text-sm text-muted-foreground sm:text-base">
+              Dedicated fabric separated from the home LAN. The master routes and serves DHCP for 512rede.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/512rede"
+                className="rounded-full border border-border/70 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent"
+              >
+                View 512rede diagram
+              </Link>
+              <Link
+                href="/installation/external"
+                className="rounded-full border border-border/70 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground"
+              >
+                Switch to external
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className="rounded-3xl border border-border/70 bg-[rgba(8,12,22,0.85)] p-6 shadow-[0_24px_60px_rgba(5,8,16,0.45)]">
-          <div className="grid gap-4">
-            {internalSteps.map((step) => (
-              <InstallStepCard key={step.id} step={step} />
-            ))}
+          <div className="glass-panel rounded-3xl border border-border/70 p-6 shadow-[0_18px_48px_rgba(5,8,16,0.35)]">
+            <div className="grid gap-4">
+              {internalSteps.map((step) => (
+                <InstallStepCard key={step.id} step={step} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

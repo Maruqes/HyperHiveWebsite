@@ -33,11 +33,23 @@ export default function NetworkPage() {
                         viewBox="0 0 10 10"
                         refX="9"
                         refY="5"
-                        markerWidth="7"
-                        markerHeight="7"
+                        markerWidth="5"
+                        markerHeight="5"
                         orient="auto-start-reverse"
                       >
                         <path d="M 0 0 L 10 5 L 0 10 z" fill="#389088" />
+                      </marker>
+
+                      <marker
+                        id="arrow-wan"
+                        viewBox="0 0 10 10"
+                        refX="9"
+                        refY="5"
+                        markerWidth="5"
+                        markerHeight="5"
+                        orient="auto"
+                      >
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#8FA3BF" />
                       </marker>
 
                       <linearGradient id="internetGlow" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -72,13 +84,13 @@ export default function NetworkPage() {
 
                       {/* Switch Icon */}
                       <g id="icon-switch">
-                        <rect x="2" y="9" width="20" height="6" rx="1" fill="none" stroke="#389088" strokeWidth="2" />
-                        <line x1="5" y1="12" x2="5" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
-                        <line x1="8" y1="12" x2="8" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
-                        <line x1="11" y1="12" x2="11" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
-                        <line x1="14" y1="12" x2="14" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
-                        <line x1="17" y1="12" x2="17" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
-                        <line x1="19" y1="12" x2="19" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <rect x="2" y="9" width="24" height="6" rx="1" fill="none" stroke="#389088" strokeWidth="2" />
+                        <line x1="5.5" y1="12" x2="5.5" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="9" y1="12" x2="9" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="12.5" y1="12" x2="12.5" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="16" y1="12" x2="16" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="19.5" y1="12" x2="19.5" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="23" y1="12" x2="23" y2="12" stroke="#389088" strokeWidth="1.5" strokeLinecap="round" />
                       </g>
 
                       {/* Server/Node Icon */}
@@ -252,11 +264,8 @@ export default function NetworkPage() {
                       y2="310"
                       stroke="#8FA3BF"
                       strokeWidth="3"
-                      markerEnd="url(#arrow-512)"
+                      markerEnd="url(#arrow-wan)"
                     />
-                    <text x="175" y="230" fill="#8FA3BF" fontSize="10" fontWeight="600">
-                      WAN
-                    </text>
 
                     {/* Master to Switch */}
                     <line
@@ -265,10 +274,11 @@ export default function NetworkPage() {
                       x2="370"
                       y2="365"
                       stroke="#389088"
-                      strokeWidth="4"
+                      strokeWidth="3"
                       markerEnd="url(#arrow-512)"
+                      markerStart="url(#arrow-512)"
                     />
-                    <text x="295" y="355" fill="#389088" fontSize="10" fontWeight="600">
+                    <text x="325" y="355" fill="#389088" fontSize="10" fontWeight="600" textAnchor="middle">
                       2.5G/10G
                     </text>
 
@@ -279,45 +289,35 @@ export default function NetworkPage() {
                       x2="435"
                       y2="450"
                       stroke="#389088"
-                      strokeWidth="3.5"
+                      strokeWidth="3"
                       markerEnd="url(#arrow-512)"
                     />
 
                     {/* Switch to Node C */}
                     <line
-                      x1="495"
+                      x1="490"
                       y1="400"
-                      x2="585"
+                      x2="550"
                       y2="450"
                       stroke="#389088"
-                      strokeWidth="3.5"
+                      strokeWidth="3"
                       markerEnd="url(#arrow-512)"
-                    />
-
-                    {/* Bidirectional indicators */}
-                    <line
-                      x1="370"
-                      y1="372"
-                      x2="280"
-                      y2="372"
-                      stroke="#389088"
-                      strokeWidth="2"
-                      markerEnd="url(#arrow-512)"
-                      opacity="0.4"
-                      strokeDasharray="3 3"
                     />
 
                     {/* Labels for traffic types */}
                     <g opacity="0.85">
-                      <rect x="60" y="505" width="140" height="48" rx="8" fill="rgba(14, 21, 36, 0.95)"
+                      <rect x="60" y="474" width="160" height="66" rx="8" fill="rgba(14, 21, 36, 0.95)"
                         stroke="#389088" strokeWidth="1.5" />
-                      <text x="70" y="523" fill="#389088" fontSize="9" fontWeight="600">
-                        High-speed fabric:
+                      <text x="70" y="492" fill="#389088" fontSize="9" fontWeight="700">
+                        Isolated Network:
                       </text>
-                      <text x="70" y="536" fill="#8FA3BF" fontSize="8">
+                      <text x="70" y="506" fill="#8FA3BF" fontSize="8">
+                        • VMs, Docker & cluster
+                      </text>
+                      <text x="70" y="518" fill="#8FA3BF" fontSize="8">
                         • NFS storage traffic
                       </text>
-                      <text x="70" y="547" fill="#8FA3BF" fontSize="8">
+                      <text x="70" y="530" fill="#8FA3BF" fontSize="8">
                         • Backups & observability
                       </text>
                     </g>

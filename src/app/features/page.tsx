@@ -223,7 +223,7 @@ export default function FeaturesPage() {
                     {/* Features Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {layerFeatures.map((feature) => (
-                        <div key={feature.id} id={`feature-${feature.id}`}>
+                        <div key={feature.id} id={`feature-${feature.id}`} className="h-full">
                           <FeatureCard
                             feature={feature}
                             showConnections={showConnections}

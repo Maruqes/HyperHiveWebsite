@@ -21,7 +21,7 @@ const renderStepBlock = (
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-border/50 bg-white/5 p-3">
+    <div className="glass-panel rounded-xl border border-border/50 p-3">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
         {label}
       </p>
@@ -43,7 +43,7 @@ const renderStepBlock = (
 
 export function InstallStepCard({ step }: { step: InstallStep }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-[rgba(5,8,16,0.7)] p-5">
+    <div className="glass-panel rounded-2xl border border-border/60 p-5">
       <div className="flex flex-col gap-2">
         <h4 className="text-lg font-semibold text-foreground">{step.title}</h4>
         <p className="text-sm text-muted-foreground">{step.summary}</p>
@@ -59,7 +59,7 @@ export function InstallStepCard({ step }: { step: InstallStep }) {
         {renderStepBlock("Checks", step.checks)}
       </div>
       {step.notes ? (
-        <div className="mt-3 rounded-xl border border-border/50 bg-white/5 p-3">
+        <div className="glass-panel mt-3 rounded-xl border border-border/50 p-3">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Notes
           </p>
