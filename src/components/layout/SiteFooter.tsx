@@ -40,7 +40,7 @@ export function SiteFooter() {
             compute, access, and operations aligned.
           </p>
         </div>
-        <div className="grid gap-6 text-sm text-muted-foreground sm:grid-cols-2">
+        <div className="grid gap-6 text-sm text-muted-foreground sm:grid-cols-3">
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
               Navigation
@@ -66,6 +66,25 @@ export function SiteFooter() {
               target="_blank"
             >
               View HyperHive on GitHub
+            </a>
+          </div>
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
+              Legal
+            </p>
+            <Link href="/privacy" className="transition-colors hover:text-foreground">
+              Privacy
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-foreground">
+              Terms
+            </Link>
+            <a
+              href="https://github.com/Maruqes/HyperHive/blob/main/LICENSE"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              rel="noreferrer"
+              target="_blank"
+            >
+              License
             </a>
           </div>
         </div>
