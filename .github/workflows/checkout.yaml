@@ -1,0 +1,41 @@
+name: Clone repo
+
+on:
+    workflow_dispatch:
+
+jobs:
+    clone:
+        runs-on: [self-hosted, linux, x64]
+
+        steps:
+            - name: checkout do repo privado
+              uses: actions/checkout@v4
+
+            - name: fix home
+              run: |
+                  echo "HOME=/home/compileronline" >> $GITHUB_ENV
+                  echo "PM2_HOME=/home/compileronline/.pm2" >> $GITHUB_ENV
+
+            - name: see content
+              run: |
+                  whoami
+                  pwd
+                  ls -la
+
+            - name: copiar project
+              run: |
+                  pm2 stop hyperhive-website-app || true
+                  pm2 delete hyperhive-website-app || true
+                  rsync -a --delete ./ "$HOME/HYPERHIVE_WEBSITE/"
+
+            - name: run project
+              env:
+                  HOME: /home/compileronline
+                  PM2_HOME: /home/compileronline/.pm2
+              run: |
+                  cd "$HOME/HYPERHIVE_WEBSITE"
+                  make build
+                  pm2 startOrReload ecosystem.config.js --update-env
+                  pm2 save --force
+                  pm2 list
+                  pm2 logs hyperhive-website-app --lines 50 --nostream

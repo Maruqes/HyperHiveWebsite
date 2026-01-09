@@ -87,7 +87,10 @@ export function DiagramSVG({ activeStep }: DiagramSVGProps) {
     START_Y + ARCHITECTURE_STEPS.length * BOX_HEIGHT +
     (ARCHITECTURE_STEPS.length - 1) * BOX_GAP +
     20;
-  const transition = { duration: 0.35, ease: [0.22, 1, 0.36, 1] };
+  const transition = {
+    duration: 0.35,
+    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  };
 
   return (
     <svg

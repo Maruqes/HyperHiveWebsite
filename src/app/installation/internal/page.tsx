@@ -1,207 +1,462 @@
+"use client";
+
 import Link from "next/link";
 
-import { InstallStepCard } from "@/components/installation/InstallStepCard";
-import type { InstallStep } from "@/components/installation/InstallStepCard";
+import { CodeBlock } from "@/components/installation/CodeBlock";
 import { ScrollProgressBar } from "@/components/installation/ScrollProgressBar";
 
-const internalSteps: InstallStep[] = [
-  {
-    id: "internal-step-01",
-    title: "Step 1: Define the 512rede subnet",
-    summary: "Pick the subnet, DHCP range, and gateway for the internal fabric.",
-    actions: [
-      "Choose the 512rede subnet",
-      "Reserve static IPs for nodes",
-      "Set gateway and DNS plan",
-    ],
-    commands: ["ipcalc 192.168.76.0/24", "printf '%s' 192.168.76.1"],
-    files: ["/etc/hyperhive/network.yaml"],
-    env: ["CLUSTER_SUBNET=192.168.76.0/24", "CLUSTER_GW=192.168.76.1"],
-    notes: "Keep the fabric on a dedicated NIC.",
-  },
-  {
-    id: "internal-step-02",
-    title: "Step 2: Wire the fabric",
-    summary: "Connect all nodes to the cluster switch and verify link speed.",
-    actions: [
-      "Label switch ports per node",
-      "Confirm NIC mapping on each node",
-      "Set MTU if required",
-    ],
-    commands: ["ip link", "ethtool eth1", "ping -c 3 192.168.76.1"],
-    paths: ["/etc/netplan", "/etc/network"],
-    checks: ["Links report expected speed", "Nodes reach master on 512rede"],
-    notes: "Keep fabric traffic off the home LAN.",
-  },
-  {
-    id: "internal-step-03",
-    title: "Step 3: Master DHCP and routing",
-    summary: "Enable DHCP, IP forwarding, and routing on the master.",
-    actions: [
-      "Enable DHCP service",
-      "Enable IP forwarding",
-      "Add NAT rules if needed",
-    ],
-    commands: [
-      "systemctl enable isc-dhcp-server",
-      "sysctl -w net.ipv4.ip_forward=1",
-      "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE",
-    ],
-    files: ["/etc/dhcp/dhcpd.conf", "/etc/sysctl.conf"],
-    checks: ["Nodes receive DHCP leases", "Nodes reach LAN through master"],
-    notes: "Use reservations for node IPs.",
-  },
-  {
-    id: "internal-step-04",
-    title: "Step 4: Node fabric config",
-    summary: "Configure node routes and pin services to 512rede.",
-    actions: [
-      "Set static IPs or DHCP reservations",
-      "Pin NFS mounts to the 512rede IP",
-      "Verify isolation from the LAN",
-    ],
-    commands: [
-      "ip route",
-      "mount -t nfs master:/srv/hyperhive /srv/hyperhive",
-      "ss -tulpn | grep nfs",
-    ],
-    paths: ["/etc/fstab", "/srv/hyperhive"],
-    moves: ["Move cluster-only configs into /etc/hyperhive/network"],
-    checks: ["NFS uses 512rede IPs", "LAN does not see fabric services"],
-  },
-  {
-    id: "internal-step-05",
-    title: "Step 5: Install base OS",
-    summary: "Install the OS and baseline packages on every node.",
-    actions: ["Install OS image", "Apply baseline packages", "Sync time and locale"],
-    commands: [
-      "apt update",
-      "apt install btrfs-progs nfs-kernel-server",
-      "timedatectl set-ntp true",
-    ],
-    files: ["/etc/hostname", "/etc/hosts", "/etc/timezone"],
-    checks: ["hostnamectl", "timedatectl"],
-  },
-  {
-    id: "internal-step-06",
-    title: "Step 6: Create BTRFS volumes",
-    summary: "Create pools and subvolumes with consistent labels.",
-    actions: ["Create the pool", "Create subvolumes", "Label volumes"],
-    commands: [
-      "mkfs.btrfs -L hivepool /dev/sdX /dev/sdY",
-      "mount /dev/sdX /mnt/hive",
-      "btrfs subvolume create /mnt/hive/vms",
-    ],
-    paths: ["/mnt/hive", "/srv/hyperhive"],
-    checks: ["btrfs filesystem show"],
-  },
-  {
-    id: "internal-step-07",
-    title: "Step 7: Auto-mounts and disk health",
-    summary: "Make mounts consistent and record disk health baselines.",
-    actions: [
-      "Add fstab entries",
-      "Create mount points",
-      "Enable SMART monitoring",
-    ],
-    commands: ["mount -a", "systemctl enable smartd", "smartctl -a /dev/sdX"],
-    files: ["/etc/fstab", "/etc/smartd.conf"],
-    paths: ["/srv/hyperhive/vms", "/var/log/smartdisk"],
-    checks: ["findmnt /srv/hyperhive/vms"],
-  },
-  {
-    id: "internal-step-08",
-    title: "Step 8: Export NFS on 512rede",
-    summary: "Expose shared volumes only to fabric IPs.",
-    actions: ["Define NFS exports", "Restrict to 512rede subnet", "Reload exports"],
-    commands: ["exportfs -ra", "showmount -e localhost", "systemctl restart nfs-server"],
-    files: ["/etc/exports"],
-    env: ["NFS_ALLOWED=192.168.76.0/24"],
-    checks: ["showmount -e master"],
-  },
-  {
-    id: "internal-step-09",
-    title: "Step 9: Prepare assets and .env files",
-    summary: "Download ISOs, create templates, and configure stacks.",
-    actions: ["Download ISO images", "Create templates", "Fill .env files"],
-    commands: ["curl -O https://example.local/isos/debian.iso", "virsh list --all"],
-    paths: ["/srv/hyperhive/isos", "/srv/hyperhive/stacks/app"],
-    files: ["/srv/hyperhive/stacks/app/.env", "/etc/hyperhive/templates/base.xml"],
-    env: ["APP_ENV=production", "API_URL=https://api.local"],
-    moves: ["Copy assets from /srv/hyperhive/assets to /srv/hyperhive/stacks/app"],
-  },
-  {
-    id: "internal-step-10",
-    title: "Step 10: Deploy compute",
-    summary: "Bring up VMs and Docker services on shared storage.",
-    actions: ["Create VM templates", "Start VM services", "Deploy Docker stacks"],
-    commands: ["virt-install --name base-vm --dry-run", "docker compose up -d"],
-    paths: ["/srv/hyperhive/vms", "/srv/hyperhive/stacks"],
-    checks: ["docker compose ps", "virsh list --all"],
-  },
-  {
-    id: "internal-step-11",
-    title: "Step 11: Configure edge and access",
-    summary: "Set Nginx routing and gated access with WireGuard + SPA.",
-    actions: ["Create Nginx routes", "Attach TLS certs", "Enable WireGuard + SPA"],
-    commands: ["nginx -t", "systemctl reload nginx", "wg-quick up wg0"],
-    files: ["/etc/nginx/sites-available/hyperhive.conf", "/etc/wireguard/wg0.conf"],
-    env: ["EDGE_DOMAIN=service.local", "WG_PORT=51820"],
-    checks: ["curl -I https://service.local", "wg show"],
-  },
-  {
-    id: "internal-step-12",
-    title: "Step 12: Backups and logs",
-    summary: "Configure VM backups and central logs.",
-    actions: ["Create snapshot scripts", "Schedule backups", "Enable log forwarding"],
-    commands: ["btrfs subvolume snapshot", "systemctl list-timers", "journalctl -u nginx"],
-    files: ["/etc/hyperhive/backup.yaml", "/etc/rsyslog.d/60-hyperhive.conf"],
-    paths: ["/srv/hyperhive/backups", "/srv/hyperhive/logs"],
-    checks: ["ls -la /srv/hyperhive/backups", "grep -i hyperhive /var/log/syslog"],
-  },
+const sections = [
+  { id: "dhcp", label: "Master DHCP", number: 1 },
+  { id: "requirements", label: "Requirements", number: 2 },
+  { id: "master", label: "Master", number: 3 },
+  { id: "slaves", label: "Slave(s)", number: 4 },
+  { id: "final", label: "Final Run", number: 5 },
 ];
 
-export default function InstallationInternalPage() {
+export default function InternalInstallationPage() {
   return (
     <>
-      <ScrollProgressBar />
-      <section className="py-16 sm:py-20">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6">
-          <div className="flex flex-col gap-4">
-            <Link href="/installation" className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              Back to choices
-            </Link>
-            <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-              Internal 512rede installation
-            </h1>
-            <p className="text-sm text-muted-foreground sm:text-base">
-              Dedicated fabric separated from the home LAN. The master routes and serves DHCP for 512rede.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/512rede"
-                className="rounded-full border border-border/70 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent"
-              >
-                View 512rede diagram
-              </Link>
-              <Link
-                href="/installation/external"
-                className="rounded-full border border-border/70 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground"
-              >
-                Switch to external
-              </Link>
-            </div>
-          </div>
+      <ScrollProgressBar sections={sections} />
+      <div className="min-h-screen">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <div className="space-y-16">
+            <section className="space-y-4">
+              <h1 className="text-4xl font-semibold text-foreground sm:text-5xl">
+                Internal installation
+              </h1>
+              <p className="text-base text-muted-foreground max-w-3xl">
+                Dedicated 512rede fabric separated from the home LAN. The master routes and serves DHCP for the cluster.
+                Follow the steps in order.
+              </p>
+            </section>
 
-          <div className="glass-panel rounded-3xl border border-border/70 p-6 shadow-[0_18px_48px_rgba(5,8,16,0.35)]">
-            <div className="grid gap-4">
-              {internalSteps.map((step) => (
-                <InstallStepCard key={step.id} step={step} />
-              ))}
-            </div>
+            <section id="dhcp" className="space-y-6">
+              <h2 className="text-3xl font-semibold text-foreground uppercase tracking-[0.16em]">
+                1. Setup master DHCP
+              </h2>
+              <p className="text-muted-foreground">
+                Before installing anything, confirm the internal fabric is wired and the master is ready to act as the
+                router and DHCP server for 512rede.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Make sure your physical layout looks like the 512rede diagram.{" "}
+                <Link href="/512rede" className="text-accent underline decoration-dotted underline-offset-4">
+                  View the 512rede page
+                </Link>
+                .
+              </p>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Confirm the fabric layout</h3>
+                  <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                    <li>Master has two NICs: home LAN/WAN and 512rede</li>
+                    <li>Switch connects only the 512rede nodes</li>
+                    <li>Gateway is the master on 512rede</li>
+                  </ul>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Run setup1.sh and pick the correct NIC</h3>
+                  <p className="text-sm text-muted-foreground">
+                    setup1.sh will ask which interface should be renamed to 512rede. Run <code>ip a</code> first and
+                    pick the interface that does not have an IP address and does not have internet access.
+                  </p>
+                  <CodeBlock
+                    code={`sudo dnf update -y
+sudo dnf install git -y
+
+git clone https://github.com/Maruqes/HyperHive
+cd HyperHive/scripts/main/master
+sudo ./setup1.sh`}
+                  />
+                  <div className="space-y-3">
+                    <p className="text-sm text-muted-foreground">
+                      In the example below, <strong>ens3</strong> has an IP address and <strong>ens9</strong> has no IP.
+                      Your interface names can differ. Choose the interface without an IP and without internet access.
+                      That one becomes 512rede.
+                    </p>
+                    <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-2xl border border-border/60 bg-black/20">
+                      <img
+                        src="/static/example_setup_dhcp.png"
+                        alt="ip a output showing one interface with an IP and another without"
+                        className="w-full max-h-72 object-contain"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    setup1.sh installs dependencies and performs a full reboot.
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Disable firewalld</h3>
+                  <CodeBlock
+                    code={`sudo systemctl stop firewalld
+sudo systemctl disable firewalld`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Run setup_dhcp.sh</h3>
+                  <CodeBlock
+                    code={`cd HyperHive/scripts/master
+sudo ./setup_dhcp.sh`}
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    After this, all slaves should receive DHCP leases in the 192.168.76.x range from the master.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section id="requirements" className="space-y-6">
+              <h2 className="text-3xl font-semibold text-foreground uppercase tracking-[0.16em]">
+                2. Requirements
+              </h2>
+              <p className="text-muted-foreground">
+                Run these commands on every server.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                All nodes should be connected to the 512rede switch by cable or an equivalent link that offers the same
+                reliability and throughput as Ethernet.
+              </p>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Update system</h3>
+                  <CodeBlock code="sudo dnf update -y" />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Install Go</h3>
+                  <CodeBlock code="sudo dnf install golang -y" />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Install SSH server</h3>
+                  <CodeBlock
+                    code={`sudo dnf install -y openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshd`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Install Node.js and PM2</h3>
+                  <CodeBlock
+                    code={`sudo dnf install npm -y
+sudo npm install -g pm2`}
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section id="master" className="space-y-6">
+              <h2 className="text-3xl font-semibold text-foreground uppercase tracking-[0.16em]">
+                3. Master
+              </h2>
+              <p className="text-muted-foreground">
+                Run these steps on the master. The master also runs a local slave, so setup2.sh will ask for
+                both MASTER and SLAVE .env values.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Since setup1.sh was already completed in the DHCP step, continue with setup2.sh.
+              </p>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Run setup2.sh</h3>
+                  <div className="rounded-lg border border-border/50 bg-[rgba(5,8,16,0.5)] p-4 text-sm text-muted-foreground">
+                    <p className="font-semibold text-foreground">Master setup2.sh fields (short)</p>
+                    <ul className="mt-2 space-y-1">
+                      <li><strong>MODE</strong> - prod or dev environment.</li>
+                      <li><strong>QEMU_UID / QEMU_GID</strong> - user/group IDs for QEMU/libvirt.</li>
+                      <li><strong>SPRITE_MIN_PORT / SPRITE_MAX_PORT</strong> - port range used by Sprite VMs.</li>
+                      <li><strong>MASTER_INTERNET_IP</strong> - IP of the home LAN/internet-facing interface.</li>
+                      <li>
+                        <strong>MAIN_LINK</strong> - base URL for dashboard/API. For full features, use a domain like{" "}
+                        <code>https://hyperhive.domain.com/api</code>. You can update the .env later.
+                      </li>
+                      <li><strong>GoAccess (optional)</strong> - enable/disable analytics panels.</li>
+                      <li><strong>VAPID (optional)</strong> - web push keys.</li>
+                    </ul>
+                  <div className="mt-3 text-xs text-muted-foreground">
+                    <p><strong>GoAccess keys:</strong> Get the GeoIP license key from MaxMind (GeoLite2). Use it for GEOIP_LICENSE_KEY / GEOIP_EDITION.</p>
+                    <p><strong>VAPID keys:</strong> Generate with <code>npx web-push generate-vapid-keys</code> and paste the public/private keys. You can also find online generators by searching for "VAPID key generator".</p>
+                  </div>
+                    <p className="mt-3 text-xs font-semibold text-red-400">
+                      Careful with port ranges. Do not overlap them with other services or other nodes.
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-border/50 bg-[rgba(5,8,16,0.5)] p-4 text-sm text-muted-foreground">
+                    <p className="font-semibold text-foreground">Local slave setup2.sh fields (short)</p>
+                    <ul className="mt-2 space-y-1">
+                      <li><strong>MASTER_IP</strong> - master IP on 512rede.</li>
+                      <li><strong>SLAVE_IP</strong> - same as MASTER_IP (local slave runs on the master).</li>
+                      <li><strong>OTHER_SLAVE_IPS</strong> - other nodes (comma-separated, no self).</li>
+                      <li><strong>DIRTY_RATIO_PERCENT</strong> - max dirty RAM before sync.</li>
+                      <li><strong>DIRTY_BACKGROUND_RATIO_PERCENT</strong> - start background flush threshold.</li>
+                      <li><strong>MODE</strong> - prod or dev environment.</li>
+                      <li><strong>MACHINE_NAME</strong> - name for the local slave (e.g. master).</li>
+                      <li><strong>VNC_MIN_PORT / VNC_MAX_PORT</strong> - VNC port range for the local slave.</li>
+                      <li><strong>QEMU_UID / QEMU_GID</strong> - user/group IDs for QEMU/libvirt.</li>
+                      <li><strong>EXTRA_K8S_IPS (optional)</strong> - extra IPs for Kubernetes integration.</li>
+                    </ul>
+                  </div>
+                  <CodeBlock
+                    code={`cd HyperHive/scripts/main/master
+sudo ./setup2.sh`}
+                  />
+                  <CodeBlock
+                    title="Example values (Master)"
+                    code={`MODE=prod
+QEMU_UID=107
+QEMU_GID=107
+SPRITE_MIN_PORT=9600
+SPRITE_MAX_PORT=9700
+MASTER_INTERNET_IP=192.168.76.128
+MAIN_LINK=http://192.168.76.128:8079
+GOACCESS_ENABLE_PANELS=
+GOACCESS_DISABLE_PANELS=
+GOACCESS_GEOIP_LICENSE_KEY=YOUR_MAXMIND_KEY
+GOACCESS_GEOIP_EDITION=GeoLite2-City
+VAPID_PUBLIC_KEY=YOUR_VAPID_PUBLIC
+VAPID_PRIVATE_KEY=YOUR_VAPID_PRIVATE`}
+                  />
+                  <CodeBlock
+                    title="Example values (Local Slave on Master)"
+                    code={`MASTER_IP=192.168.76.128
+SLAVE_IP=192.168.76.128
+OTHER_SLAVE_IPS=192.168.76.78,192.168.76.114
+DIRTY_RATIO_PERCENT=15
+DIRTY_BACKGROUND_RATIO_PERCENT=8
+MODE=prod
+MACHINE_NAME=master
+VNC_MIN_PORT=35000
+VNC_MAX_PORT=35999
+QEMU_UID=107
+QEMU_GID=107
+EXTRA_K8S_IPS=`}
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section id="slaves" className="space-y-6">
+              <h2 className="text-3xl font-semibold text-foreground uppercase tracking-[0.16em]">
+                4. Slave
+              </h2>
+              <p className="text-muted-foreground">
+                Repeat for each internal slave. The local slave on the master is already handled in the master setup2.sh.
+              </p>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Clone the repo</h3>
+                  <CodeBlock
+                    code={`sudo dnf install git -y
+
+git clone https://github.com/Maruqes/HyperHive
+cd HyperHive/scripts/main/slave`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Run setup1.sh</h3>
+                  <div className="text-sm text-muted-foreground space-y-2">
+                    <ol className="list-decimal pl-5 space-y-1">
+                      <li>Reset the root password (do not forget it, you will need it later).</li>
+                      <li>Which interface is connected to 512rede (it will be renamed to 512rede).</li>
+                      <li>Install all dependencies.</li>
+                      <li>Restart the machine.</li>
+                    </ol>
+                  </div>
+                  <CodeBlock code="sudo ./setup1.sh" />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Run setup2.sh</h3>
+                  <div className="rounded-lg border border-border/50 bg-[rgba(5,8,16,0.5)] p-4 text-sm text-muted-foreground">
+                    <p className="font-semibold text-foreground">Slave setup2.sh fields (short)</p>
+                    <ul className="mt-2 space-y-1">
+                      <li><strong>MASTER_IP</strong> - master node IP on 512rede.</li>
+                      <li><strong>SLAVE_IP</strong> - this slave's IP.</li>
+                      <li><strong>OTHER_SLAVE_IPS</strong> - other nodes (comma-separated, no self).</li>
+                      <li><strong>DIRTY_RATIO_PERCENT</strong> - max dirty RAM before sync.</li>
+                      <li><strong>DIRTY_BACKGROUND_RATIO_PERCENT</strong> - start background flush threshold.</li>
+                      <li><strong>MODE</strong> - prod or dev environment.</li>
+                      <li><strong>MACHINE_NAME</strong> - unique node name.</li>
+                      <li><strong>VNC_MIN_PORT / VNC_MAX_PORT</strong> - VNC port range for this node.</li>
+                      <li><strong>QEMU_UID / QEMU_GID</strong> - user/group IDs for QEMU/libvirt.</li>
+                      <li><strong>EXTRA_K8S_IPS (optional)</strong> - extra IPs for Kubernetes integration.</li>
+                    </ul>
+                    <div className="mt-3 text-xs text-muted-foreground">
+                      <p><strong>MASTER_IP:</strong> always the master IP (same on every slave).</p>
+                      <p><strong>SLAVE_IP:</strong> the IP of the current slave (different on every slave).</p>
+                      <p><strong>OTHER_SLAVE_IPS:</strong> all other nodes, excluding the current SLAVE_IP. You may include the master IP.</p>
+                    </div>
+                    <p className="mt-3 text-xs font-semibold text-red-400">
+                      Careful with port ranges. Do not overlap them with other nodes or local services.
+                    </p>
+                  </div>
+                  <CodeBlock
+                    code={`cd HyperHive/scripts/main/slave
+sudo ./setup2.sh`}
+                  />
+                  <CodeBlock
+                    title="Example values (Slave 1)"
+                    code={`MASTER_IP=192.168.76.128
+SLAVE_IP=192.168.76.114
+OTHER_SLAVE_IPS=192.168.76.128,192.168.76.78
+DIRTY_RATIO_PERCENT=15
+DIRTY_BACKGROUND_RATIO_PERCENT=8
+MODE=prod
+MACHINE_NAME=slave-01
+VNC_MIN_PORT=35000
+VNC_MAX_PORT=35999
+QEMU_UID=107
+QEMU_GID=107
+EXTRA_K8S_IPS=`}
+                  />
+                  <CodeBlock
+                    title="Example values (Slave 2)"
+                    code={`MASTER_IP=192.168.76.128
+SLAVE_IP=192.168.76.78
+OTHER_SLAVE_IPS=192.168.76.128,192.168.76.114
+DIRTY_RATIO_PERCENT=15
+DIRTY_BACKGROUND_RATIO_PERCENT=8
+MODE=prod
+MACHINE_NAME=slave-02
+VNC_MIN_PORT=36000
+VNC_MAX_PORT=36999
+QEMU_UID=107
+QEMU_GID=107
+EXTRA_K8S_IPS=`}
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section id="final" className="space-y-6">
+              <h2 className="text-3xl font-semibold text-foreground uppercase tracking-[0.16em]">
+                5. Final run
+              </h2>
+              <p className="text-muted-foreground">Build and start services.</p>
+
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Master: first run</h3>
+                  <CodeBlock
+                    title="Local slave (on master)"
+                    code={`cd HyperHive/slave
+make`}
+                  />
+                  <CodeBlock
+                    title="Master"
+                    code={`cd HyperHive/master
+make`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Master: PM2</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Edit the paths to your absolute folders. Do not forget to replace <code>/path/to/</code>.
+                  </p>
+                  <CodeBlock
+                    title="Create the PM2 config file"
+                    code={`cd HyperHive/master
+nano ecosystem.config.js`}
+                  />
+                  <CodeBlock
+                    title="ecosystem.config.js (Master + Local Slave)"
+                    code={`module.exports = {
+  apps: [
+    {
+      name: "hyperhive-master",
+      script: "./512SvMan",
+      cwd: "/path/to/HyperHive/master",
+      autorestart: true,
+      max_restarts: 0,
+      min_uptime: "10s",
+      restart_delay: 5000,
+      env: {
+        NODE_ENV: "production",
+      },
+    },
+    {
+      name: "hyperhive-slave",
+      script: "./slave",
+      cwd: "/path/to/HyperHive/slave",
+      autorestart: true,
+      max_restarts: 0,
+      min_uptime: "10s",
+      restart_delay: 5000,
+      env: {
+        NODE_ENV: "production",
+      },
+    },
+  ],
+};`}
+                  />
+                  <CodeBlock
+                    title="Start services"
+                    code={`sudo pm2 start ecosystem.config.js
+sudo pm2 save
+sudo pm2 startup systemd -u root --hp /root`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Slave: first run</h3>
+                  <CodeBlock
+                    code={`cd HyperHive/slave
+make`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-foreground">Slave: PM2</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Edit the path to your absolute folder. Do not forget to replace <code>/path/to/</code>.
+                  </p>
+                  <CodeBlock
+                    title="Create the PM2 config file"
+                    code={`cd HyperHive/slave
+nano ecosystem.config.js`}
+                  />
+                  <CodeBlock
+                    title="ecosystem.config.js (Slave Only)"
+                    code={`module.exports = {
+  apps: [
+    {
+      name: "hyperhive-slave",
+      script: "./slave",
+      cwd: "/path/to/HyperHive/slave",
+      autorestart: true,
+      max_restarts: 0,
+      min_uptime: "10s",
+      restart_delay: 5000,
+      env: {
+        NODE_ENV: "production",
+      },
+    },
+  ],
+};`}
+                  />
+                  <CodeBlock
+                    title="Start service"
+                    code={`sudo pm2 start ecosystem.config.js
+sudo pm2 save
+sudo pm2 startup systemd -u root --hp /root`}
+                  />
+                </div>
+              </div>
+            </section>
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }

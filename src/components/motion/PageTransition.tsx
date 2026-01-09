@@ -6,7 +6,10 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
-const transition = { duration: 0.35, ease: [0.22, 1, 0.36, 1] };
+const transition = {
+  duration: 0.35,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+};
 
 export function PageTransition({
   children,
