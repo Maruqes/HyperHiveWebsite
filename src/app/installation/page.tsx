@@ -45,13 +45,13 @@ export default function InstallationLandingPage() {
           </p>
         </div>
 
-        <div className="glass-panel rounded-3xl border border-border/70 p-6 shadow-[0_18px_48px_rgba(5,8,16,0.35)]">
+        <div className="glass-panel rounded-3xl border border-border/70 p-6 shadow-[0_18px_48px_var(--shadow-soft)]">
           <div className="grid gap-5 lg:grid-cols-2">
             {installChoices.map((choice) => (
               <Link
                 key={choice.id}
                 href={choice.href}
-                className="group rounded-2xl border border-border/70 bg-[rgba(5,8,16,0.6)] p-6 transition hover:border-accent/60"
+                className="group rounded-2xl border border-border/70 bg-[color:var(--surface-overlay)] p-6 transition hover:border-accent/60"
               >
                 <div className="flex flex-col gap-3">
                   <h2 className="text-xl font-semibold text-foreground">
@@ -76,7 +76,7 @@ export default function InstallationLandingPage() {
             ))}
           </div>
 
-          <div className="mt-6 rounded-2xl border border-border/70 bg-white/5 p-4 text-sm text-muted-foreground">
+          <div className="mt-6 rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] p-4 text-sm text-muted-foreground">
             Not sure? Start with the 512rede diagram:{" "}
             <Link href="/512rede" className="font-semibold text-accent">
               View 512rede

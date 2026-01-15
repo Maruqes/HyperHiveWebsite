@@ -28,7 +28,7 @@ export function CodeBlock({ code, title, className }: CodeBlockProps) {
 			)}
 		>
 			{title && (
-				<div className="border-b border-border/50 bg-[rgba(5,8,16,0.5)] px-4 py-2 text-xs font-medium text-muted-foreground">
+				<div className="border-b border-border/50 bg-[color:var(--surface-overlay-soft)] px-4 py-2 text-xs font-medium text-muted-foreground">
 					{title}
 				</div>
 			)}
@@ -38,7 +38,7 @@ export function CodeBlock({ code, title, className }: CodeBlockProps) {
 				</pre>
 				<button
 					onClick={handleCopy}
-					className="absolute right-2 top-2 rounded-md border border-border/50 bg-[rgba(20,25,35,0.8)] p-2 transition-colors hover:bg-[rgba(30,35,45,0.9)]"
+					className="absolute right-2 top-2 rounded-md border border-border/50 bg-[color:var(--surface-input-strong)] p-2 transition-colors hover:bg-[color:var(--surface-input-hover)]"
 					aria-label="Copy code"
 				>
 					{copied ? (

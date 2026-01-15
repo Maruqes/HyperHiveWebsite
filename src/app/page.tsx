@@ -73,7 +73,7 @@ export default function Home() {
       {/* Hero Section */}
       <Section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24">
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(56,144,136,0.15)_0%,_transparent_70%)] blur-3xl" />
+          <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_var(--surface-accent-glow)_0%,_transparent_70%)] blur-3xl" />
         </div>
 
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 text-center">
@@ -83,7 +83,7 @@ export default function Home() {
               alt="HyperHive"
               width={96}
               height={96}
-              className="h-24 w-24"
+              className="h-24 w-24 invert dark:invert-0"
               priority
             />
           </div>
@@ -114,7 +114,7 @@ export default function Home() {
             </Link>
             <Link
               href="/architecture"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-border/80 bg-transparent px-6 py-3.5 text-base font-semibold text-foreground transition-all hover:border-accent/60 hover:bg-[rgba(56,144,136,0.1)]"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-border/80 bg-transparent px-6 py-3.5 text-base font-semibold text-foreground transition-all hover:border-accent/60 hover:bg-[color:var(--surface-accent-soft)]"
             >
               View Architecture
               <Boxes className="h-5 w-5" />
@@ -126,7 +126,7 @@ export default function Home() {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col items-center gap-1 rounded-2xl border border-border/50 bg-[rgba(14,21,36,0.6)] p-4 backdrop-blur-sm"
+                className="flex flex-col items-center gap-1 rounded-2xl border border-border/50 bg-[color:var(--surface-soft)] p-4 backdrop-blur-sm"
               >
                 <span className="font-display text-3xl font-bold text-accent">
                   {stat.value}
@@ -249,7 +249,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col gap-4">
-                <div className="rounded-2xl border border-accent/30 bg-[rgba(56,144,136,0.05)] p-6">
+                <div className="rounded-2xl border border-accent/30 bg-[color:var(--surface-accent-subtle)] p-6">
                   <div className="mb-4 flex items-center gap-2">
                     <Zap className="h-5 w-5 text-accent" />
                     <h4 className="font-semibold text-foreground">Key Benefits</h4>
@@ -266,7 +266,7 @@ export default function Home() {
                   </ul>
                 </div>
 
-                <div className="rounded-2xl border border-border/50 bg-[rgba(14,21,36,0.6)] p-6">
+                <div className="rounded-2xl border border-border/50 bg-[color:var(--surface-soft)] p-6">
                   <h4 className="mb-3 font-semibold text-foreground">
                     Everything Connected
                   </h4>
@@ -334,7 +334,7 @@ export default function Home() {
 
       {/* CTA */}
       <Section className="pb-24">
-        <Card className="overflow-hidden border-accent/30 bg-gradient-to-br from-[rgba(56,144,136,0.1)] to-transparent">
+        <Card className="overflow-hidden border-accent/30 bg-gradient-to-br from-[color:var(--surface-accent-soft)] to-transparent">
           <div className="p-12 text-center">
             <h2 className="mb-4 font-display text-3xl font-bold text-foreground sm:text-4xl">
               Ready to Take Control?
@@ -346,7 +346,7 @@ export default function Home() {
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/architecture"
-                className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-[rgba(14,21,36,0.85)] px-6 py-3 text-base font-semibold text-foreground transition-all hover:border-accent/60 hover:bg-[rgba(14,21,36,0.95)]"
+                className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-[color:var(--surface-elevated-strong)] px-6 py-3 text-base font-semibold text-foreground transition-all hover:border-accent/60 hover:bg-[color:var(--surface-elevated-stronger)]"
               >
                 View Architecture
                 <ArrowRight className="h-5 w-5" />

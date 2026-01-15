@@ -13,17 +13,17 @@ export function SiteFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border/70 bg-[rgba(5,8,16,0.85)]">
+    <footer className="mt-auto border-t border-border/70 bg-[color:var(--surface-elevated-strong)]">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-start md:justify-between">
         <div className="flex max-w-sm flex-col gap-4">
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[rgba(14,21,36,0.8)] text-sm font-semibold text-foreground">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[color:var(--surface-elevated)] text-sm font-semibold text-foreground">
               <Image
                 src="/static/android-chrome-192x192.png"
                 alt="HyperHive"
                 width={32}
                 height={32}
-                className="h-8 w-8"
+                className="h-8 w-8 invert dark:invert-0"
               />
             </span>
             <div>

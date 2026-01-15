@@ -54,11 +54,11 @@ export function FeatureDetailsPanel({
 			{/* Panel */}
 			<div
 				ref={panelRef}
-				className="fixed right-0 top-0 bottom-0 w-full max-w-2xl bg-[#0E1524] border-l border-[#1A2637] 
+				className="fixed right-0 top-0 bottom-0 w-full max-w-2xl bg-secondary border-l border-border 
                    z-50 overflow-y-auto animate-in slide-in-from-right duration-300"
 			>
 				{/* Header */}
-				<div className="sticky top-0 bg-[#0E1524] border-b border-[#1A2637] p-6 z-10">
+				<div className="sticky top-0 bg-secondary border-b border-border p-6 z-10">
 					<div className="flex items-start justify-between gap-4">
 						<div className="flex items-start gap-4 flex-1">
 							<div
@@ -68,7 +68,7 @@ export function FeatureDetailsPanel({
 								<Icon size={28} style={{ color: layerColor }} />
 							</div>
 							<div className="flex-1 min-w-0">
-								<h2 className="text-2xl font-bold text-[#E6EDF7] mb-2">
+								<h2 className="text-2xl font-bold text-foreground mb-2">
 									{feature.name}
 								</h2>
 								<div className="flex items-center gap-2">
@@ -80,9 +80,9 @@ export function FeatureDetailsPanel({
 						</div>
 						<button
 							onClick={onClose}
-							className="p-2 hover:bg-[#1A2637] rounded-lg transition-colors shrink-0"
+							className="p-2 hover:bg-[color:var(--surface-overlay-soft)] rounded-lg transition-colors shrink-0"
 						>
-							<X size={20} className="text-[#8FA3BF]" />
+							<X size={20} className="text-muted-foreground" />
 						</button>
 					</div>
 				</div>
@@ -91,51 +91,51 @@ export function FeatureDetailsPanel({
 				<div className="p-6 space-y-6">
 					{/* Short description */}
 					<div>
-						<p className="text-lg text-[#E6EDF7] leading-relaxed">
+						<p className="text-lg text-foreground leading-relaxed">
 							{feature.shortDescription}
 						</p>
 					</div>
 
 					{/* What it is */}
-					<div className="bg-[#0B1322] border border-[#1A2637] rounded-lg p-5">
+					<div className="bg-card border border-border rounded-lg p-5">
 						<h3 className="text-sm font-semibold text-teal-400 uppercase tracking-wide mb-3">
 							What it is
 						</h3>
-						<p className="text-[#E6EDF7] leading-relaxed">{feature.whatItIs}</p>
+						<p className="text-foreground leading-relaxed">{feature.whatItIs}</p>
 					</div>
 
 					{/* Why exists */}
-					<div className="bg-[#0B1322] border border-[#1A2637] rounded-lg p-5">
+					<div className="bg-card border border-border rounded-lg p-5">
 						<h3 className="text-sm font-semibold text-teal-400 uppercase tracking-wide mb-3">
 							Why it exists
 						</h3>
-						<p className="text-[#E6EDF7] leading-relaxed">{feature.whyExists}</p>
+						<p className="text-foreground leading-relaxed">{feature.whyExists}</p>
 					</div>
 
 					{/* How it fits */}
-					<div className="bg-[#0B1322] border border-[#1A2637] rounded-lg p-5">
+					<div className="bg-card border border-border rounded-lg p-5">
 						<h3 className="text-sm font-semibold text-teal-400 uppercase tracking-wide mb-3">
 							How it fits
 						</h3>
-						<p className="text-[#E6EDF7] leading-relaxed">{feature.howItFits}</p>
+						<p className="text-foreground leading-relaxed">{feature.howItFits}</p>
 					</div>
 
 					{/* Capabilities */}
 					<div>
-						<h3 className="text-sm font-semibold text-[#8FA3BF] uppercase tracking-wide mb-4">
+						<h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
 							Capabilities
 						</h3>
 						<div className="space-y-3">
 							{feature.capabilities.map((capability, idx) => (
 								<div
 									key={idx}
-									className="flex items-start gap-3 bg-[#0B1322] border border-[#1A2637] rounded-lg p-4"
+									className="flex items-start gap-3 bg-card border border-border rounded-lg p-4"
 								>
 									<div
 										className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
 										style={{ backgroundColor: layerColor }}
 									/>
-									<p className="text-[#E6EDF7] leading-relaxed">{capability}</p>
+									<p className="text-foreground leading-relaxed">{capability}</p>
 								</div>
 							))}
 						</div>
@@ -144,7 +144,7 @@ export function FeatureDetailsPanel({
 					{/* Dependencies */}
 					{feature.dependsOn.length > 0 && (
 						<div>
-							<h3 className="text-sm font-semibold text-[#8FA3BF] uppercase tracking-wide mb-4">
+							<h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
 								Requires
 							</h3>
 							<div className="space-y-2">
@@ -158,8 +158,8 @@ export function FeatureDetailsPanel({
 										<button
 											key={depId}
 											onClick={() => onFeatureClick?.(depId)}
-											className="w-full flex items-center gap-3 bg-[#0B1322] border border-[#1A2637] 
-                                 hover:border-[#2A3647] rounded-lg p-4 transition-all duration-200
+											className="w-full flex items-center gap-3 bg-card border border-border 
+                                 hover:border-border/80 rounded-lg p-4 transition-all duration-200
                                  hover:-translate-y-0.5 group"
 										>
 											<div
@@ -169,12 +169,12 @@ export function FeatureDetailsPanel({
 												<DepIcon size={18} style={{ color: depColor }} />
 											</div>
 											<div className="flex-1 text-left">
-												<p className="text-[#E6EDF7] font-medium group-hover:text-teal-400 transition-colors">
+												<p className="text-foreground font-medium group-hover:text-teal-400 transition-colors">
 													{dep.name}
 												</p>
-												<p className="text-[#8FA3BF] text-sm">{dep.shortDescription}</p>
+												<p className="text-muted-foreground text-sm">{dep.shortDescription}</p>
 											</div>
-											<ArrowRight size={16} className="text-[#8FA3BF]" />
+											<ArrowRight size={16} className="text-muted-foreground" />
 										</button>
 									);
 								})}
@@ -185,7 +185,7 @@ export function FeatureDetailsPanel({
 					{/* Feeds into */}
 					{feature.feedsInto.length > 0 && (
 						<div>
-							<h3 className="text-sm font-semibold text-[#8FA3BF] uppercase tracking-wide mb-4">
+							<h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
 								Enables
 							</h3>
 							<div className="space-y-2">
@@ -199,8 +199,8 @@ export function FeatureDetailsPanel({
 										<button
 											key={feedId}
 											onClick={() => onFeatureClick?.(feedId)}
-											className="w-full flex items-center gap-3 bg-[#0B1322] border border-[#1A2637] 
-                                 hover:border-[#2A3647] rounded-lg p-4 transition-all duration-200
+											className="w-full flex items-center gap-3 bg-card border border-border 
+                                 hover:border-border/80 rounded-lg p-4 transition-all duration-200
                                  hover:-translate-y-0.5 group"
 										>
 											<div
@@ -210,12 +210,12 @@ export function FeatureDetailsPanel({
 												<FeedIcon size={18} style={{ color: feedColor }} />
 											</div>
 											<div className="flex-1 text-left">
-												<p className="text-[#E6EDF7] font-medium group-hover:text-teal-400 transition-colors">
+												<p className="text-foreground font-medium group-hover:text-teal-400 transition-colors">
 													{feed.name}
 												</p>
-												<p className="text-[#8FA3BF] text-sm">{feed.shortDescription}</p>
+												<p className="text-muted-foreground text-sm">{feed.shortDescription}</p>
 											</div>
-											<ArrowRight size={16} className="text-[#8FA3BF]" />
+											<ArrowRight size={16} className="text-muted-foreground" />
 										</button>
 									);
 								})}
@@ -226,7 +226,7 @@ export function FeatureDetailsPanel({
 					{/* Links */}
 					{feature.links.length > 0 && (
 						<div>
-							<h3 className="text-sm font-semibold text-[#8FA3BF] uppercase tracking-wide mb-4">
+							<h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
 								Related links
 							</h3>
 							<div className="flex flex-wrap gap-3">
@@ -234,7 +234,7 @@ export function FeatureDetailsPanel({
 									<a
 										key={idx}
 										href={link.href}
-										className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B1322] border border-[#1A2637]
+										className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border
                                hover:border-teal-500/50 rounded-lg text-teal-400 hover:text-teal-300
                                transition-all duration-200 hover:-translate-y-0.5"
 									>
@@ -248,14 +248,14 @@ export function FeatureDetailsPanel({
 
 					{/* Tags */}
 					<div>
-						<h3 className="text-sm font-semibold text-[#8FA3BF] uppercase tracking-wide mb-4">
+						<h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
 							Tags
 						</h3>
 						<div className="flex flex-wrap gap-2">
 							{feature.keywords.map((keyword, idx) => (
 								<span
 									key={idx}
-									className="px-3 py-1 bg-[#0B1322] border border-[#1A2637] rounded text-[#8FA3BF] text-sm"
+									className="px-3 py-1 bg-card border border-border rounded text-muted-foreground text-sm"
 								>
 									{keyword}
 								</span>

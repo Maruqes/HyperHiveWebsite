@@ -17,7 +17,7 @@ export function ArchitectureScroller() {
         onActiveChange={setActiveStep}
       />
       <div className="lg:sticky lg:top-28 lg:self-start">
-        <div className="glass-panel rounded-2xl border border-border/80 p-6 shadow-[0_18px_38px_rgba(5,8,16,0.35)]">
+        <div className="glass-panel rounded-2xl border border-border/80 p-6 shadow-[0_18px_38px_var(--shadow-soft)]">
           <div className="flex flex-col gap-4">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               Layer stack

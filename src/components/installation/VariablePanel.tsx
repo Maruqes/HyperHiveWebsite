@@ -49,7 +49,7 @@ export function VariablePanel({ variables: initialVariables, className }: Variab
 				{variables.map((variable) => (
 					<div
 						key={variable.key}
-						className="p-3 rounded-lg bg-[rgba(10,15,25,0.5)] border border-border/30"
+						className="p-3 rounded-lg bg-[color:var(--surface-input)] border border-border/30"
 					>
 						<div className="flex items-start justify-between mb-1">
 							<code className="text-xs font-mono text-accent">{variable.key}</code>

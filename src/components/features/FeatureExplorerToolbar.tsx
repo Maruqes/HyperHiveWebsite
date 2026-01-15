@@ -30,7 +30,7 @@ export function FeatureExplorerToolbar({
 			{/* Search */}
 			<div className="relative">
 				<Search
-					className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8FA3BF]"
+					className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
 					size={18}
 				/>
 				<input
@@ -38,8 +38,8 @@ export function FeatureExplorerToolbar({
 					placeholder="Search features by name or tags..."
 					value={searchQuery}
 					onChange={(e) => onSearchChange(e.target.value)}
-					className="w-full bg-[#0B1322] border border-[#1A2637] rounded-lg pl-10 pr-4 py-3
-                     text-[#E6EDF7] placeholder:text-[#8FA3BF]
+					className="w-full bg-[color:var(--surface-input)] border border-border rounded-lg pl-10 pr-4 py-3
+                     text-foreground placeholder:text-muted-foreground
                      focus:outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20
                      transition-all duration-200"
 				/>
@@ -47,7 +47,7 @@ export function FeatureExplorerToolbar({
 
 			{/* Filters */}
 			<div className="flex flex-wrap items-center gap-3">
-				<span className="text-sm font-medium text-[#8FA3BF]">Filter by layer:</span>
+				<span className="text-sm font-medium text-muted-foreground">Filter by layer:</span>
 				{layers.map((layer) => (
 					<Chip
 						key={layer}
@@ -60,13 +60,13 @@ export function FeatureExplorerToolbar({
 			</div>
 
 			{/* Toggle connections */}
-			<div className="flex items-center justify-between pt-2 border-t border-[#1A2637]">
+			<div className="flex items-center justify-between pt-2 border-t border-border">
 				<div className="flex items-center gap-2">
 					<button
 						onClick={onShowConnectionsToggle}
 						className={`
               relative inline-flex h-6 w-11 items-center rounded-full transition-colors
-              ${showConnections ? 'bg-teal-600' : 'bg-[#1A2637]'}
+              ${showConnections ? 'bg-teal-600' : 'bg-border'}
             `}
 					>
 						<span
@@ -76,7 +76,7 @@ export function FeatureExplorerToolbar({
               `}
 						/>
 					</button>
-					<span className="text-sm text-[#8FA3BF]">
+					<span className="text-sm text-muted-foreground">
 						Show connections between features
 					</span>
 				</div>
@@ -93,15 +93,15 @@ export function FeatureExplorerToolbar({
 
 			{/* Active filters summary */}
 			{(selectedLayers.length > 0 || searchQuery) && (
-				<div className="flex items-center gap-2 text-sm text-[#8FA3BF]">
+				<div className="flex items-center gap-2 text-sm text-muted-foreground">
 					<span>Active filters:</span>
 					{searchQuery && (
-						<span className="text-[#E6EDF7]">
+						<span className="text-foreground">
 							&quot;{searchQuery}&quot;
 						</span>
 					)}
 					{selectedLayers.length > 0 && (
-						<span className="text-[#E6EDF7]">
+						<span className="text-foreground">
 							{selectedLayers.length} layer{selectedLayers.length > 1 ? 's' : ''}
 						</span>
 					)}

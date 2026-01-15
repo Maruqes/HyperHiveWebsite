@@ -18,7 +18,7 @@ export function DiagramFrame({
   return (
     <div
       className={cn(
-        "glass-panel rounded-3xl border border-border/80 p-6 shadow-[0_24px_48px_rgba(5,8,16,0.45)]",
+        "glass-panel rounded-3xl border border-border/80 p-6 shadow-[0_24px_48px_var(--shadow-strong)]",
         className
       )}
     >

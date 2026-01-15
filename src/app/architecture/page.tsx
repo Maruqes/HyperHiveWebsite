@@ -105,9 +105,9 @@ const nodeMeta: Record<
 };
 
 const raidBlockStyles: Record<RaidBlock, { label: string; color: string }> = {
-  data: { label: "D", color: "rgba(56, 144, 136, 0.75)" },
+  data: { label: "D", color: "rgba(var(--accent-rgb), 0.75)" },
   parity: { label: "P", color: "rgba(233, 186, 97, 0.8)" },
-  mirror: { label: "M", color: "rgba(143, 163, 191, 0.75)" },
+  mirror: { label: "M", color: "rgba(var(--diagram-muted-rgb), 0.75)" },
 };
 
 const raidLegend: Array<{ id: string; label: string; type: RaidBlock }> = [
@@ -221,7 +221,7 @@ export default function ArchitecturePage() {
         title="Node-local storage, cluster-wide access"
         description="Master and slave nodes form a single compute pool with shared BTRFS RAID storage over NFS. Click any node to inspect its RAID layout."
       >
-        <div className="glass-panel rounded-2xl border border-border/80 p-8 shadow-[0_18px_38px_rgba(5,8,16,0.35)] xl:mx-auto xl:w-fit">
+        <div className="glass-panel rounded-2xl border border-border/80 p-8 shadow-[0_18px_38px_var(--shadow-soft)] xl:mx-auto xl:w-fit">
           <div className="flex flex-col gap-6 xl:flex-row xl:items-start">
             <div className="w-full xl:w-[48rem] xl:shrink-0">
               <svg
@@ -240,12 +240,12 @@ export default function ArchitecturePage() {
                     markerHeight="8"
                     orient="auto-start-reverse"
                   >
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#389088" />
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
                   </marker>
 
                   <linearGradient id="masterGlow" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="rgba(56, 144, 136, 0.2)" />
-                    <stop offset="100%" stopColor="rgba(56, 144, 136, 0.05)" />
+                    <stop offset="0%" stopColor="rgba(var(--accent-rgb), 0.2)" />
+                    <stop offset="100%" stopColor="rgba(var(--accent-rgb), 0.05)" />
                   </linearGradient>
 
                   {/* API Icon - Clean brackets with slash */}
@@ -253,7 +253,7 @@ export default function ArchitecturePage() {
                     <path
                       d="M6 6L2 12L6 18M18 6L22 12L18 18"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -263,7 +263,7 @@ export default function ArchitecturePage() {
                       y1="16"
                       x2="15"
                       y2="8"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                     />
@@ -277,13 +277,13 @@ export default function ArchitecturePage() {
                       rx="7"
                       ry="3"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <path
                       d="M5 6v8c0 1.66 3.13 3 7 3s7-1.34 7-3V6"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <ellipse
@@ -292,7 +292,7 @@ export default function ArchitecturePage() {
                       rx="7"
                       ry="3"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                       opacity="0.6"
                     />
@@ -305,7 +305,7 @@ export default function ArchitecturePage() {
                       cy="6"
                       r="2.5"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <circle
@@ -313,7 +313,7 @@ export default function ArchitecturePage() {
                       cy="6"
                       r="2.5"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <circle
@@ -321,7 +321,7 @@ export default function ArchitecturePage() {
                       cy="18"
                       r="2.5"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <circle
@@ -329,7 +329,7 @@ export default function ArchitecturePage() {
                       cy="18"
                       r="2.5"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <line
@@ -337,7 +337,7 @@ export default function ArchitecturePage() {
                       y1="6"
                       x2="15.5"
                       y2="6"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <line
@@ -345,7 +345,7 @@ export default function ArchitecturePage() {
                       y1="18"
                       x2="15.5"
                       y2="18"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <line
@@ -353,7 +353,7 @@ export default function ArchitecturePage() {
                       y1="8.5"
                       x2="6"
                       y2="15.5"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <line
@@ -361,7 +361,7 @@ export default function ArchitecturePage() {
                       y1="8.5"
                       x2="18"
                       y2="15.5"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                   </g>
@@ -375,7 +375,7 @@ export default function ArchitecturePage() {
                       height="16"
                       rx="2"
                       fill="none"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <line
@@ -383,7 +383,7 @@ export default function ArchitecturePage() {
                       y1="9"
                       x2="20"
                       y2="9"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
                     <line
@@ -391,15 +391,15 @@ export default function ArchitecturePage() {
                       y1="14"
                       x2="20"
                       y2="14"
-                      stroke="#389088"
+                      stroke="var(--accent)"
                       strokeWidth="2"
                     />
-                    <circle cx="7" cy="6.5" r="0.8" fill="#389088" />
-                    <circle cx="9.5" cy="6.5" r="0.8" fill="#389088" />
-                    <circle cx="7" cy="11.5" r="0.8" fill="#389088" />
-                    <circle cx="9.5" cy="11.5" r="0.8" fill="#389088" />
-                    <circle cx="7" cy="16.5" r="0.8" fill="#389088" />
-                    <circle cx="9.5" cy="16.5" r="0.8" fill="#389088" />
+                    <circle cx="7" cy="6.5" r="0.8" fill="var(--accent)" />
+                    <circle cx="9.5" cy="6.5" r="0.8" fill="var(--accent)" />
+                    <circle cx="7" cy="11.5" r="0.8" fill="var(--accent)" />
+                    <circle cx="9.5" cy="11.5" r="0.8" fill="var(--accent)" />
+                    <circle cx="7" cy="16.5" r="0.8" fill="var(--accent)" />
+                    <circle cx="9.5" cy="16.5" r="0.8" fill="var(--accent)" />
                   </g>
 
                   {/* VM Icon - Monitor with activity */}
@@ -426,7 +426,7 @@ export default function ArchitecturePage() {
                   y="0"
                   width={viewBox.width}
                   height={viewBox.height}
-                  fill="rgba(11, 19, 34, 0.7)"
+                  fill="var(--diagram-surface-soft)"
                   opacity={isZoomed ? 1 : 0}
                   style={{ transition: "opacity 350ms ease" }}
                   pointerEvents="none"
@@ -448,8 +448,8 @@ export default function ArchitecturePage() {
                     width="300"
                     height="80"
                     rx="16"
-                    fill="rgba(14, 21, 36, 0.9)"
-                    stroke="rgba(56, 144, 136, 0.6)"
+                    fill="var(--diagram-surface-strong)"
+                    stroke="rgba(var(--accent-rgb), 0.6)"
                     strokeWidth="3"
                   />
                   <use href="#icon-api" transform="translate(268 55) scale(1.3)" />
@@ -457,13 +457,13 @@ export default function ArchitecturePage() {
                     x="400"
                     y="75"
                     textAnchor="middle"
-                    fill="#E6EDF7"
+                    fill="var(--diagram-text)"
                     fontSize="18"
                     fontWeight="700"
                   >
                     API Endpoints
                   </text>
-                  <text x="400" y="100" textAnchor="middle" fill="#8FA3BF" fontSize="14">
+                  <text x="400" y="100" textAnchor="middle" fill="var(--diagram-text-muted)" fontSize="14">
                     /app, /stream, /api
                   </text>
 
@@ -473,12 +473,12 @@ export default function ArchitecturePage() {
                     y1="120"
                     x2="400"
                     y2="210"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="3"
                     markerEnd="url(#arch-arrow)"
                     strokeDasharray="5,5"
                   />
-                  <text x="420" y="165" fill="#8FA3BF" fontSize="13">
+                  <text x="420" y="165" fill="var(--diagram-text-muted)" fontSize="13">
                     Request
                   </text>
 
@@ -489,13 +489,13 @@ export default function ArchitecturePage() {
                     width="700"
                     height="740"
                     rx="20"
-                    fill="rgba(11, 19, 34, 0.7)"
-                    stroke="rgba(26, 38, 55, 0.9)"
+                    fill="var(--diagram-surface-soft)"
+                    stroke="var(--diagram-border)"
                     strokeWidth="3"
                     fillOpacity={isZoomed ? 0.85 : 1}
                     strokeOpacity={isZoomed ? 0.35 : 1}
                   />
-                  <text x="80" y="190" textAnchor="start" fill="#E6EDF7" fontSize="16" fontWeight="700">
+                  <text x="80" y="190" textAnchor="start" fill="var(--diagram-text)" fontSize="16" fontWeight="700">
                     Compute Pool
                   </text>
 
@@ -518,7 +518,7 @@ export default function ArchitecturePage() {
                       height="220"
                       rx="18"
                       fill="url(#masterGlow)"
-                      stroke="rgba(56, 144, 136, 0.8)"
+                      stroke="rgba(var(--accent-rgb), 0.8)"
                       strokeWidth="3"
                     />
                     <rect
@@ -527,36 +527,36 @@ export default function ArchitecturePage() {
                       width="360"
                       height="180"
                       rx="14"
-                      fill="rgba(14, 21, 36, 0.95)"
-                      stroke="rgba(56, 144, 136, 0.7)"
+                      fill="var(--diagram-surface-strong)"
+                      stroke="rgba(var(--accent-rgb), 0.7)"
                       strokeWidth="2"
                     />
 
                     <use href="#icon-nginx" transform="translate(232 248) scale(1.1)" />
-                    <text x="280" y="275" textAnchor="start" fill="#E6EDF7" fontSize="18" fontWeight="700">
+                    <text x="280" y="275" textAnchor="start" fill="var(--diagram-text)" fontSize="18" fontWeight="700">
                       NODE A (Master)
                     </text>
-                    <text x="235" y="300" textAnchor="start" fill="#8FA3BF" fontSize="14">
+                    <text x="235" y="300" textAnchor="start" fill="var(--diagram-text-muted)" fontSize="14">
                       Nginx + IP Routing
                     </text>
 
                     {/* VM and RAID Badges */}
                     <g transform="translate(235, 315)">
-                      <rect x="0" y="0" width="75" height="20" rx="10" fill="rgba(56, 144, 136, 0.25)" stroke="rgba(56, 144, 136, 0.6)" strokeWidth="1.5" />
-                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: '#E6EDF7' }} />
-                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                      <rect x="0" y="0" width="75" height="20" rx="10" fill="rgba(var(--accent-rgb), 0.25)" stroke="rgba(var(--accent-rgb), 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: "var(--diagram-text)" }} />
+                      <text x="18" y="14" fill="var(--diagram-text)" fontSize="10" fontWeight="600">
                         {nodeMeta.master.vms.length} VMs
                       </text>
                     </g>
                     <g transform="translate(315, 315)">
                       <rect x="0" y="0" width="85" height="20" rx="10" fill="rgba(233, 186, 97, 0.25)" stroke="rgba(233, 186, 97, 0.6)" strokeWidth="1.5" />
                       <use href="#icon-disk" transform="translate(5, 4) scale(0.45)" />
-                      <text x="20" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                      <text x="20" y="14" fill="var(--diagram-text)" fontSize="10" fontWeight="600">
                         {nodeMeta.master.raids.length} RAIDs
                       </text>
                     </g>
 
-                    <text x="235" y="355" textAnchor="start" fill="#E6EDF7" fontSize="15" fontWeight="600">
+                    <text x="235" y="355" textAnchor="start" fill="var(--diagram-text)" fontSize="15" fontWeight="600">
                       BTRFS RAID Storage
                     </text>
                     <use href="#icon-disk" transform="translate(235 362) scale(0.75)" />
@@ -569,7 +569,7 @@ export default function ArchitecturePage() {
                       width="320"
                       height="14"
                       rx="7"
-                      fill="rgba(56, 144, 136, 0.15)"
+                      fill="rgba(var(--accent-rgb), 0.15)"
                     />
                     <rect
                       x="240"
@@ -577,7 +577,7 @@ export default function ArchitecturePage() {
                       width="240"
                       height="14"
                       rx="7"
-                      fill="rgba(56, 144, 136, 0.4)"
+                      fill="rgba(var(--accent-rgb), 0.4)"
                     />
 
                     {isMasterSelected ? (
@@ -587,8 +587,8 @@ export default function ArchitecturePage() {
                         width="400"
                         height="220"
                         rx="18"
-                        fill="rgba(56, 144, 136, 0.08)"
-                        stroke="rgba(56, 144, 136, 0.95)"
+                        fill="rgba(var(--accent-rgb), 0.08)"
+                        stroke="rgba(var(--accent-rgb), 0.95)"
                         strokeWidth="3"
                         pointerEvents="none"
                       />
@@ -613,31 +613,31 @@ export default function ArchitecturePage() {
                       width="280"
                       height="180"
                       rx="16"
-                      fill="rgba(14, 21, 36, 0.9)"
-                      stroke="rgba(56, 144, 136, 0.5)"
+                      fill="var(--diagram-surface-strong)"
+                      stroke="rgba(var(--accent-rgb), 0.5)"
                       strokeWidth="2"
                     />
-                    <text x="110" y="585" textAnchor="start" fill="#E6EDF7" fontSize="17" fontWeight="700">
+                    <text x="110" y="585" textAnchor="start" fill="var(--diagram-text)" fontSize="17" fontWeight="700">
                       NODE B (Slave)
                     </text>
 
                     {/* VM and RAID Badges for Node B */}
                     <g transform="translate(110, 598)">
-                      <rect x="0" y="0" width="70" height="20" rx="10" fill="rgba(56, 144, 136, 0.25)" stroke="rgba(56, 144, 136, 0.6)" strokeWidth="1.5" />
-                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: '#E6EDF7' }} />
-                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                      <rect x="0" y="0" width="70" height="20" rx="10" fill="rgba(var(--accent-rgb), 0.25)" stroke="rgba(var(--accent-rgb), 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: "var(--diagram-text)" }} />
+                      <text x="18" y="14" fill="var(--diagram-text)" fontSize="10" fontWeight="600">
                         {nodeMeta["node-b"].vms.length} VMs
                       </text>
                     </g>
                     <g transform="translate(185, 598)">
                       <rect x="0" y="0" width="85" height="20" rx="10" fill="rgba(233, 186, 97, 0.25)" stroke="rgba(233, 186, 97, 0.6)" strokeWidth="1.5" />
                       <use href="#icon-disk" transform="translate(5, 4) scale(0.45)" />
-                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                      <text x="18" y="14" fill="var(--diagram-text)" fontSize="10" fontWeight="600">
                         {nodeMeta["node-b"].raids.length} RAID
                       </text>
                     </g>
 
-                    <text x="110" y="635" textAnchor="start" fill="#8FA3BF" fontSize="13">
+                    <text x="110" y="635" textAnchor="start" fill="var(--diagram-text-muted)" fontSize="13">
                       BTRFS RAID Storage
                     </text>
                     <use href="#icon-disk" transform="translate(110 645) scale(0.7)" />
@@ -650,7 +650,7 @@ export default function ArchitecturePage() {
                       width="240"
                       height="14"
                       rx="7"
-                      fill="rgba(56, 144, 136, 0.15)"
+                      fill="rgba(var(--accent-rgb), 0.15)"
                     />
                     <rect
                       x="110"
@@ -658,7 +658,7 @@ export default function ArchitecturePage() {
                       width="180"
                       height="14"
                       rx="7"
-                      fill="rgba(56, 144, 136, 0.35)"
+                      fill="rgba(var(--accent-rgb), 0.35)"
                     />
 
                     {isNodeBSelected ? (
@@ -668,8 +668,8 @@ export default function ArchitecturePage() {
                         width="280"
                         height="180"
                         rx="16"
-                        fill="rgba(56, 144, 136, 0.08)"
-                        stroke="rgba(56, 144, 136, 0.95)"
+                        fill="rgba(var(--accent-rgb), 0.08)"
+                        stroke="rgba(var(--accent-rgb), 0.95)"
                         strokeWidth="2.5"
                         pointerEvents="none"
                       />
@@ -694,31 +694,31 @@ export default function ArchitecturePage() {
                       width="280"
                       height="180"
                       rx="16"
-                      fill="rgba(14, 21, 36, 0.9)"
-                      stroke="rgba(56, 144, 136, 0.5)"
+                      fill="var(--diagram-surface-strong)"
+                      stroke="rgba(var(--accent-rgb), 0.5)"
                       strokeWidth="2"
                     />
-                    <text x="450" y="585" textAnchor="start" fill="#E6EDF7" fontSize="17" fontWeight="700">
+                    <text x="450" y="585" textAnchor="start" fill="var(--diagram-text)" fontSize="17" fontWeight="700">
                       NODE C (Slave)
                     </text>
 
                     {/* VM and RAID Badges for Node C */}
                     <g transform="translate(450, 598)">
-                      <rect x="0" y="0" width="70" height="20" rx="10" fill="rgba(56, 144, 136, 0.25)" stroke="rgba(56, 144, 136, 0.6)" strokeWidth="1.5" />
-                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: '#E6EDF7' }} />
-                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                      <rect x="0" y="0" width="70" height="20" rx="10" fill="rgba(var(--accent-rgb), 0.25)" stroke="rgba(var(--accent-rgb), 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: "var(--diagram-text)" }} />
+                      <text x="18" y="14" fill="var(--diagram-text)" fontSize="10" fontWeight="600">
                         {nodeMeta["node-c"].vms.length} VMs
                       </text>
                     </g>
                     <g transform="translate(525, 598)">
                       <rect x="0" y="0" width="90" height="20" rx="10" fill="rgba(233, 186, 97, 0.25)" stroke="rgba(233, 186, 97, 0.6)" strokeWidth="1.5" />
                       <use href="#icon-disk" transform="translate(5, 4) scale(0.45)" />
-                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                      <text x="18" y="14" fill="var(--diagram-text)" fontSize="10" fontWeight="600">
                         {nodeMeta["node-c"].raids.length} RAIDs
                       </text>
                     </g>
 
-                    <text x="450" y="635" textAnchor="start" fill="#8FA3BF" fontSize="13">
+                    <text x="450" y="635" textAnchor="start" fill="var(--diagram-text-muted)" fontSize="13">
                       BTRFS RAID Storage
                     </text>
                     <use href="#icon-disk" transform="translate(450 645) scale(0.7)" />
@@ -731,7 +731,7 @@ export default function ArchitecturePage() {
                       width="240"
                       height="14"
                       rx="7"
-                      fill="rgba(56, 144, 136, 0.15)"
+                      fill="rgba(var(--accent-rgb), 0.15)"
                     />
                     <rect
                       x="450"
@@ -739,7 +739,7 @@ export default function ArchitecturePage() {
                       width="190"
                       height="14"
                       rx="7"
-                      fill="rgba(56, 144, 136, 0.35)"
+                      fill="rgba(var(--accent-rgb), 0.35)"
                     />
 
                     {isNodeCSelected ? (
@@ -749,8 +749,8 @@ export default function ArchitecturePage() {
                         width="280"
                         height="180"
                         rx="16"
-                        fill="rgba(56, 144, 136, 0.08)"
-                        stroke="rgba(56, 144, 136, 0.95)"
+                        fill="rgba(var(--accent-rgb), 0.08)"
+                        stroke="rgba(var(--accent-rgb), 0.95)"
                         strokeWidth="2.5"
                         pointerEvents="none"
                       />
@@ -763,7 +763,7 @@ export default function ArchitecturePage() {
                     y1="440"
                     x2="230"
                     y2="550"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2.5"
                     markerEnd="url(#arch-arrow)"
                   />
@@ -772,7 +772,7 @@ export default function ArchitecturePage() {
                     y1="440"
                     x2="570"
                     y2="550"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2.5"
                     markerEnd="url(#arch-arrow)"
                   />
@@ -783,7 +783,7 @@ export default function ArchitecturePage() {
                     y1="730"
                     x2="230"
                     y2="780"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2.5"
                     markerEnd="url(#arch-arrow)"
                   />
@@ -792,7 +792,7 @@ export default function ArchitecturePage() {
                     y1="430"
                     x2="400"
                     y2="780"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2.5"
                     markerEnd="url(#arch-arrow)"
                   />
@@ -801,7 +801,7 @@ export default function ArchitecturePage() {
                     y1="730"
                     x2="570"
                     y2="780"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2.5"
                     markerEnd="url(#arch-arrow)"
                   />
@@ -813,18 +813,18 @@ export default function ArchitecturePage() {
                     width="560"
                     height="100"
                     rx="16"
-                    fill="rgba(14, 21, 36, 0.9)"
-                    stroke="rgba(56, 144, 136, 0.7)"
+                    fill="var(--diagram-surface-strong)"
+                    stroke="rgba(var(--accent-rgb), 0.7)"
                     strokeWidth="3"
                   />
                   <use href="#icon-nfs" transform="translate(140 795) scale(1.2)" />
-                  <text x="185" y="820" textAnchor="start" fill="#E6EDF7" fontSize="18" fontWeight="700">
+                  <text x="185" y="820" textAnchor="start" fill="var(--diagram-text)" fontSize="18" fontWeight="700">
                     NFS Shared Storage
                   </text>
-                  <text x="145" y="850" textAnchor="start" fill="#8FA3BF" fontSize="13">
+                  <text x="145" y="850" textAnchor="start" fill="var(--diagram-text-muted)" fontSize="13">
                     Exports each node's BTRFS volumes
                   </text>
-                  <text x="145" y="870" textAnchor="start" fill="#8FA3BF" fontSize="12">
+                  <text x="145" y="870" textAnchor="start" fill="var(--diagram-text-muted)" fontSize="12">
                     RAID modes: single, raid0, raid1, raid5, raid6
                   </text>
 
@@ -834,7 +834,7 @@ export default function ArchitecturePage() {
                     y1="780"
                     x2="210"
                     y2="730"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2"
                     markerEnd="url(#arch-arrow)"
                     opacity="0.4"
@@ -845,7 +845,7 @@ export default function ArchitecturePage() {
                     y1="780"
                     x2="380"
                     y2="430"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2"
                     markerEnd="url(#arch-arrow)"
                     opacity="0.4"
@@ -856,7 +856,7 @@ export default function ArchitecturePage() {
                     y1="780"
                     x2="590"
                     y2="730"
-                    stroke="#389088"
+                    stroke="var(--accent)"
                     strokeWidth="2"
                     markerEnd="url(#arch-arrow)"
                     opacity="0.4"
@@ -864,13 +864,13 @@ export default function ArchitecturePage() {
                   />
 
                   {/* Labels for data flow */}
-                  <text x="165" y="760" fill="#389088" fontSize="11" fontWeight="600">
+                  <text x="165" y="760" fill="var(--accent)" fontSize="11" fontWeight="600">
                     Share
                   </text>
-                  <text x="335" y="760" fill="#389088" fontSize="11" fontWeight="600">
+                  <text x="335" y="760" fill="var(--accent)" fontSize="11" fontWeight="600">
                     Share
                   </text>
-                  <text x="545" y="760" fill="#389088" fontSize="11" fontWeight="600">
+                  <text x="545" y="760" fill="var(--accent)" fontSize="11" fontWeight="600">
                     Share
                   </text>
                 </g>
@@ -878,7 +878,7 @@ export default function ArchitecturePage() {
             </div>
 
             <div className="w-full xl:w-[340px] xl:shrink-0">
-              <div className="glass-card max-h-[700px] overflow-y-auto rounded-2xl border border-border/70 p-5 shadow-[0_18px_36px_rgba(5,8,16,0.45)]">
+              <div className="glass-card max-h-[700px] overflow-y-auto rounded-2xl border border-border/70 p-5 shadow-[0_18px_36px_var(--shadow-strong)]">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
@@ -897,7 +897,7 @@ export default function ArchitecturePage() {
                     <button
                       type="button"
                       onClick={() => setSelectedNode(null)}
-                      className="rounded-full border border-border/70 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground transition hover:text-foreground"
+                      className="rounded-full border border-border/70 bg-[color:var(--surface-overlay-soft)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground transition hover:text-foreground"
                     >
                       Reset
                     </button>
@@ -910,7 +910,7 @@ export default function ArchitecturePage() {
                     {/* VMs Section */}
                     <div>
                       <div className="mb-2 flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full bg-[#389088]"></div>
+                        <div className="h-2 w-2 rounded-full bg-accent"></div>
                         <p className="text-xs font-semibold uppercase tracking-wider text-foreground/90">
                           Virtual Machines ({selectedInfo.vms.length})
                         </p>
@@ -919,7 +919,7 @@ export default function ArchitecturePage() {
                         {selectedInfo.vms.map((vm) => (
                           <div
                             key={vm.name}
-                            className="rounded-lg border border-border/50 bg-white/5 p-2.5"
+                            className="rounded-lg border border-border/50 bg-[color:var(--surface-overlay-soft)] p-2.5"
                           >
                             <div className="flex items-center justify-between">
                               <p className="text-xs font-semibold text-foreground">{vm.name}</p>
@@ -960,7 +960,7 @@ export default function ArchitecturePage() {
                         {selectedInfo.raids.map((raid) => (
                           <div
                             key={raid.name}
-                            className="rounded-lg border border-border/50 bg-white/5 p-2.5"
+                            className="rounded-lg border border-border/50 bg-[color:var(--surface-overlay-soft)] p-2.5"
                           >
                             <div className="flex items-center justify-between">
                               <p className="text-xs font-semibold text-foreground">{raid.name}</p>
@@ -1046,7 +1046,7 @@ export default function ArchitecturePage() {
                 </div>
 
                 {!selectedNode ? (
-                  <div className="mt-4 rounded-xl border border-dashed border-border/70 bg-white/5 p-3 text-xs text-muted-foreground">
+                  <div className="mt-4 rounded-xl border border-dashed border-border/70 bg-[color:var(--surface-overlay-soft)] p-3 text-xs text-muted-foreground">
                     Tip: click a node to zoom. Press Esc to reset.
                   </div>
                 ) : null}

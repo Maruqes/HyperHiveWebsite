@@ -8,7 +8,7 @@ export default function TermsPage() {
         title="Terms"
         description="HyperHive is a proof of concept and is not intended for production use."
       >
-        <div className="glass-panel rounded-3xl border border-border/70 bg-[rgba(5,8,16,0.6)] p-6 sm:p-8">
+        <div className="glass-panel rounded-3xl border border-border/70 bg-[color:var(--surface-overlay)] p-6 sm:p-8">
           <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
               By accessing this website or using HyperHive, you acknowledge that

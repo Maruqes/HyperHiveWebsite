@@ -167,7 +167,7 @@ sudo npm install -g pm2`}
               <div className="space-y-4">
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold text-foreground">Run setup2.sh</h3>
-                  <div className="rounded-lg border border-border/50 bg-[rgba(5,8,16,0.5)] p-4 text-sm text-muted-foreground">
+                  <div className="rounded-lg border border-border/50 bg-[color:var(--surface-overlay-soft)] p-4 text-sm text-muted-foreground">
                     <p className="font-semibold text-foreground">Master setup2.sh fields (short)</p>
                     <ul className="mt-2 space-y-1">
                       <li><strong>MODE</strong> - prod or dev environment.</li>
@@ -189,7 +189,7 @@ sudo npm install -g pm2`}
                       Careful with port ranges. Do not overlap them with other services or other nodes.
                     </p>
                   </div>
-                  <div className="rounded-lg border border-border/50 bg-[rgba(5,8,16,0.5)] p-4 text-sm text-muted-foreground">
+                  <div className="rounded-lg border border-border/50 bg-[color:var(--surface-overlay-soft)] p-4 text-sm text-muted-foreground">
                     <p className="font-semibold text-foreground">Local slave setup2.sh fields (short)</p>
                     <ul className="mt-2 space-y-1">
                       <li><strong>MASTER_IP</strong> - master IP on 512rede.</li>
@@ -277,7 +277,7 @@ cd HyperHive/scripts/main/slave`}
 
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold text-foreground">Run setup2.sh</h3>
-                  <div className="rounded-lg border border-border/50 bg-[rgba(5,8,16,0.5)] p-4 text-sm text-muted-foreground">
+                  <div className="rounded-lg border border-border/50 bg-[color:var(--surface-overlay-soft)] p-4 text-sm text-muted-foreground">
                     <p className="font-semibold text-foreground">Slave setup2.sh fields (short)</p>
                     <ul className="mt-2 space-y-1">
                       <li><strong>MASTER_IP</strong> - master node IP on 512rede.</li>

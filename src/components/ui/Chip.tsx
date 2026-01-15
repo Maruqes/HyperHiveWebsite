@@ -33,7 +33,7 @@ export function Chip({
         ${sizeClasses[size]}
         ${active
 					? 'bg-teal-600/20 text-teal-400 border border-teal-500/30'
-					: 'bg-[#0B1322] text-[#8FA3BF] border border-[#1A2637] hover:border-[#2A3647]'
+					: 'bg-card text-muted-foreground border border-border hover:border-border/80'
 				}
         ${onClick ? 'cursor-pointer hover:scale-105' : 'cursor-default'}
         disabled:cursor-not-allowed

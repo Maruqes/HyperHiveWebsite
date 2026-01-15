@@ -38,15 +38,15 @@ export function StorageShareCompute({ className, title }: IllustrationProps) {
   return (
     <IllustrationShell className={className} title={title ?? "Storage to compute"}>
       <rect x="20" y="32" width="90" height="60" rx="12" />
-      <text x="65" y="62" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="65" y="62" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Storage
       </text>
       <rect x="135" y="32" width="90" height="60" rx="12" />
-      <text x="180" y="62" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="180" y="62" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Share
       </text>
       <rect x="250" y="32" width="90" height="60" rx="12" />
-      <text x="295" y="62" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="295" y="62" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Compute
       </text>
       <line x1="110" y1="62" x2="135" y2="62" />
@@ -61,22 +61,22 @@ export function EdgeRouting({ className, title }: IllustrationProps) {
   return (
     <IllustrationShell className={className} title={title ?? "Edge routing"}>
       <rect x="20" y="50" width="90" height="50" rx="12" />
-      <text x="65" y="78" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="65" y="78" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Clients
       </text>
       <rect x="135" y="30" width="90" height="80" rx="12" />
-      <text x="180" y="64" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="180" y="64" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Nginx
       </text>
-      <text x="180" y="78" textAnchor="middle" fontSize="10" fill="#8FA3BF">
+      <text x="180" y="78" textAnchor="middle" fontSize="10" fill="var(--diagram-text-muted)">
         Routing
       </text>
       <rect x="250" y="20" width="90" height="40" rx="12" />
       <rect x="250" y="80" width="90" height="40" rx="12" />
-      <text x="295" y="46" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="295" y="46" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Service A
       </text>
-      <text x="295" y="106" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="295" y="106" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Service B
       </text>
       <line x1="110" y1="75" x2="135" y2="70" />
@@ -93,18 +93,18 @@ export function SecureAccessGate({ className, title }: IllustrationProps) {
   return (
     <IllustrationShell className={className} title={title ?? "Secure access gate"}>
       <rect x="20" y="50" width="90" height="50" rx="12" />
-      <text x="65" y="78" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="65" y="78" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Remote
       </text>
       <rect x="135" y="30" width="90" height="80" rx="12" />
-      <text x="180" y="60" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="180" y="60" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Gate
       </text>
-      <text x="180" y="74" textAnchor="middle" fontSize="10" fill="#8FA3BF">
+      <text x="180" y="74" textAnchor="middle" fontSize="10" fill="var(--diagram-text-muted)">
         WG + SPA
       </text>
       <rect x="250" y="50" width="90" height="50" rx="12" />
-      <text x="295" y="78" textAnchor="middle" fontSize="10" fill="#E6EDF7">
+      <text x="295" y="78" textAnchor="middle" fontSize="10" fill="var(--diagram-text)">
         Services
       </text>
       <line x1="110" y1="75" x2="135" y2="70" />

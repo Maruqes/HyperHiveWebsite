@@ -23,7 +23,7 @@ export function ExplainerCallout({
   return (
     <aside
       className={cn(
-        "glass-panel rounded-2xl border border-border/80 p-6 shadow-[0_18px_38px_rgba(5,8,16,0.35)]",
+        "glass-panel rounded-2xl border border-border/80 p-6 shadow-[0_18px_38px_var(--shadow-soft)]",
         className
       )}
     >
@@ -51,7 +51,7 @@ export function ExplainerCallout({
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-full border border-border/80 bg-[rgba(14,21,36,0.7)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground transition hover:border-accent/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
+                className="rounded-full border border-border/80 bg-[color:var(--surface-elevated)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground transition hover:border-accent/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
               >
                 {link.label}
               </Link>

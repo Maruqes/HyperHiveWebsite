@@ -12,16 +12,16 @@ const navItems = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-[rgba(5,8,16,0.78)] backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-[color:var(--surface-header)] backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[rgba(14,21,36,0.8)] text-sm font-semibold text-foreground">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[color:var(--surface-elevated)] text-sm font-semibold text-foreground">
             <Image
               src="/static/android-chrome-192x192.png"
               alt="HyperHive"
               width={32}
               height={32}
-              className="h-8 w-8"
+              className="h-8 w-8 invert dark:invert-0"
               priority
             />
           </span>
@@ -48,7 +48,7 @@ export function SiteHeader() {
           </nav>
           <a
             href="https://github.com/Maruqes/HyperHive"
-            className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-[rgba(14,21,36,0.8)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground transition hover:border-accent/60"
+            className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-[color:var(--surface-elevated)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground transition hover:border-accent/60"
             rel="noreferrer"
             target="_blank"
           >

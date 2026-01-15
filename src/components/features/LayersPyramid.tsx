@@ -90,8 +90,8 @@ export function LayersPyramid({ onLayerClick, selectedLayers = [] }: LayersPyram
 				<defs>
 					{/* Gradient background */}
 					<linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" stopColor="#0E1524" stopOpacity="0.8" />
-						<stop offset="100%" stopColor="#050810" stopOpacity="0.9" />
+						<stop offset="0%" stopColor="var(--diagram-surface-strong)" stopOpacity="0.8" />
+						<stop offset="100%" stopColor="var(--background)" stopOpacity="0.9" />
 					</linearGradient>
 
 					{/* Glow filter */}
@@ -201,7 +201,7 @@ export function LayersPyramid({ onLayerClick, selectedLayers = [] }: LayersPyram
 								x={centerX}
 								y={y + layerHeight / 2 - 10}
 								textAnchor="middle"
-								fill="#E6EDF7"
+								fill="var(--diagram-text)"
 								fontSize="19"
 								fontWeight="700"
 								animate={{
@@ -218,7 +218,7 @@ export function LayersPyramid({ onLayerClick, selectedLayers = [] }: LayersPyram
 								x={centerX}
 								y={y + layerHeight / 2 + 15}
 								textAnchor="middle"
-								fill="#8FA3BF"
+								fill="var(--diagram-text-muted)"
 								fontSize="12"
 								animate={{
 									opacity: isDimmed ? 0.3 : 0.8,
@@ -262,7 +262,7 @@ export function LayersPyramid({ onLayerClick, selectedLayers = [] }: LayersPyram
 								y1={y}
 								x2={centerX - nextWidth / 2}
 								y2={nextY}
-								stroke="#389088"
+								stroke="var(--accent)"
 								strokeWidth="1"
 								strokeOpacity="0.3"
 								strokeDasharray="3,3"
@@ -273,7 +273,7 @@ export function LayersPyramid({ onLayerClick, selectedLayers = [] }: LayersPyram
 								y1={y}
 								x2={centerX + nextWidth / 2}
 								y2={nextY}
-								stroke="#389088"
+								stroke="var(--accent)"
 								strokeWidth="1"
 								strokeOpacity="0.3"
 								strokeDasharray="3,3"
@@ -287,7 +287,7 @@ export function LayersPyramid({ onLayerClick, selectedLayers = [] }: LayersPyram
 					x={centerX}
 					y={35}
 					textAnchor="middle"
-					fill="#E6EDF7"
+					fill="var(--diagram-text)"
 					fontSize="28"
 					fontWeight="700"
 				>

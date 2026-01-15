@@ -8,7 +8,7 @@ export default function PrivacyPage() {
         title="Privacy"
         description="This site is a proof of concept. Use it at your own risk."
       >
-        <div className="glass-panel rounded-3xl border border-border/70 bg-[rgba(5,8,16,0.6)] p-6 sm:p-8">
+        <div className="glass-panel rounded-3xl border border-border/70 bg-[color:var(--surface-overlay)] p-6 sm:p-8">
           <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
               HyperHive is an experimental project and this website is provided

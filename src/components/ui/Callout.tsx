@@ -20,7 +20,7 @@ export function Callout({
   return (
     <div
       className={cn(
-        "glass-panel rounded-2xl border border-border/80 p-6 shadow-[0_18px_38px_rgba(5,8,16,0.35)]",
+        "glass-panel rounded-2xl border border-border/80 p-6 shadow-[0_18px_38px_var(--shadow-soft)]",
         className
       )}
     >
@@ -29,7 +29,7 @@ export function Callout({
       ) : (
         <div className="flex items-start gap-4">
           {icon ? (
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-[rgba(14,21,36,0.9)] text-accent">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-[color:var(--surface-elevated-stronger)] text-accent">
               {icon}
             </div>
           ) : null}

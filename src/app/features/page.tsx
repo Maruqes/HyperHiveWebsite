@@ -75,15 +75,15 @@ export default function FeaturesPage() {
   const layers = getAllLayers();
 
   return (
-    <main className="min-h-screen bg-[#050810]">
+    <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative border-b border-[#1A2637] bg-gradient-to-b from-[#0E1524] to-[#050810]">
+      <section className="relative border-b border-border bg-gradient-to-b from-[color:var(--secondary)] to-[color:var(--background)]">
         <div className="container mx-auto px-4 py-20 max-w-7xl">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold text-[#E6EDF7] mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
               Features & Ecosystem
             </h1>
-            <p className="text-xl text-[#8FA3BF] leading-relaxed mb-8">
+            <p className="text-xl text-muted-foreground leading-relaxed mb-8">
               HyperHive is an integrated stack built in layers: from{' '}
               <span className="text-teal-400 font-medium">Storage Foundation</span> to{' '}
               <span className="text-teal-400 font-medium">Secure Access</span>, through{' '}
@@ -105,8 +105,8 @@ export default function FeaturesPage() {
               </Link>
               <Link
                 href="/512rede"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1322] border border-[#1A2637]
-                           hover:border-teal-500/50 text-[#E6EDF7] font-medium rounded-lg 
+                className="inline-flex items-center gap-2 px-6 py-3 bg-card border border-border
+                           hover:border-teal-500/50 text-foreground font-medium rounded-lg 
                            transition-all duration-200 hover:-translate-y-0.5"
               >
                 About 512rede
@@ -118,13 +118,13 @@ export default function FeaturesPage() {
       </section>
 
       {/* How It All Connects Section */}
-      <section className="py-20 border-b border-[#1A2637]">
+      <section className="py-20 border-b border-border">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#E6EDF7] mb-4">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
               Stack Visualization
             </h2>
-            <p className="text-[#8FA3BF] max-w-2xl mx-auto mb-8">
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
               HyperHive is built in 7 integrated layers. Click any layer to filter features below.
             </p>
           </div>
@@ -166,7 +166,7 @@ export default function FeaturesPage() {
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >
-                    <div className="glass-card rounded-2xl border border-border/70 p-6 shadow-[0_18px_36px_rgba(5,8,16,0.45)] bg-[#0B1322]/95 backdrop-blur-xl max-h-[800px] flex flex-col">
+                    <div className="glass-card rounded-2xl border border-border/70 p-6 shadow-[0_18px_36px_var(--shadow-strong)] bg-[color:var(--surface-card-strong)] backdrop-blur-xl max-h-[800px] flex flex-col">
                       <div className="flex items-start justify-between gap-3 mb-4">
                         <div className="flex-1">
                           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-2">
@@ -192,7 +192,7 @@ export default function FeaturesPage() {
                         <button
                           type="button"
                           onClick={() => setSelectedPyramidLayer(null)}
-                          className="rounded-full border border-border/70 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground transition hover:text-foreground hover:bg-white/10"
+                          className="rounded-full border border-border/70 bg-[color:var(--surface-overlay-soft)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground transition hover:text-foreground hover:bg-[color:var(--surface-overlay)]"
                         >
                           ✕
                         </button>
@@ -241,7 +241,7 @@ export default function FeaturesPage() {
                                   }, 100);
                                 }
                               }}
-                              className="rounded-lg border border-border/50 bg-white/5 p-4 cursor-pointer hover:bg-white/10 hover:border-teal-500/50 hover:-translate-y-0.5 transition-all"
+                              className="rounded-lg border border-border/50 bg-[color:var(--surface-overlay-soft)] p-4 cursor-pointer hover:bg-[color:var(--surface-overlay)] hover:border-teal-500/50 hover:-translate-y-0.5 transition-all"
                             >
                               <div className="flex items-start gap-3">
                                 <div
@@ -286,7 +286,7 @@ export default function FeaturesPage() {
                         </button>
                         <button
                           onClick={() => setSelectedPyramidLayer(null)}
-                          className="px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-border/50 hover:border-border text-muted-foreground hover:text-foreground text-sm font-medium rounded-lg transition-all hover:-translate-y-0.5"
+                          className="px-4 py-2.5 bg-[color:var(--surface-overlay-soft)] hover:bg-[color:var(--surface-overlay)] border border-border/50 hover:border-border text-muted-foreground hover:text-foreground text-sm font-medium rounded-lg transition-all hover:-translate-y-0.5"
                         >
                           Close
                         </button>
@@ -299,10 +299,10 @@ export default function FeaturesPage() {
           </div>
 
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#E6EDF7] mb-4">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
               How It All Connects
             </h2>
-            <p className="text-[#8FA3BF]">
+            <p className="text-muted-foreground">
               If you only read one thing, read this:
             </p>
           </div>
@@ -318,14 +318,14 @@ export default function FeaturesPage() {
             ].map((text, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-4 bg-[#0B1322] border border-[#1A2637] 
-                           rounded-lg p-5 hover:border-[#2A3647] transition-colors"
+                className="flex items-start gap-4 bg-card border border-border 
+                           rounded-lg p-5 hover:border-border/80 transition-colors"
               >
                 <div className="w-8 h-8 rounded-full bg-teal-600/20 border border-teal-500/30 
                                flex items-center justify-center text-teal-400 font-bold shrink-0">
                   {idx + 1}
                 </div>
-                <p className="text-[#E6EDF7] leading-relaxed">{text}</p>
+                <p className="text-foreground leading-relaxed">{text}</p>
               </div>
             ))}
           </div>
@@ -336,10 +336,10 @@ export default function FeaturesPage() {
       <section id="feature-explorer" className="py-20">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#E6EDF7] mb-4">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
               Feature Explorer
             </h2>
-            <p className="text-[#8FA3BF] max-w-2xl mx-auto">
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Explore all HyperHive features, organized by layers. Use filters
               to navigate and discover how everything connects.
             </p>
@@ -358,7 +358,7 @@ export default function FeaturesPage() {
           </div>
 
           {/* Results count */}
-          <div className="mb-6 text-[#8FA3BF]">
+          <div className="mb-6 text-muted-foreground">
             {filteredFeatures.length === features.length ? (
               <p>Showing all {features.length} features</p>
             ) : (
@@ -398,10 +398,10 @@ export default function FeaturesPage() {
                         <Icon size={32} style={{ color: info.color }} />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-[#E6EDF7]">
+                        <h3 className="text-2xl font-bold text-foreground">
                           {info.label}
                         </h3>
-                        <p className="text-[#8FA3BF] mt-1">{info.description}</p>
+                        <p className="text-muted-foreground mt-1">{info.description}</p>
                       </div>
                     </div>
 
@@ -424,7 +424,7 @@ export default function FeaturesPage() {
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="text-[#8FA3BF] text-lg">
+              <p className="text-muted-foreground text-lg">
                 No features found with applied filters.
               </p>
               <button
@@ -442,13 +442,13 @@ export default function FeaturesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 border-t border-[#1A2637] bg-gradient-to-b from-[#050810] to-[#0E1524]">
+      <section className="py-20 border-t border-border bg-gradient-to-b from-[color:var(--background)] to-[color:var(--secondary)]">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-[#E6EDF7] mb-4">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
               Ready to dive deeper?
             </h2>
-            <p className="text-[#8FA3BF]">
+            <p className="text-muted-foreground">
               Explore the architecture and network infrastructure
             </p>
           </div>
@@ -465,8 +465,8 @@ export default function FeaturesPage() {
             </Link>
             <Link
               href="/512rede"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1322] border border-[#1A2637]
-                         hover:border-teal-500/50 text-[#E6EDF7] font-medium rounded-lg 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-card border border-border
+                         hover:border-teal-500/50 text-foreground font-medium rounded-lg 
                          transition-all duration-200 hover:-translate-y-0.5"
             >
               About 512rede
@@ -474,8 +474,8 @@ export default function FeaturesPage() {
             </Link>
             <Link
               href="/installation"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1322] border border-[#1A2637]
-                         hover:border-teal-500/50 text-[#E6EDF7] font-medium rounded-lg 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-card border border-border
+                         hover:border-teal-500/50 text-foreground font-medium rounded-lg 
                          transition-all duration-200 hover:-translate-y-0.5"
             >
               View installation

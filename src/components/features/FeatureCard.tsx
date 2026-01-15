@@ -25,8 +25,8 @@ export function FeatureCard({
 	return (
 		<div
 			onClick={onClick}
-			className="group relative flex h-full flex-col rounded-lg border border-[#1A2637] bg-[#0B1322] p-5
-                 transition-all duration-300 hover:-translate-y-1 hover:border-[#2A3647]
+			className="group relative flex h-full flex-col rounded-lg border border-border bg-card p-5
+                 transition-all duration-300 hover:-translate-y-1 hover:border-border/80
                  hover:shadow-lg hover:shadow-teal-500/5 cursor-pointer"
 		>
 			{/* Layer indicator */}
@@ -44,10 +44,10 @@ export function FeatureCard({
 					<Icon size={20} style={{ color: layerColor }} />
 				</div>
 				<div className="flex-1 min-w-0">
-					<h3 className="text-[#E6EDF7] font-semibold text-base mb-1 group-hover:text-teal-400 transition-colors">
+					<h3 className="text-foreground font-semibold text-base mb-1 group-hover:text-teal-400 transition-colors">
 						{feature.name}
 					</h3>
-					<p className="text-[#8FA3BF] text-sm leading-relaxed">
+					<p className="text-muted-foreground text-sm leading-relaxed">
 						{feature.shortDescription}
 					</p>
 				</div>
@@ -61,17 +61,17 @@ export function FeatureCard({
 							className="w-1 h-1 rounded-full mt-2 shrink-0"
 							style={{ backgroundColor: layerColor }}
 						/>
-						<p className="text-[#8FA3BF] text-sm leading-relaxed">{capability}</p>
+						<p className="text-muted-foreground text-sm leading-relaxed">{capability}</p>
 					</div>
 				))}
 			</div>
 
 			{/* Connections */}
 			{showConnections && (feature.dependsOn.length > 0 || feature.feedsInto.length > 0) && (
-				<div className="mt-4 pt-4 border-t border-[#1A2637] space-y-3">
+				<div className="mt-4 pt-4 border-t border-border space-y-3">
 					{feature.dependsOn.length > 0 && (
 						<div>
-							<p className="text-[#8FA3BF] text-xs font-medium mb-2">Requires:</p>
+							<p className="text-muted-foreground text-xs font-medium mb-2">Requires:</p>
 							<div className="flex flex-wrap gap-1.5">
 								{feature.dependsOn.map((depId) => {
 									const depFeature = getFeatureById(depId);
@@ -100,7 +100,7 @@ export function FeatureCard({
 					)}
 					{feature.feedsInto.length > 0 && (
 						<div>
-							<p className="text-[#8FA3BF] text-xs font-medium mb-2">Enables:</p>
+							<p className="text-muted-foreground text-xs font-medium mb-2">Enables:</p>
 							<div className="flex flex-wrap gap-1.5">
 								{feature.feedsInto.map((feedId) => {
 									const feedFeature = getFeatureById(feedId);
@@ -132,7 +132,7 @@ export function FeatureCard({
 
 			{/* Mini diagram (optional, when connections are shown) */}
 			{showConnections && feature.dependsOn.length > 0 && feature.feedsInto.length > 0 && (
-				<div className="mt-4 pt-4 border-t border-[#1A2637]">
+				<div className="mt-4 pt-4 border-t border-border">
 					<svg viewBox="0 0 200 60" className="w-full h-12 opacity-40">
 						<defs>
 							<marker
@@ -180,14 +180,14 @@ export function FeatureCard({
 			)}
 
 			{/* View more button */}
-			<div className="mt-auto pt-4 border-t border-[#1A2637] flex items-center justify-between">
+			<div className="mt-auto pt-4 border-t border-border flex items-center justify-between">
 				<div className="flex gap-2">
 					{feature.links.slice(0, 2).map((link, idx) => (
 						<a
 							key={idx}
 							href={link.href}
 							onClick={(e) => e.stopPropagation()}
-							className="text-xs text-[#8FA3BF] hover:text-teal-400 transition-colors flex items-center gap-1"
+							className="text-xs text-muted-foreground hover:text-teal-400 transition-colors flex items-center gap-1"
 						>
 							<LinkIcon size={12} />
 							{link.label}

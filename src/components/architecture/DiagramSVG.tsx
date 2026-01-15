@@ -109,7 +109,7 @@ export function DiagramSVG({ activeStep }: DiagramSVGProps) {
           markerHeight="6"
           orient="auto-start-reverse"
         >
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#389088" />
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
         </marker>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="6" result="coloredBlur" />
@@ -124,10 +124,10 @@ export function DiagramSVG({ activeStep }: DiagramSVGProps) {
         const visualIndex = ARCHITECTURE_STEPS.length - 1 - index;
         const y = START_Y + visualIndex * (BOX_HEIGHT + BOX_GAP);
         const isActive = index === activeStep;
-        const stroke = isActive ? "#389088" : "rgba(56, 144, 136, 0.35)";
+        const stroke = isActive ? "var(--accent)" : "var(--diagram-stroke)";
         const fill = isActive
-          ? "rgba(56, 144, 136, 0.14)"
-          : "rgba(14, 21, 36, 0.65)";
+          ? "var(--diagram-accent)"
+          : "var(--diagram-surface)";
 
         return (
           <motion.g
@@ -164,7 +164,7 @@ export function DiagramSVG({ activeStep }: DiagramSVGProps) {
             <text
               x={START_X + 48}
               y={y + 30}
-              fill={isActive ? "#E6EDF7" : "#8FA3BF"}
+              fill={isActive ? "var(--diagram-text)" : "var(--diagram-text-muted)"}
               fontSize="12"
               fontWeight="600"
             >
@@ -173,7 +173,7 @@ export function DiagramSVG({ activeStep }: DiagramSVGProps) {
             <text
               x={START_X + 48}
               y={y + 46}
-              fill={isActive ? "#8FA3BF" : "#6B819F"}
+              fill={isActive ? "var(--diagram-text-muted)" : "var(--diagram-text-subtle)"}
               fontSize="10"
             >
               {layer.subtitle}
@@ -197,7 +197,7 @@ export function DiagramSVG({ activeStep }: DiagramSVGProps) {
             y1={y1}
             x2={x}
             y2={y2}
-            stroke="#389088"
+            stroke="var(--accent)"
             strokeWidth="2"
             markerEnd="url(#arrow)"
             opacity="0.6"

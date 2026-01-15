@@ -46,7 +46,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						refX="9"
 						refY="3"
 						orient="auto"
-						className="fill-[#389088]"
+						className="fill-accent"
 					>
 						<polygon points="0 0, 10 3, 0 6" />
 					</marker>
@@ -73,7 +73,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					<path
 						d="M 40 0 L 0 0 0 40"
 						fill="none"
-						stroke="#1A2637"
+						stroke="var(--diagram-border)"
 						strokeWidth="0.5"
 						opacity="0.3"
 					/>
@@ -87,7 +87,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="120"
 					x2="200"
 					y2="200"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth={hoveredFeature && isRelated('nfs') ? '3' : '2'}
 					markerEnd={
 						hoveredFeature && isRelated('nfs')
@@ -104,7 +104,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="260"
 					x2="200"
 					y2="340"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth={hoveredFeature && isRelated('virtual-machines') ? '3' : '2'}
 					markerEnd={
 						hoveredFeature && isRelated('virtual-machines')
@@ -123,7 +123,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="280"
 					x2="150"
 					y2="360"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth="2"
 					markerEnd="url(#arrowhead)"
 					opacity={hoveredFeature ? (isRelated('isos') ? 1 : 0.2) : 0.4}
@@ -134,7 +134,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="280"
 					x2="250"
 					y2="360"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth="2"
 					markerEnd="url(#arrowhead)"
 					opacity={hoveredFeature ? (isRelated('docker-images') ? 1 : 0.2) : 0.4}
@@ -147,7 +147,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="420"
 					x2="200"
 					y2="500"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth={hoveredFeature && isRelated('nginx-proxy') ? '3' : '2'}
 					markerEnd={
 						hoveredFeature && isRelated('nginx-proxy')
@@ -166,7 +166,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="540"
 					x2="350"
 					y2="540"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth="2"
 					markerEnd="url(#arrowhead)"
 					opacity={hoveredFeature ? (isRelated('wireguard') ? 1 : 0.2) : 0.5}
@@ -179,7 +179,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="560"
 					x2="550"
 					y2="650"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth="2"
 					markerEnd="url(#arrowhead)"
 					opacity={hoveredFeature ? (isRelated('logs') ? 1 : 0.2) : 0.4}
@@ -193,7 +193,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 					y1="100"
 					x2="600"
 					y2="650"
-					stroke="#389088"
+					stroke="var(--accent)"
 					strokeWidth="2"
 					markerEnd="url(#arrowhead)"
 					opacity={hoveredFeature ? (isRelated('smartdisk') ? 1 : 0.2) : 0.3}
@@ -209,16 +209,16 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						width="300"
 						height="80"
 						rx="8"
-						fill="#0B1322"
+						fill="var(--card)"
 						stroke={layerInfo.layer0.color}
 						strokeWidth="2"
 						opacity={hoveredFeature ? (isRelated('btrfs-raids') ? 1 : 0.3) : 1}
 						className="transition-all duration-300"
 					/>
-					<text x="200" y="75" fill="#E6EDF7" fontSize="14" fontWeight="600" textAnchor="middle">
+					<text x="200" y="75" fill="var(--diagram-text)" fontSize="14" fontWeight="600" textAnchor="middle">
 						Layer 0 - Storage Foundation
 					</text>
-					<text x="200" y="100" fill="#8FA3BF" fontSize="12" textAnchor="middle">
+					<text x="200" y="100" fill="var(--diagram-text-muted)" fontSize="12" textAnchor="middle">
 						BTRFS/RAIDs | Auto-Mounts | SmartDisk
 					</text>
 				</g>
@@ -237,7 +237,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 							width="200"
 							height="60"
 							rx="8"
-							fill="#0B1322"
+							fill="var(--card)"
 							stroke={layerInfo.layer1.color}
 							strokeWidth={hoveredFeature === nfsFeature.id ? '3' : '2'}
 							opacity={hoveredFeature ? (isRelated(nfsFeature.id) ? 1 : 0.3) : 1}
@@ -246,7 +246,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						<text
 							x="200"
 							y="235"
-							fill="#E6EDF7"
+							fill="var(--diagram-text)"
 							fontSize="14"
 							fontWeight="600"
 							textAnchor="middle"
@@ -256,7 +256,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						<text
 							x="200"
 							y="255"
-							fill="#8FA3BF"
+							fill="var(--diagram-text-muted)"
 							fontSize="11"
 							textAnchor="middle"
 						>
@@ -273,16 +273,16 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						width="70"
 						height="50"
 						rx="6"
-						fill="#0B1322"
+						fill="var(--card)"
 						stroke={layerInfo.assets.color}
 						strokeWidth="2"
 						opacity={hoveredFeature ? (isRelated('isos') ? 1 : 0.3) : 0.8}
 						className="transition-all duration-300"
 					/>
-					<text x="85" y="270" fill="#8FA3BF" fontSize="11" textAnchor="middle">
+					<text x="85" y="270" fill="var(--diagram-text-muted)" fontSize="11" textAnchor="middle">
 						ISOs
 					</text>
-					<text x="85" y="285" fill="#8FA3BF" fontSize="9" textAnchor="middle">
+					<text x="85" y="285" fill="var(--diagram-text-muted)" fontSize="9" textAnchor="middle">
 						(Assets)
 					</text>
 				</g>
@@ -293,16 +293,16 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						width="70"
 						height="50"
 						rx="6"
-						fill="#0B1322"
+						fill="var(--card)"
 						stroke={layerInfo.assets.color}
 						strokeWidth="2"
 						opacity={hoveredFeature ? (isRelated('docker-images') ? 1 : 0.3) : 0.8}
 						className="transition-all duration-300"
 					/>
-					<text x="315" y="270" fill="#8FA3BF" fontSize="11" textAnchor="middle">
+					<text x="315" y="270" fill="var(--diagram-text-muted)" fontSize="11" textAnchor="middle">
 						Docker
 					</text>
-					<text x="315" y="285" fill="#8FA3BF" fontSize="9" textAnchor="middle">
+					<text x="315" y="285" fill="var(--diagram-text-muted)" fontSize="9" textAnchor="middle">
 						Images
 					</text>
 				</g>
@@ -315,7 +315,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						width="300"
 						height="80"
 						rx="8"
-						fill="#0B1322"
+						fill="var(--card)"
 						stroke={layerInfo.layer2.color}
 						strokeWidth="2"
 						opacity={
@@ -329,10 +329,10 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						}
 						className="transition-all duration-300"
 					/>
-					<text x="200" y="375" fill="#E6EDF7" fontSize="14" fontWeight="600" textAnchor="middle">
+					<text x="200" y="375" fill="var(--diagram-text)" fontSize="14" fontWeight="600" textAnchor="middle">
 						Layer 2 - Compute
 					</text>
-					<text x="200" y="400" fill="#8FA3BF" fontSize="12" textAnchor="middle">
+					<text x="200" y="400" fill="var(--diagram-text-muted)" fontSize="12" textAnchor="middle">
 						VMs | Docker | K8 Cluster
 					</text>
 				</g>
@@ -345,7 +345,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						width="300"
 						height="80"
 						rx="8"
-						fill="#0B1322"
+						fill="var(--card)"
 						stroke={layerInfo.edge.color}
 						strokeWidth="2"
 						opacity={
@@ -359,10 +359,10 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						}
 						className="transition-all duration-300"
 					/>
-					<text x="200" y="535" fill="#E6EDF7" fontSize="14" fontWeight="600" textAnchor="middle">
+					<text x="200" y="535" fill="var(--diagram-text)" fontSize="14" fontWeight="600" textAnchor="middle">
 						Edge - Nginx
 					</text>
-					<text x="200" y="560" fill="#8FA3BF" fontSize="11" textAnchor="middle">
+					<text x="200" y="560" fill="var(--diagram-text-muted)" fontSize="11" textAnchor="middle">
 						Proxy | Certs | Streams | Redirect | 404
 					</text>
 				</g>
@@ -375,7 +375,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						width="250"
 						height="80"
 						rx="8"
-						fill="#0B1322"
+						fill="var(--card)"
 						stroke={layerInfo.access.color}
 						strokeWidth="2"
 						opacity={
@@ -387,10 +387,10 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						}
 						className="transition-all duration-300"
 					/>
-					<text x="1025" y="535" fill="#E6EDF7" fontSize="14" fontWeight="600" textAnchor="middle">
+					<text x="1025" y="535" fill="var(--diagram-text)" fontSize="14" fontWeight="600" textAnchor="middle">
 						Secure Access
 					</text>
-					<text x="1025" y="560" fill="#8FA3BF" fontSize="12" textAnchor="middle">
+					<text x="1025" y="560" fill="var(--diagram-text-muted)" fontSize="12" textAnchor="middle">
 						WireGuard VPN | SPA
 					</text>
 				</g>
@@ -403,7 +403,7 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						width="350"
 						height="80"
 						rx="8"
-						fill="#0B1322"
+						fill="var(--card)"
 						stroke={layerInfo.operations.color}
 						strokeWidth="2"
 						opacity={
@@ -418,17 +418,17 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						}
 						className="transition-all duration-300"
 					/>
-					<text x="625" y="695" fill="#E6EDF7" fontSize="14" fontWeight="600" textAnchor="middle">
+					<text x="625" y="695" fill="var(--diagram-text)" fontSize="14" fontWeight="600" textAnchor="middle">
 						Operations
 					</text>
-					<text x="625" y="720" fill="#8FA3BF" fontSize="11" textAnchor="middle">
+					<text x="625" y="720" fill="var(--diagram-text-muted)" fontSize="11" textAnchor="middle">
 						Backups | Auto-Backups | Updates | Logs
 					</text>
 				</g>
 
 				{/* Legend */}
 				<g>
-					<text x="50" y="830" fill="#8FA3BF" fontSize="12" fontWeight="500">
+					<text x="50" y="830" fill="var(--diagram-text-muted)" fontSize="12" fontWeight="500">
 						Legend:
 					</text>
 					<line
@@ -436,11 +436,11 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						y1="850"
 						x2="100"
 						y2="850"
-						stroke="#389088"
+						stroke="var(--accent)"
 						strokeWidth="2"
 						markerEnd="url(#arrowhead)"
 					/>
-					<text x="110" y="855" fill="#8FA3BF" fontSize="11">
+					<text x="110" y="855" fill="var(--diagram-text-muted)" fontSize="11">
 						Data flow / dependencies
 					</text>
 					<line
@@ -448,15 +448,15 @@ export function EcosystemMap({ onFeatureClick }: EcosystemMapProps) {
 						y1="850"
 						x2="350"
 						y2="850"
-						stroke="#389088"
+						stroke="var(--accent)"
 						strokeWidth="2"
 						strokeDasharray="5,5"
 						markerEnd="url(#arrowhead)"
 					/>
-					<text x="360" y="855" fill="#8FA3BF" fontSize="11">
+					<text x="360" y="855" fill="var(--diagram-text-muted)" fontSize="11">
 						Logs
 					</text>
-					<text x="550" y="855" fill="#8FA3BF" fontSize="11">
+					<text x="550" y="855" fill="var(--diagram-text-muted)" fontSize="11">
 						Hover to highlight, click for details
 					</text>
 				</g>

@@ -61,7 +61,7 @@ export function ServerChecklist({ title, description, className }: ServerCheckli
 				{servers.map((server) => (
 					<div
 						key={server.id}
-						className="flex items-center gap-3 p-3 rounded-lg bg-[rgba(10,15,25,0.5)] border border-border/30"
+						className="flex items-center gap-3 p-3 rounded-lg bg-[color:var(--surface-input)] border border-border/30"
 					>
 						<button
 							onClick={() => toggleServer(server.id)}

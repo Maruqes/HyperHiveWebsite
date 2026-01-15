@@ -9,6 +9,7 @@ import "./globals.css";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { PageTransition } from "@/components/motion/PageTransition";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const plexSans = IBM_Plex_Sans({
   variable: "--font-plex-sans",
@@ -27,6 +28,16 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
 });
+
+const themeScript = `(function () {
+  try {
+    var stored = localStorage.getItem("hyperhive-theme");
+    if (stored === "light" || stored === "dark") {
+      document.documentElement.dataset.theme = stored;
+      document.documentElement.classList.toggle("dark", stored === "dark");
+    }
+  } catch (e) {}
+})();`;
 
 export const metadata: Metadata = {
   title: "HyperHive",
@@ -58,17 +69,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" className="dark" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/site.webmanifest" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${plexSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${plexSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} flex min-h-[100dvh] flex-col antialiased`}
       >
-        <div className="relative min-h-screen overflow-hidden">
-          <div className="pointer-events-none absolute left-1/2 top-[-240px] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(56,144,136,0.25)_0%,_transparent_70%)] blur-3xl" />
-          <div className="pointer-events-none absolute bottom-[-220px] right-[-120px] h-[440px] w-[440px] rounded-full bg-[radial-gradient(circle,_rgba(143,163,191,0.2)_0%,_transparent_70%)] blur-3xl" />
-          <div className="relative z-10 flex min-h-screen flex-col">
+        <div className="relative flex min-h-[100dvh] flex-1 flex-col overflow-hidden">
+          <div className="pointer-events-none absolute left-1/2 top-[-240px] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_var(--hero-glow-1)_0%,_transparent_70%)] blur-3xl" />
+          <div className="pointer-events-none absolute bottom-[-220px] right-[-120px] h-[440px] w-[440px] rounded-full bg-[radial-gradient(circle,_var(--hero-glow-2)_0%,_transparent_70%)] blur-3xl" />
+          <div className="relative z-10 flex flex-1 flex-col">
             <SiteHeader />
             <main className="flex flex-1 flex-col">
               <PageTransition className="flex min-h-full flex-1 flex-col">
@@ -78,6 +90,7 @@ export default function RootLayout({
             <SiteFooter />
           </div>
         </div>
+        <ThemeToggle />
       </body>
     </html>
   );
