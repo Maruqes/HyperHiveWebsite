@@ -8,6 +8,23 @@ import { Section } from "@/components/ui/Section";
 type NodeId = "master" | "node-b" | "node-c";
 type RaidBlock = "data" | "parity" | "mirror";
 
+type VMInfo = {
+  name: string;
+  vcpu: number;
+  ram: number;
+  ip: string;
+  status: "running" | "stopped";
+};
+
+type RaidInfo = {
+  name: string;
+  type: "raid1" | "raid5" | "raid6";
+  capacity: string;
+  used: string;
+  disks: number;
+  parity: number;
+};
+
 const viewBox = { width: 800, height: 1000 };
 const zoomTarget = { x: 400, y: 520 };
 const diagramBounds = { minX: 50, maxX: 750, minY: 40, maxY: 880 };
@@ -29,6 +46,8 @@ const nodeMeta: Record<
     y: number;
     width: number;
     height: number;
+    vms: VMInfo[];
+    raids: RaidInfo[];
   }
 > = {
   master: {
@@ -39,6 +58,15 @@ const nodeMeta: Record<
     y: 210,
     width: 400,
     height: 220,
+    vms: [
+      { name: "vm1", vcpu: 4, ram: 8, ip: "192.168.76.10", status: "running" },
+      { name: "vm2", vcpu: 2, ram: 4, ip: "192.168.76.11", status: "running" },
+      { name: "vm3", vcpu: 8, ram: 16, ip: "192.168.76.12", status: "running" },
+    ],
+    raids: [
+      { name: "raid1", type: "raid1", capacity: "2TB", used: "1.5TB", disks: 4, parity: 0 },
+      { name: "raid5", type: "raid5", capacity: "8TB", used: "6TB", disks: 4, parity: 1 },
+    ],
   },
   "node-b": {
     label: "Node B",
@@ -48,6 +76,13 @@ const nodeMeta: Record<
     y: 550,
     width: 280,
     height: 180,
+    vms: [
+      { name: "vm4", vcpu: 6, ram: 12, ip: "192.168.76.20", status: "running" },
+      { name: "vm5", vcpu: 4, ram: 8, ip: "192.168.76.21", status: "stopped" },
+    ],
+    raids: [
+      { name: "raid6", type: "raid6", capacity: "10TB", used: "7TB", disks: 6, parity: 2 },
+    ],
   },
   "node-c": {
     label: "Node C",
@@ -57,6 +92,15 @@ const nodeMeta: Record<
     y: 550,
     width: 280,
     height: 180,
+    vms: [
+      { name: "vm6", vcpu: 8, ram: 16, ip: "192.168.76.30", status: "running" },
+      { name: "vm7", vcpu: 4, ram: 8, ip: "192.168.76.31", status: "running" },
+      { name: "vm8", vcpu: 2, ram: 4, ip: "192.168.76.32", status: "running" },
+    ],
+    raids: [
+      { name: "raid1", type: "raid1", capacity: "4TB", used: "2.8TB", disks: 2, parity: 0 },
+      { name: "raid5", type: "raid5", capacity: "6TB", used: "4.5TB", disks: 4, parity: 1 },
+    ],
   },
 };
 
@@ -357,6 +401,24 @@ export default function ArchitecturePage() {
                     <circle cx="7" cy="16.5" r="0.8" fill="#389088" />
                     <circle cx="9.5" cy="16.5" r="0.8" fill="#389088" />
                   </g>
+
+                  {/* VM Icon - Monitor with activity */}
+                  <g id="icon-vm">
+                    <rect
+                      x="3"
+                      y="4"
+                      width="10"
+                      height="7"
+                      rx="1"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                    />
+                    <line x1="5" y1="13" x2="11" y2="13" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="8" y1="11" x2="8" y2="13" stroke="currentColor" strokeWidth="1.2" />
+                    <circle cx="6" cy="7" r="0.6" fill="currentColor" />
+                    <circle cx="10" cy="7" r="0.6" fill="currentColor" />
+                  </g>
                 </defs>
 
                 <rect
@@ -478,27 +540,43 @@ export default function ArchitecturePage() {
                       Nginx + IP Routing
                     </text>
 
-                    <text x="235" y="330" textAnchor="start" fill="#E6EDF7" fontSize="15" fontWeight="600">
+                    {/* VM and RAID Badges */}
+                    <g transform="translate(235, 315)">
+                      <rect x="0" y="0" width="75" height="20" rx="10" fill="rgba(56, 144, 136, 0.25)" stroke="rgba(56, 144, 136, 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: '#E6EDF7' }} />
+                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                        {nodeMeta.master.vms.length} VMs
+                      </text>
+                    </g>
+                    <g transform="translate(315, 315)">
+                      <rect x="0" y="0" width="85" height="20" rx="10" fill="rgba(233, 186, 97, 0.25)" stroke="rgba(233, 186, 97, 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-disk" transform="translate(5, 4) scale(0.45)" />
+                      <text x="20" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                        {nodeMeta.master.raids.length} RAIDs
+                      </text>
+                    </g>
+
+                    <text x="235" y="355" textAnchor="start" fill="#E6EDF7" fontSize="15" fontWeight="600">
                       BTRFS RAID Storage
                     </text>
-                    <use href="#icon-disk" transform="translate(235 337) scale(0.75)" />
-                    <use href="#icon-disk" transform="translate(270 337) scale(0.75)" />
-                    <use href="#icon-disk" transform="translate(305 337) scale(0.75)" />
+                    <use href="#icon-disk" transform="translate(235 362) scale(0.75)" />
+                    <use href="#icon-disk" transform="translate(270 362) scale(0.75)" />
+                    <use href="#icon-disk" transform="translate(305 362) scale(0.75)" />
 
                     <rect
                       x="240"
-                      y="380"
+                      y="385"
                       width="320"
-                      height="16"
-                      rx="8"
+                      height="14"
+                      rx="7"
                       fill="rgba(56, 144, 136, 0.15)"
                     />
                     <rect
                       x="240"
-                      y="380"
+                      y="385"
                       width="240"
-                      height="16"
-                      rx="8"
+                      height="14"
+                      rx="7"
                       fill="rgba(56, 144, 136, 0.4)"
                     />
 
@@ -542,16 +620,33 @@ export default function ArchitecturePage() {
                     <text x="110" y="585" textAnchor="start" fill="#E6EDF7" fontSize="17" fontWeight="700">
                       NODE B (Slave)
                     </text>
-                    <text x="110" y="610" textAnchor="start" fill="#8FA3BF" fontSize="13">
+
+                    {/* VM and RAID Badges for Node B */}
+                    <g transform="translate(110, 598)">
+                      <rect x="0" y="0" width="70" height="20" rx="10" fill="rgba(56, 144, 136, 0.25)" stroke="rgba(56, 144, 136, 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: '#E6EDF7' }} />
+                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                        {nodeMeta["node-b"].vms.length} VMs
+                      </text>
+                    </g>
+                    <g transform="translate(185, 598)">
+                      <rect x="0" y="0" width="85" height="20" rx="10" fill="rgba(233, 186, 97, 0.25)" stroke="rgba(233, 186, 97, 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-disk" transform="translate(5, 4) scale(0.45)" />
+                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                        {nodeMeta["node-b"].raids.length} RAID
+                      </text>
+                    </g>
+
+                    <text x="110" y="635" textAnchor="start" fill="#8FA3BF" fontSize="13">
                       BTRFS RAID Storage
                     </text>
-                    <use href="#icon-disk" transform="translate(110 620) scale(0.7)" />
-                    <use href="#icon-disk" transform="translate(143 620) scale(0.7)" />
-                    <use href="#icon-disk" transform="translate(176 620) scale(0.7)" />
+                    <use href="#icon-disk" transform="translate(110 645) scale(0.7)" />
+                    <use href="#icon-disk" transform="translate(143 645) scale(0.7)" />
+                    <use href="#icon-disk" transform="translate(176 645) scale(0.7)" />
 
                     <rect
                       x="110"
-                      y="685"
+                      y="695"
                       width="240"
                       height="14"
                       rx="7"
@@ -559,7 +654,7 @@ export default function ArchitecturePage() {
                     />
                     <rect
                       x="110"
-                      y="685"
+                      y="695"
                       width="180"
                       height="14"
                       rx="7"
@@ -606,16 +701,33 @@ export default function ArchitecturePage() {
                     <text x="450" y="585" textAnchor="start" fill="#E6EDF7" fontSize="17" fontWeight="700">
                       NODE C (Slave)
                     </text>
-                    <text x="450" y="610" textAnchor="start" fill="#8FA3BF" fontSize="13">
+
+                    {/* VM and RAID Badges for Node C */}
+                    <g transform="translate(450, 598)">
+                      <rect x="0" y="0" width="70" height="20" rx="10" fill="rgba(56, 144, 136, 0.25)" stroke="rgba(56, 144, 136, 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-vm" transform="translate(5, 4) scale(0.9)" style={{ color: '#E6EDF7' }} />
+                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                        {nodeMeta["node-c"].vms.length} VMs
+                      </text>
+                    </g>
+                    <g transform="translate(525, 598)">
+                      <rect x="0" y="0" width="90" height="20" rx="10" fill="rgba(233, 186, 97, 0.25)" stroke="rgba(233, 186, 97, 0.6)" strokeWidth="1.5" />
+                      <use href="#icon-disk" transform="translate(5, 4) scale(0.45)" />
+                      <text x="18" y="14" fill="#E6EDF7" fontSize="10" fontWeight="600">
+                        {nodeMeta["node-c"].raids.length} RAIDs
+                      </text>
+                    </g>
+
+                    <text x="450" y="635" textAnchor="start" fill="#8FA3BF" fontSize="13">
                       BTRFS RAID Storage
                     </text>
-                    <use href="#icon-disk" transform="translate(450 620) scale(0.7)" />
-                    <use href="#icon-disk" transform="translate(483 620) scale(0.7)" />
-                    <use href="#icon-disk" transform="translate(516 620) scale(0.7)" />
+                    <use href="#icon-disk" transform="translate(450 645) scale(0.7)" />
+                    <use href="#icon-disk" transform="translate(483 645) scale(0.7)" />
+                    <use href="#icon-disk" transform="translate(516 645) scale(0.7)" />
 
                     <rect
                       x="450"
-                      y="685"
+                      y="695"
                       width="240"
                       height="14"
                       rx="7"
@@ -623,7 +735,7 @@ export default function ArchitecturePage() {
                     />
                     <rect
                       x="450"
-                      y="685"
+                      y="695"
                       width="190"
                       height="14"
                       rx="7"
@@ -765,12 +877,12 @@ export default function ArchitecturePage() {
               </svg>
             </div>
 
-            <div className="w-full xl:w-[280px] xl:shrink-0">
-              <div className="glass-card rounded-2xl border border-border/70 p-5 shadow-[0_18px_36px_rgba(5,8,16,0.45)]">
+            <div className="w-full xl:w-[340px] xl:shrink-0">
+              <div className="glass-card max-h-[700px] overflow-y-auto rounded-2xl border border-border/70 p-5 shadow-[0_18px_36px_rgba(5,8,16,0.45)]">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                      BTRFS RAID
+                      {selectedInfo ? "NODE DETAILS" : "BTRFS RAID"}
                     </p>
                     <p className="font-display text-lg text-foreground">
                       {selectedInfo ? selectedInfo.label : "Select a node"}
@@ -792,10 +904,108 @@ export default function ArchitecturePage() {
                   ) : null}
                 </div>
 
+                {/* VMs and RAIDs Details */}
+                {selectedNode && selectedInfo ? (
+                  <div className="mt-4 space-y-4">
+                    {/* VMs Section */}
+                    <div>
+                      <div className="mb-2 flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-[#389088]"></div>
+                        <p className="text-xs font-semibold uppercase tracking-wider text-foreground/90">
+                          Virtual Machines ({selectedInfo.vms.length})
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        {selectedInfo.vms.map((vm) => (
+                          <div
+                            key={vm.name}
+                            className="rounded-lg border border-border/50 bg-white/5 p-2.5"
+                          >
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs font-semibold text-foreground">{vm.name}</p>
+                              <span
+                                className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${vm.status === "running"
+                                    ? "bg-green-500/20 text-green-400"
+                                    : "bg-red-500/20 text-red-400"
+                                  }`}
+                              >
+                                {vm.status}
+                              </span>
+                            </div>
+                            <div className="mt-1.5 grid grid-cols-2 gap-1.5 text-[10px] text-muted-foreground">
+                              <div>
+                                <span className="font-medium text-foreground/70">vCPU:</span> {vm.vcpu}
+                              </div>
+                              <div>
+                                <span className="font-medium text-foreground/70">RAM:</span> {vm.ram}GB
+                              </div>
+                              <div className="col-span-2">
+                                <span className="font-medium text-foreground/70">IP:</span> {vm.ip}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* RAIDs Section */}
+                    <div>
+                      <div className="mb-2 flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-[#E9BA61]"></div>
+                        <p className="text-xs font-semibold uppercase tracking-wider text-foreground/90">
+                          RAID Arrays ({selectedInfo.raids.length})
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        {selectedInfo.raids.map((raid) => (
+                          <div
+                            key={raid.name}
+                            className="rounded-lg border border-border/50 bg-white/5 p-2.5"
+                          >
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs font-semibold text-foreground">{raid.name}</p>
+                              <span className="rounded-full bg-[#E9BA61]/20 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#E9BA61]">
+                                {raid.type}
+                              </span>
+                            </div>
+                            <div className="mt-1.5 space-y-1 text-[10px] text-muted-foreground">
+                              <div className="flex justify-between">
+                                <span className="font-medium text-foreground/70">Capacity:</span>
+                                <span>{raid.capacity}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="font-medium text-foreground/70">Used:</span>
+                                <span>{raid.used}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="font-medium text-foreground/70">Disks:</span>
+                                <span>{raid.disks} total</span>
+                              </div>
+                              {raid.parity > 0 && (
+                                <div className="flex justify-between">
+                                  <span className="font-medium text-foreground/70">Parity:</span>
+                                  <span>{raid.parity} disk{raid.parity > 1 ? 's' : ''} in parity</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Separator */}
+                    <div className="border-t border-border/50 pt-4">
+                      <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        RAID Block Legend
+                      </p>
+                    </div>
+                  </div>
+                ) : null}
+
                 <div
                   className={`mt-4 grid gap-3 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${selectedNode
-                      ? "max-h-[420px] opacity-100 translate-y-0"
-                      : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
+                    ? "max-h-[420px] opacity-100 translate-y-0"
+                    : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
                     }`}
                 >
                   <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">

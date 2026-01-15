@@ -3,9 +3,11 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Layers, Network, Server, Shield, Activity, Box } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FeatureCard } from '@/components/features/FeatureCard';
 import { FeatureExplorerToolbar } from '@/components/features/FeatureExplorerToolbar';
 import { FeatureDetailsPanel } from '@/components/features/FeatureDetailsPanel';
+import { LayersPyramid } from '@/components/features/LayersPyramid';
 import {
   features,
   layerInfo,
@@ -20,6 +22,7 @@ export default function FeaturesPage() {
   const [selectedLayers, setSelectedLayers] = useState<FeatureLayer[]>([]);
   const [showConnections, setShowConnections] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
+  const [selectedPyramidLayer, setSelectedPyramidLayer] = useState<FeatureLayer | null>(null);
 
   // Filter features
   const filteredFeatures = useMemo(() => {
@@ -47,6 +50,10 @@ export default function FeaturesPage() {
     setSelectedLayers((prev) =>
       prev.includes(layer) ? prev.filter((l) => l !== layer) : [...prev, layer]
     );
+  };
+
+  const handlePyramidLayerClick = (layer: FeatureLayer) => {
+    setSelectedPyramidLayer((prev) => (prev === layer ? null : layer));
   };
 
   const handleFeatureClick = (feature: Feature) => {
@@ -112,7 +119,185 @@ export default function FeaturesPage() {
 
       {/* How It All Connects Section */}
       <section className="py-20 border-b border-[#1A2637]">
-        <div className="container mx-auto px-4 max-w-5xl">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#E6EDF7] mb-4">
+              Stack Visualization
+            </h2>
+            <p className="text-[#8FA3BF] max-w-2xl mx-auto mb-8">
+              HyperHive is built in 7 integrated layers. Click any layer to filter features below.
+            </p>
+          </div>
+
+          {/* Pyramid Diagram with Animated Panel */}
+          <div className="mb-16 max-w-7xl mx-auto">
+            <div className="relative flex flex-col xl:flex-row gap-6 items-start">
+              {/* Pyramid Container - Smooth transitions */}
+              <motion.div
+                className="w-full"
+                style={{
+                  width: selectedPyramidLayer ? 'calc(100% - 440px)' : '100%',
+                }}
+                animate={{
+                  width: selectedPyramidLayer ? 'calc(100% - 440px)' : '100%',
+                }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <LayersPyramid
+                  onLayerClick={handlePyramidLayerClick}
+                  selectedLayers={selectedPyramidLayer ? [selectedPyramidLayer] : []}
+                />
+              </motion.div>
+
+              {/* Layer Details Panel - Slides in from right */}
+              <AnimatePresence mode="wait">
+                {selectedPyramidLayer && (
+                  <motion.div
+                    key="layer-panel"
+                    className="w-full xl:w-[420px] xl:shrink-0 xl:absolute xl:right-0 xl:top-0"
+                    initial={{ x: 450, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 450, opacity: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <div className="glass-card rounded-2xl border border-border/70 p-6 shadow-[0_18px_36px_rgba(5,8,16,0.45)] bg-[#0B1322]/95 backdrop-blur-xl max-h-[800px] flex flex-col">
+                      <div className="flex items-start justify-between gap-3 mb-4">
+                        <div className="flex-1">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-2">
+                            LAYER DETAILS
+                          </p>
+                          <motion.h3
+                            className="font-display text-xl text-foreground mb-2"
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.1 }}
+                          >
+                            {layerInfo[selectedPyramidLayer].label}
+                          </motion.h3>
+                          <motion.p
+                            className="text-sm text-muted-foreground"
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.15 }}
+                          >
+                            {layerInfo[selectedPyramidLayer].description}
+                          </motion.p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedPyramidLayer(null)}
+                          className="rounded-full border border-border/70 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground transition hover:text-foreground hover:bg-white/10"
+                        >
+                          ✕
+                        </button>
+                      </div>
+
+                      {/* Layer Color Indicator */}
+                      <motion.div
+                        className="h-1 rounded-full mb-6"
+                        style={{ backgroundColor: layerInfo[selectedPyramidLayer].color }}
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ delay: 0.2, duration: 0.4 }}
+                      />
+
+                      {/* Layer Features */}
+                      <div className="flex-1 overflow-hidden flex flex-col">
+                        <motion.div
+                          className="mb-4 flex items-center gap-2"
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.25 }}
+                        >
+                          <div
+                            className="h-2 w-2 rounded-full"
+                            style={{ backgroundColor: layerInfo[selectedPyramidLayer].color }}
+                          />
+                          <p className="text-xs font-semibold uppercase tracking-wider text-foreground/90">
+                            Features in this Layer ({getFeaturesByLayer(selectedPyramidLayer).length})
+                          </p>
+                        </motion.div>
+
+                        <div className="flex-1 overflow-y-auto space-y-2 pr-2 pt-1">
+                          {getFeaturesByLayer(selectedPyramidLayer).map((feature, idx) => (
+                            <motion.div
+                              key={feature.id}
+                              initial={{ x: 20, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              transition={{ delay: 0.3 + idx * 0.05 }}
+                              onClick={() => {
+                                setSelectedFeature(feature);
+                                setSelectedPyramidLayer(null);
+                                const element = document.getElementById(`feature-${feature.id}`);
+                                if (element) {
+                                  setTimeout(() => {
+                                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                  }, 100);
+                                }
+                              }}
+                              className="rounded-lg border border-border/50 bg-white/5 p-4 cursor-pointer hover:bg-white/10 hover:border-teal-500/50 hover:-translate-y-0.5 transition-all"
+                            >
+                              <div className="flex items-start gap-3">
+                                <div
+                                  className="p-2 rounded-lg shrink-0"
+                                  style={{ backgroundColor: `${layerInfo[selectedPyramidLayer].color}20` }}
+                                >
+                                  <feature.icon size={18} style={{ color: layerInfo[selectedPyramidLayer].color }} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-semibold text-foreground mb-1">{feature.name}</p>
+                                  <p className="text-xs text-muted-foreground line-clamp-2">
+                                    {feature.shortDescription}
+                                  </p>
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Quick Actions */}
+                      <motion.div
+                        className="mt-6 pt-6 border-t border-border/50 flex gap-3"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        <button
+                          onClick={() => {
+                            setSelectedLayers([selectedPyramidLayer]);
+                            setSelectedPyramidLayer(null);
+                            const element = document.getElementById('feature-explorer');
+                            if (element) {
+                              setTimeout(() => {
+                                element.scrollIntoView({ behavior: 'smooth' });
+                              }, 100);
+                            }
+                          }}
+                          className="flex-1 px-4 py-2.5 bg-teal-600/20 hover:bg-teal-600/30 border border-teal-500/30 hover:border-teal-500/50 text-teal-400 text-sm font-medium rounded-lg transition-all hover:-translate-y-0.5"
+                        >
+                          Filter Below
+                        </button>
+                        <button
+                          onClick={() => setSelectedPyramidLayer(null)}
+                          className="px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-border/50 hover:border-border text-muted-foreground hover:text-foreground text-sm font-medium rounded-lg transition-all hover:-translate-y-0.5"
+                        >
+                          Close
+                        </button>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#E6EDF7] mb-4">
               How It All Connects
@@ -122,7 +307,7 @@ export default function FeaturesPage() {
             </p>
           </div>
 
-          <div className="space-y-4 mb-12">
+          <div className="space-y-4 mb-12 max-w-5xl mx-auto">
             {[
               'BTRFS/RAIDs + Auto-Mounts + SmartDisk create a stable storage foundation.',
               'NFS turns that storage into a shared cluster resource over 512rede.',
@@ -148,7 +333,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* Feature Explorer Section */}
-      <section className="py-20">
+      <section id="feature-explorer" className="py-20">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#E6EDF7] mb-4">

@@ -181,10 +181,10 @@ sudo npm install -g pm2`}
                       <li><strong>GoAccess (optional)</strong> - enable/disable analytics panels.</li>
                       <li><strong>VAPID (optional)</strong> - web push keys.</li>
                     </ul>
-                  <div className="mt-3 text-xs text-muted-foreground">
-                    <p><strong>GoAccess keys:</strong> Get the GeoIP license key from MaxMind (GeoLite2). Use it for GEOIP_LICENSE_KEY / GEOIP_EDITION.</p>
-                    <p><strong>VAPID keys:</strong> Generate with <code>npx web-push generate-vapid-keys</code> and paste the public/private keys. You can also find online generators by searching for "VAPID key generator".</p>
-                  </div>
+                    <div className="mt-3 text-muted-foreground">
+                      <p><strong>GoAccess keys:</strong> Get the GeoIP license key from MaxMind (GeoLite2). Use it for GEOIP_LICENSE_KEY / GEOIP_EDITION.</p>
+                      <p><strong>VAPID keys:</strong> Generate with <code>npx web-push generate-vapid-keys</code> and paste the public/private keys. You can also find online generators by searching for &quot;VAPID key generator&quot;.</p>
+                    </div>
                     <p className="mt-3 text-xs font-semibold text-red-400">
                       Careful with port ranges. Do not overlap them with other services or other nodes.
                     </p>
@@ -281,7 +281,7 @@ cd HyperHive/scripts/main/slave`}
                     <p className="font-semibold text-foreground">Slave setup2.sh fields (short)</p>
                     <ul className="mt-2 space-y-1">
                       <li><strong>MASTER_IP</strong> - master node IP on 512rede.</li>
-                      <li><strong>SLAVE_IP</strong> - this slave's IP.</li>
+                      <li><strong>SLAVE_IP</strong> - this slave&apos;s IP.</li>
                       <li><strong>OTHER_SLAVE_IPS</strong> - other nodes (comma-separated, no self).</li>
                       <li><strong>DIRTY_RATIO_PERCENT</strong> - max dirty RAM before sync.</li>
                       <li><strong>DIRTY_BACKGROUND_RATIO_PERCENT</strong> - start background flush threshold.</li>
