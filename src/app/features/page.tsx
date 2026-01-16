@@ -309,6 +309,76 @@ export default function FeaturesPage() {
             </div>
 
             <AnimatePresence>
+              {selectedPyramidLayer === 'layer0' && (
+                <motion.div
+                  key="raid-gif"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 flex w-full justify-center"
+                >
+                  <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
+                    <video
+                      className="h-auto w-full object-cover dark:hidden"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="RAID storage running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/raid-light.mp4" type="video/mp4" />
+                    </video>
+                    <video
+                      className="hidden h-auto w-full object-cover dark:block"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="RAID storage running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/raid-dark.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                </motion.div>
+              )}
+              {selectedPyramidLayer === 'layer1' && (
+                <motion.div
+                  key="nfs-gif"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 flex w-full justify-center"
+                >
+                  <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
+                    <video
+                      className="h-auto w-full object-cover dark:hidden"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="NFS storage running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/nfs-light.mp4" type="video/mp4" />
+                    </video>
+                    <video
+                      className="hidden h-auto w-full object-cover dark:block"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="NFS storage running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/nfs-dark.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                </motion.div>
+              )}
               {selectedPyramidLayer === 'layer2' && (
                 <motion.div
                   key="vm-gif"
@@ -319,12 +389,28 @@ export default function FeaturesPage() {
                   className="mt-8 flex w-full justify-center"
                 >
                   <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
-                    <img
-                      src="/static/gifs/vm.gif"
-                      alt="Virtual machines running"
-                      className="h-auto w-full object-cover"
-                      loading="lazy"
-                    />
+                    <video
+                      className="h-auto w-full object-cover dark:hidden"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="Virtual machines running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/vm-light.mp4" type="video/mp4" />
+                    </video>
+                    <video
+                      className="hidden h-auto w-full object-cover dark:block"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="Virtual machines running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/vm-dark.mp4" type="video/mp4" />
+                    </video>
                   </div>
                 </motion.div>
               )}
