@@ -37,6 +37,14 @@ export default function ExternalInstallationPage() {
               <p className="text-sm text-muted-foreground">
                 All nodes should be connected by cable or an equivalent link that offers the same reliability and throughput as Ethernet.
               </p>
+              <div className="rounded-lg border border-border/70 border-l-4 border-l-red-500/80 bg-[color:var(--surface-overlay-soft)] p-4 text-sm text-muted-foreground">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
+                  Important
+                </p>
+                <p className="mt-2 text-foreground">
+                  Forward ports on your router to the master IP: 51512 (VPN), 443 (HTTPS), and 80 (HTTP).
+                </p>
+              </div>
 
               <div className="space-y-4">
                 <div className="space-y-2">
