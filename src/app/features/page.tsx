@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Layers, Network, Server, Shield, Activity, Box } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,6 +23,7 @@ export default function FeaturesPage() {
   const [showConnections, setShowConnections] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const [selectedPyramidLayer, setSelectedPyramidLayer] = useState<FeatureLayer | null>(null);
+  const pyramidRef = useRef<HTMLDivElement>(null);
 
   // Filter features
   const filteredFeatures = useMemo(() => {
@@ -55,6 +56,16 @@ export default function FeaturesPage() {
   const handlePyramidLayerClick = (layer: FeatureLayer) => {
     setSelectedPyramidLayer((prev) => (prev === layer ? null : layer));
   };
+
+  useEffect(() => {
+    if (!selectedPyramidLayer) return;
+
+    const timeout = window.setTimeout(() => {
+      pyramidRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+
+    return () => window.clearTimeout(timeout);
+  }, [selectedPyramidLayer]);
 
   const handleFeatureClick = (feature: Feature) => {
     setSelectedFeature(feature);
@@ -131,7 +142,7 @@ export default function FeaturesPage() {
 
           {/* Pyramid Diagram with Animated Panel */}
           <div className="mb-16 max-w-7xl mx-auto">
-            <div className="relative flex flex-col xl:flex-row gap-6 items-start">
+            <div ref={pyramidRef} className="relative flex flex-col xl:flex-row gap-6 items-start">
               {/* Pyramid Container - Smooth transitions */}
               <motion.div
                 className="w-full"
@@ -150,28 +161,6 @@ export default function FeaturesPage() {
                   onLayerClick={handlePyramidLayerClick}
                   selectedLayers={selectedPyramidLayer ? [selectedPyramidLayer] : []}
                 />
-
-                <AnimatePresence>
-                  {selectedPyramidLayer === 'layer2' && (
-                    <motion.div
-                      key="vm-gif"
-                      initial={{ opacity: 0, y: -12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                      className="mt-6 flex w-full justify-center"
-                    >
-                      <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
-                        <img
-                          src="/static/gifs/vm.gif"
-                          alt="Virtual machines running"
-                          className="h-auto w-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </motion.div>
 
               {/* Layer Details Panel - Slides in from right */}
@@ -318,6 +307,28 @@ export default function FeaturesPage() {
                 )}
               </AnimatePresence>
             </div>
+
+            <AnimatePresence>
+              {selectedPyramidLayer === 'layer2' && (
+                <motion.div
+                  key="vm-gif"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 flex w-full justify-center"
+                >
+                  <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
+                    <img
+                      src="/static/gifs/vm.gif"
+                      alt="Virtual machines running"
+                      className="h-auto w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="text-center mb-12">
