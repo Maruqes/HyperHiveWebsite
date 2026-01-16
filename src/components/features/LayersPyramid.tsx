@@ -151,7 +151,8 @@ export function LayersPyramid({ onLayerClick, selectedLayers = [] }: LayersPyram
 							onMouseEnter={() => setHoveredLayer(layer.id)}
 							onMouseLeave={() => setHoveredLayer(null)}
 							onClick={() => onLayerClick?.(layer.id)}
-							style={{ cursor: "pointer" }}
+							style={{ cursor: "pointer", outline: "none" }}
+							className="focus:outline-none focus-visible:outline-none"
 							role="button"
 							tabIndex={0}
 							aria-label={`${layer.label}: ${layer.subtitle}`}
