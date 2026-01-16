@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Layers, Network, Server, Shield, Activity, Box } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Layers, Network, Server, Shield, Activity, Box } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FeatureCard } from '@/components/features/FeatureCard';
 import { FeatureExplorerToolbar } from '@/components/features/FeatureExplorerToolbar';
@@ -23,6 +23,7 @@ export default function FeaturesPage() {
   const [showConnections, setShowConnections] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const [selectedPyramidLayer, setSelectedPyramidLayer] = useState<FeatureLayer | null>(null);
+  const [vmVideoIndex, setVmVideoIndex] = useState(0);
   const pyramidRef = useRef<HTMLDivElement>(null);
 
   // Filter features
@@ -84,6 +85,18 @@ export default function FeaturesPage() {
   };
 
   const layers = getAllLayers();
+  const vmVideos = [
+    {
+      light: '/static/gifs/vm-light.mp4',
+      dark: '/static/gifs/vm-dark.mp4',
+      label: 'Virtual machines running',
+    },
+    {
+      light: '/static/gifs/vm-migrate-light.mp4',
+      dark: '/static/gifs/vm-migrate-dark.mp4',
+      label: 'Virtual machines migrating',
+    },
+  ];
 
   return (
     <main className="min-h-screen bg-background">
@@ -388,29 +401,59 @@ export default function FeaturesPage() {
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                   className="mt-8 flex w-full justify-center"
                 >
-                  <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
-                    <video
-                      className="h-auto w-full object-cover dark:hidden"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      aria-label="Virtual machines running"
-                      preload="metadata"
-                    >
-                      <source src="/static/gifs/vm-light.mp4" type="video/mp4" />
-                    </video>
-                    <video
-                      className="hidden h-auto w-full object-cover dark:block"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      aria-label="Virtual machines running"
-                      preload="metadata"
-                    >
-                      <source src="/static/gifs/vm-dark.mp4" type="video/mp4" />
-                    </video>
+                  <div className="w-full max-w-3xl">
+                    <div className="relative">
+                      <div className="aspect-video w-full overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
+                        <video
+                          key={`vm-light-${vmVideoIndex}`}
+                          className="h-full w-full object-cover dark:hidden"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        aria-label={vmVideos[vmVideoIndex].label}
+                        preload="metadata"
+                      >
+                        <source src={vmVideos[vmVideoIndex].light} type="video/mp4" />
+                      </video>
+                      <video
+                        key={`vm-dark-${vmVideoIndex}`}
+                        className="hidden h-full w-full object-cover dark:block"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        aria-label={vmVideos[vmVideoIndex].label}
+                          preload="metadata"
+                        >
+                          <source src={vmVideos[vmVideoIndex].dark} type="video/mp4" />
+                        </video>
+                      </div>
+                    {vmVideos.length > 1 && (
+                      <button
+                        type="button"
+                        aria-label="Previous VM video"
+                        onClick={() =>
+                          setVmVideoIndex((prev) => (prev - 1 + vmVideos.length) % vmVideos.length)
+                        }
+                        className="absolute -left-12 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-left-14"
+                      >
+                        <ArrowLeft className="h-4 w-4" />
+                      </button>
+                    )}
+                    {vmVideos.length > 1 && (
+                      <button
+                        type="button"
+                        aria-label="Next VM video"
+                        onClick={() =>
+                          setVmVideoIndex((prev) => (prev + 1) % vmVideos.length)
+                        }
+                        className="absolute -right-12 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-right-14"
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
                   </div>
                 </motion.div>
               )}
