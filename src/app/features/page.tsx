@@ -16,6 +16,7 @@ import {
   getFeaturesByLayer,
 } from '@/lib/features';
 import type { Feature, FeatureLayer } from '@/lib/features';
+import { cn } from '@/lib/utils';
 
 export default function FeaturesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -104,10 +105,10 @@ export default function FeaturesPage() {
       <section className="relative border-b border-border bg-gradient-to-b from-[color:var(--secondary)] to-[color:var(--background)]">
         <div className="container mx-auto px-4 py-20 max-w-7xl">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+            <h1 className="text-4xl font-bold text-foreground mb-6 sm:text-5xl lg:text-6xl">
               Features & Ecosystem
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed mb-8">
+            <p className="text-base text-muted-foreground leading-relaxed mb-8 sm:text-lg lg:text-xl">
               HyperHive is an integrated stack built in layers: from{' '}
               <span className="text-teal-400 font-medium">Storage Foundation</span> to{' '}
               <span className="text-teal-400 font-medium">Secure Access</span>, through{' '}
@@ -145,7 +146,7 @@ export default function FeaturesPage() {
       <section className="py-20 border-b border-border">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
+            <h2 className="text-2xl font-bold text-foreground mb-4 sm:text-3xl">
               Stack Visualization
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
@@ -158,17 +159,10 @@ export default function FeaturesPage() {
             <div ref={pyramidRef} className="relative flex flex-col xl:flex-row gap-6 items-start">
               {/* Pyramid Container - Smooth transitions */}
               <motion.div
-                className="w-full"
-                style={{
-                  width: selectedPyramidLayer ? 'calc(100% - 440px)' : '100%',
-                }}
-                animate={{
-                  width: selectedPyramidLayer ? 'calc(100% - 440px)' : '100%',
-                }}
-                transition={{
-                  duration: 0.5,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
+                className={cn(
+                  'w-full transition-[padding] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+                  selectedPyramidLayer ? 'xl:pr-[440px]' : ''
+                )}
               >
                 <LayersPyramid
                   onLayerClick={handlePyramidLayerClick}
@@ -190,7 +184,7 @@ export default function FeaturesPage() {
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >
-                    <div className="glass-card rounded-2xl border border-border/70 p-6 shadow-[0_18px_36px_var(--shadow-strong)] bg-[color:var(--surface-card-strong)] backdrop-blur-xl max-h-[800px] flex flex-col">
+                    <div className="glass-card rounded-2xl border border-border/70 p-6 shadow-[0_18px_36px_var(--shadow-strong)] bg-[color:var(--surface-card-strong)] backdrop-blur-xl max-h-[70vh] sm:max-h-[800px] flex flex-col">
                       <div className="flex items-start justify-between gap-3 mb-4">
                         <div className="flex-1">
                           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-2">
@@ -436,7 +430,7 @@ export default function FeaturesPage() {
                         onClick={() =>
                           setVmVideoIndex((prev) => (prev - 1 + vmVideos.length) % vmVideos.length)
                         }
-                        className="absolute -left-12 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-left-14"
+                        className="absolute left-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-left-14"
                       >
                         <ArrowLeft className="h-4 w-4" />
                       </button>
@@ -448,7 +442,7 @@ export default function FeaturesPage() {
                         onClick={() =>
                           setVmVideoIndex((prev) => (prev + 1) % vmVideos.length)
                         }
-                        className="absolute -right-12 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-right-14"
+                        className="absolute right-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-right-14"
                       >
                         <ArrowRight className="h-4 w-4" />
                       </button>
@@ -461,7 +455,7 @@ export default function FeaturesPage() {
           </div>
 
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
+            <h2 className="text-2xl font-bold text-foreground mb-4 sm:text-3xl">
               How It All Connects
             </h2>
             <p className="text-muted-foreground">
@@ -498,7 +492,7 @@ export default function FeaturesPage() {
       <section id="feature-explorer" className="py-20">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
+            <h2 className="text-2xl font-bold text-foreground mb-4 sm:text-3xl">
               Feature Explorer
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -607,7 +601,7 @@ export default function FeaturesPage() {
       <section className="py-20 border-t border-border bg-gradient-to-b from-[color:var(--background)] to-[color:var(--secondary)]">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl font-bold text-foreground mb-4 sm:text-2xl">
               Ready to dive deeper?
             </h2>
             <p className="text-muted-foreground">

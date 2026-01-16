@@ -221,7 +221,7 @@ export default function ArchitecturePage() {
         title="Node-local storage, cluster-wide access"
         description="Master and slave nodes form a single compute pool with shared BTRFS RAID storage over NFS. Click any node to inspect its RAID layout."
       >
-        <div className="glass-panel rounded-2xl border border-border/80 p-8 shadow-[0_18px_38px_var(--shadow-soft)] xl:mx-auto xl:w-fit">
+        <div className="glass-panel rounded-2xl border border-border/80 p-5 shadow-[0_18px_38px_var(--shadow-soft)] sm:p-8 xl:mx-auto xl:w-fit">
           <div className="flex flex-col gap-6 xl:flex-row xl:items-start">
             <div className="w-full xl:w-[48rem] xl:shrink-0">
               <svg
@@ -878,7 +878,7 @@ export default function ArchitecturePage() {
             </div>
 
             <div className="w-full xl:w-[340px] xl:shrink-0">
-              <div className="glass-card max-h-[700px] overflow-y-auto rounded-2xl border border-border/70 p-5 shadow-[0_18px_36px_var(--shadow-strong)]">
+              <div className="glass-card max-h-[70vh] overflow-y-auto rounded-2xl border border-border/70 p-5 shadow-[0_18px_36px_var(--shadow-strong)] sm:max-h-[700px]">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">

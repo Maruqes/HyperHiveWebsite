@@ -18,7 +18,7 @@ export default function NetworkPage() {
       >
         <div className="flex flex-col gap-8 items-center">
           <div className="w-full max-w-4xl">
-            <div className="glass-panel rounded-2xl border border-border/80 p-8 shadow-[0_18px_38px_var(--shadow-soft)]">
+            <div className="glass-panel rounded-2xl border border-border/80 p-5 shadow-[0_18px_38px_var(--shadow-soft)] sm:p-8">
               <div className="flex flex-col gap-6">
                 <div className="overflow-hidden">
                   <svg

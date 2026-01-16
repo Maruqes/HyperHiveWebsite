@@ -46,7 +46,7 @@ export function FeatureExplorerToolbar({
 			</div>
 
 			{/* Filters */}
-			<div className="flex flex-wrap items-center gap-3">
+			<div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
 				<span className="text-sm font-medium text-muted-foreground">Filter by layer:</span>
 				{layers.map((layer) => (
 					<Chip
@@ -60,7 +60,7 @@ export function FeatureExplorerToolbar({
 			</div>
 
 			{/* Toggle connections */}
-			<div className="flex items-center justify-between pt-2 border-t border-border">
+			<div className="flex flex-col gap-3 border-t border-border pt-2 sm:flex-row sm:items-center sm:justify-between">
 				<div className="flex items-center gap-2">
 					<button
 						onClick={onShowConnectionsToggle}
@@ -93,7 +93,7 @@ export function FeatureExplorerToolbar({
 
 			{/* Active filters summary */}
 			{(selectedLayers.length > 0 || searchQuery) && (
-				<div className="flex items-center gap-2 text-sm text-muted-foreground">
+				<div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
 					<span>Active filters:</span>
 					{searchQuery && (
 						<span className="text-foreground">

@@ -32,7 +32,7 @@ const installChoices = [
 export default function InstallationLandingPage() {
   return (
     <section className="py-16 sm:py-20">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 sm:px-6">
         <div className="flex max-w-2xl flex-col gap-3">
           <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
             Installation
@@ -45,7 +45,7 @@ export default function InstallationLandingPage() {
           </p>
         </div>
 
-        <div className="glass-panel rounded-3xl border border-border/70 p-6 shadow-[0_18px_48px_var(--shadow-soft)]">
+        <div className="glass-panel rounded-3xl border border-border/70 p-5 shadow-[0_18px_48px_var(--shadow-soft)] sm:p-6">
           <div className="grid gap-5 lg:grid-cols-2">
             {installChoices.map((choice) => (
               <Link

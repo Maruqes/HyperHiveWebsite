@@ -14,7 +14,7 @@ export function SiteFooter() {
 
   return (
     <footer className="mt-auto border-t border-border/70 bg-[color:var(--surface-elevated-strong)]">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-start md:justify-between">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-12 md:flex-row md:items-start md:justify-between">
         <div className="flex max-w-sm flex-col gap-4">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/80 bg-[color:var(--surface-elevated)] text-sm font-semibold text-foreground">
@@ -40,7 +40,7 @@ export function SiteFooter() {
             compute, access, and operations aligned.
           </p>
         </div>
-        <div className="grid gap-6 text-sm text-muted-foreground sm:grid-cols-3">
+        <div className="grid gap-6 text-sm text-muted-foreground sm:grid-cols-2 lg:grid-cols-3">
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
               Navigation
@@ -90,7 +90,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border/70">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-4 text-xs text-muted-foreground sm:px-6 sm:py-6 md:flex-row md:items-center md:justify-between">
           <span>© {currentYear} HyperHive. All rights reserved.</span>
           <span>Architecture, network, and operations aligned in one system.</span>
         </div>

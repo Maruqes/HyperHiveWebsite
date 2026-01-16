@@ -32,13 +32,13 @@ export function Section({
   return (
     <motion.section
       id={id}
-      className={cn("py-20 sm:py-24", className)}
+      className={cn("py-16 sm:py-24", className)}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, amount: 0.25 }}
     >
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 sm:gap-12 sm:px-6">
         {(eyebrow || title || description) && (
           <div className={cn("flex max-w-2xl flex-col gap-4", alignment)}>
             {eyebrow ? (

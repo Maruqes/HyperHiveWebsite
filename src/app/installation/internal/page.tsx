@@ -18,7 +18,7 @@ export default function InternalInstallationPage() {
     <>
       <ScrollProgressBar sections={sections} />
       <div className="min-h-screen">
-        <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="max-w-6xl mx-auto px-4 py-10 sm:px-6 sm:py-12">
           <div className="space-y-16">
             <section className="space-y-4">
               <h1 className="text-4xl font-semibold text-foreground sm:text-5xl">
