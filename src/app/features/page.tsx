@@ -150,6 +150,28 @@ export default function FeaturesPage() {
                   onLayerClick={handlePyramidLayerClick}
                   selectedLayers={selectedPyramidLayer ? [selectedPyramidLayer] : []}
                 />
+
+                <AnimatePresence>
+                  {selectedPyramidLayer === 'layer2' && (
+                    <motion.div
+                      key="vm-gif"
+                      initial={{ opacity: 0, y: -12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                      className="mt-6 flex w-full justify-center"
+                    >
+                      <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
+                        <img
+                          src="/static/gifs/vm.gif"
+                          alt="Virtual machines running"
+                          className="h-auto w-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
 
               {/* Layer Details Panel - Slides in from right */}

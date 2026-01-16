@@ -463,8 +463,8 @@ export default function ArchitecturePage() {
                   >
                     API Endpoints
                   </text>
-                  <text x="400" y="100" textAnchor="middle" fill="var(--diagram-text-muted)" fontSize="14">
-                    /app, /stream, /api
+                  <text x="400" y="100" textAnchor="middle" fill="var(--diagram-text-muted)" fontSize="12">
+                    api1.hyperhive.io, api2.hyperhive.io
                   </text>
 
                   {/* Flow Arrow 1 */}
@@ -925,8 +925,8 @@ export default function ArchitecturePage() {
                               <p className="text-xs font-semibold text-foreground">{vm.name}</p>
                               <span
                                 className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${vm.status === "running"
-                                    ? "bg-green-500/20 text-green-400"
-                                    : "bg-red-500/20 text-red-400"
+                                  ? "bg-green-500/20 text-green-400"
+                                  : "bg-red-500/20 text-red-400"
                                   }`}
                               >
                                 {vm.status}
