@@ -159,10 +159,7 @@ export default function FeaturesPage() {
             <div ref={pyramidRef} className="relative flex flex-col xl:flex-row gap-6 items-start">
               {/* Pyramid Container - Smooth transitions */}
               <motion.div
-                className={cn(
-                  'w-full transition-[padding] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
-                  selectedPyramidLayer ? 'xl:pr-[440px]' : ''
-                )}
+                className="w-full transition-[padding] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
               >
                 <LayersPyramid
                   onLayerClick={handlePyramidLayerClick}
@@ -175,7 +172,7 @@ export default function FeaturesPage() {
                 {selectedPyramidLayer && (
                   <motion.div
                     key="layer-panel"
-                    className="w-full xl:w-[420px] xl:shrink-0 xl:absolute xl:right-0 xl:top-0"
+                    className="w-full xl:w-[420px] xl:shrink-0"
                     initial={{ x: 450, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 450, opacity: 0 }}
@@ -448,6 +445,76 @@ export default function FeaturesPage() {
                       </button>
                     )}
                   </div>
+                  </div>
+                </motion.div>
+              )}
+              {selectedPyramidLayer === 'edge' && (
+                <motion.div
+                  key="edge-gif"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 flex w-full justify-center"
+                >
+                  <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
+                    <video
+                      className="h-auto w-full object-cover dark:hidden"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="Edge routing running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/npm-light.mp4" type="video/mp4" />
+                    </video>
+                    <video
+                      className="hidden h-auto w-full object-cover dark:block"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="Edge routing running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/npm-dark.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                </motion.div>
+              )}
+              {selectedPyramidLayer === 'operations' && (
+                <motion.div
+                  key="operations-gif"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 flex w-full justify-center"
+                >
+                  <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border/70 bg-[color:var(--surface-overlay-soft)] shadow-[0_16px_40px_rgba(0,0,0,0.25)]">
+                    <video
+                      className="h-auto w-full object-cover dark:hidden"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="Operations backup running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/back-light.mp4" type="video/mp4" />
+                    </video>
+                    <video
+                      className="hidden h-auto w-full object-cover dark:block"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      aria-label="Operations backup running"
+                      preload="metadata"
+                    >
+                      <source src="/static/gifs/back-dark.mp4" type="video/mp4" />
+                    </video>
                   </div>
                 </motion.div>
               )}
