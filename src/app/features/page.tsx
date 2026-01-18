@@ -16,7 +16,6 @@ import {
   getFeaturesByLayer,
 } from '@/lib/features';
 import type { Feature, FeatureLayer } from '@/lib/features';
-import { cn } from '@/lib/utils';
 
 export default function FeaturesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -398,53 +397,53 @@ export default function FeaturesPage() {
                         <video
                           key={`vm-light-${vmVideoIndex}`}
                           className="h-full w-full object-cover dark:hidden"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        aria-label={vmVideos[vmVideoIndex].label}
-                        preload="metadata"
-                      >
-                        <source src={vmVideos[vmVideoIndex].light} type="video/mp4" />
-                      </video>
-                      <video
-                        key={`vm-dark-${vmVideoIndex}`}
-                        className="hidden h-full w-full object-cover dark:block"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        aria-label={vmVideos[vmVideoIndex].label}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          aria-label={vmVideos[vmVideoIndex].label}
+                          preload="metadata"
+                        >
+                          <source src={vmVideos[vmVideoIndex].light} type="video/mp4" />
+                        </video>
+                        <video
+                          key={`vm-dark-${vmVideoIndex}`}
+                          className="hidden h-full w-full object-cover dark:block"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          aria-label={vmVideos[vmVideoIndex].label}
                           preload="metadata"
                         >
                           <source src={vmVideos[vmVideoIndex].dark} type="video/mp4" />
                         </video>
                       </div>
-                    {vmVideos.length > 1 && (
-                      <button
-                        type="button"
-                        aria-label="Previous VM video"
-                        onClick={() =>
-                          setVmVideoIndex((prev) => (prev - 1 + vmVideos.length) % vmVideos.length)
-                        }
-                        className="absolute left-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-left-14"
-                      >
-                        <ArrowLeft className="h-4 w-4" />
-                      </button>
-                    )}
-                    {vmVideos.length > 1 && (
-                      <button
-                        type="button"
-                        aria-label="Next VM video"
-                        onClick={() =>
-                          setVmVideoIndex((prev) => (prev + 1) % vmVideos.length)
-                        }
-                        className="absolute right-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-right-14"
-                      >
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-                    )}
-                  </div>
+                      {vmVideos.length > 1 && (
+                        <button
+                          type="button"
+                          aria-label="Previous VM video"
+                          onClick={() =>
+                            setVmVideoIndex((prev) => (prev - 1 + vmVideos.length) % vmVideos.length)
+                          }
+                          className="absolute left-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-left-14"
+                        >
+                          <ArrowLeft className="h-4 w-4" />
+                        </button>
+                      )}
+                      {vmVideos.length > 1 && (
+                        <button
+                          type="button"
+                          aria-label="Next VM video"
+                          onClick={() =>
+                            setVmVideoIndex((prev) => (prev + 1) % vmVideos.length)
+                          }
+                          className="absolute right-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-overlay)] text-foreground transition hover:border-teal-500/50 hover:text-teal-300 sm:-right-14"
+                        >
+                          <ArrowRight className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               )}
