@@ -11,8 +11,6 @@ interface FeatureExplorerToolbarProps {
 	onSearchChange: (query: string) => void;
 	selectedLayers: FeatureLayer[];
 	onLayerToggle: (layer: FeatureLayer) => void;
-	showConnections: boolean;
-	onShowConnectionsToggle: () => void;
 }
 
 export function FeatureExplorerToolbar({
@@ -20,8 +18,6 @@ export function FeatureExplorerToolbar({
 	onSearchChange,
 	selectedLayers,
 	onLayerToggle,
-	showConnections,
-	onShowConnectionsToggle,
 }: FeatureExplorerToolbarProps) {
 	const layers = getAllLayers();
 
@@ -59,37 +55,16 @@ export function FeatureExplorerToolbar({
 				))}
 			</div>
 
-			{/* Toggle connections */}
-			<div className="flex flex-col gap-3 border-t border-border pt-2 sm:flex-row sm:items-center sm:justify-between">
-				<div className="flex items-center gap-2">
-					<button
-						onClick={onShowConnectionsToggle}
-						className={`
-              relative inline-flex h-6 w-11 items-center rounded-full transition-colors
-              ${showConnections ? 'bg-teal-600' : 'bg-border'}
-            `}
-					>
-						<span
-							className={`
-                inline-block h-4 w-4 transform rounded-full bg-white transition-transform
-                ${showConnections ? 'translate-x-6' : 'translate-x-1'}
-              `}
-						/>
-					</button>
-					<span className="text-sm text-muted-foreground">
-						Show connections between features
-					</span>
-				</div>
-
-				{selectedLayers.length > 0 && (
+			{selectedLayers.length > 0 && (
+				<div className="flex justify-end border-t border-border pt-2">
 					<button
 						onClick={() => selectedLayers.forEach(onLayerToggle)}
 						className="text-sm text-teal-400 hover:text-teal-300 transition-colors"
 					>
 						Clear filters
 					</button>
-				)}
-			</div>
+				</div>
+			)}
 
 			{/* Active filters summary */}
 			{(selectedLayers.length > 0 || searchQuery) && (

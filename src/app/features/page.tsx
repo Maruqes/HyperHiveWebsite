@@ -20,7 +20,6 @@ import type { Feature, FeatureLayer } from '@/lib/features';
 export default function FeaturesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLayers, setSelectedLayers] = useState<FeatureLayer[]>([]);
-  const [showConnections, setShowConnections] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const [selectedPyramidLayer, setSelectedPyramidLayer] = useState<FeatureLayer | null>(null);
   const [vmVideoIndex, setVmVideoIndex] = useState(0);
@@ -574,8 +573,6 @@ export default function FeaturesPage() {
               onSearchChange={setSearchQuery}
               selectedLayers={selectedLayers}
               onLayerToggle={handleLayerToggle}
-              showConnections={showConnections}
-              onShowConnectionsToggle={() => setShowConnections(!showConnections)}
             />
           </div>
 
@@ -633,7 +630,6 @@ export default function FeaturesPage() {
                         <div key={feature.id} id={`feature-${feature.id}`} className="h-full">
                           <FeatureCard
                             feature={feature}
-                            showConnections={showConnections}
                             onClick={() => handleFeatureClick(feature)}
                             onDependencyClick={handleDependencyClick}
                           />

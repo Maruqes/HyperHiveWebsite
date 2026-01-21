@@ -8,14 +8,12 @@ import { getFeatureById, layerInfo } from '@/lib/features';
 
 interface FeatureCardProps {
 	feature: Feature;
-	showConnections?: boolean;
 	onClick?: () => void;
 	onDependencyClick?: (id: string) => void;
 }
 
 export function FeatureCard({
 	feature,
-	showConnections = false,
 	onClick,
 	onDependencyClick,
 }: FeatureCardProps) {
@@ -67,115 +65,35 @@ export function FeatureCard({
 			</div>
 
 			{/* Connections */}
-			{showConnections && (feature.dependsOn.length > 0 || feature.feedsInto.length > 0) && (
+			{feature.dependsOn.length > 0 && (
 				<div className="mt-4 pt-4 border-t border-border space-y-3">
-					{feature.dependsOn.length > 0 && (
-						<div>
-							<p className="text-muted-foreground text-xs font-medium mb-2">Requires:</p>
-							<div className="flex flex-wrap gap-1.5">
-								{feature.dependsOn.map((depId) => {
-									const depFeature = getFeatureById(depId);
-									const depLabel = depFeature?.name ?? depId;
-									const depColor = depFeature
-										? layerInfo[depFeature.layer].color
-										: layerColor;
+					<div>
+						<p className="text-muted-foreground text-xs font-medium mb-2">Requires:</p>
+						<div className="flex flex-wrap gap-1.5">
+							{feature.dependsOn.map((depId) => {
+								const depFeature = getFeatureById(depId);
+								const depLabel = depFeature?.name ?? depId;
+								const depColor = depFeature
+									? layerInfo[depFeature.layer].color
+									: layerColor;
 
-									return (
-										<button
-											key={depId}
-											onClick={(e) => {
-												e.stopPropagation();
-												onDependencyClick?.(depId);
-											}}
-											className="hover:scale-105 transition-transform"
-										>
-											<Tag size="sm" color={depColor}>
-												{depLabel}
-											</Tag>
-										</button>
-									);
-								})}
-							</div>
+								return (
+									<button
+										key={depId}
+										onClick={(e) => {
+											e.stopPropagation();
+											onDependencyClick?.(depId);
+										}}
+										className="hover:scale-105 transition-transform"
+									>
+										<Tag size="sm" color={depColor}>
+											{depLabel}
+										</Tag>
+									</button>
+								);
+							})}
 						</div>
-					)}
-					{feature.feedsInto.length > 0 && (
-						<div>
-							<p className="text-muted-foreground text-xs font-medium mb-2">Enables:</p>
-							<div className="flex flex-wrap gap-1.5">
-								{feature.feedsInto.map((feedId) => {
-									const feedFeature = getFeatureById(feedId);
-									const feedLabel = feedFeature?.name ?? feedId;
-									const feedColor = feedFeature
-										? layerInfo[feedFeature.layer].color
-										: layerColor;
-
-									return (
-										<button
-											key={feedId}
-											onClick={(e) => {
-												e.stopPropagation();
-												onDependencyClick?.(feedId);
-											}}
-											className="hover:scale-105 transition-transform"
-										>
-											<Tag size="sm" color={feedColor} variant="outlined">
-												{feedLabel}
-											</Tag>
-										</button>
-									);
-								})}
-							</div>
-						</div>
-					)}
-				</div>
-			)}
-
-			{/* Mini diagram (optional, when connections are shown) */}
-			{showConnections && feature.dependsOn.length > 0 && feature.feedsInto.length > 0 && (
-				<div className="mt-4 pt-4 border-t border-border">
-					<svg viewBox="0 0 200 60" className="w-full h-12 opacity-40">
-						<defs>
-							<marker
-								id={`arrow-${feature.id}`}
-								markerWidth="8"
-								markerHeight="8"
-								refX="7"
-								refY="3"
-								orient="auto"
-							>
-								<polygon points="0 0, 8 3, 0 6" fill={layerColor} />
-							</marker>
-						</defs>
-
-						{/* Left (depends) */}
-						<circle cx="30" cy="30" r="8" fill={`${layerColor}30`} stroke={layerColor} strokeWidth="1" />
-
-						{/* Center (this feature) */}
-						<rect x="85" y="22" width="30" height="16" rx="3" fill={layerColor} />
-
-						{/* Right (feeds) */}
-						<circle cx="170" cy="30" r="8" fill={`${layerColor}30`} stroke={layerColor} strokeWidth="1" />
-
-						{/* Arrows */}
-						<line
-							x1="40"
-							y1="30"
-							x2="83"
-							y2="30"
-							stroke={layerColor}
-							strokeWidth="1.5"
-							markerEnd={`url(#arrow-${feature.id})`}
-						/>
-						<line
-							x1="117"
-							y1="30"
-							x2="160"
-							y2="30"
-							stroke={layerColor}
-							strokeWidth="1.5"
-							markerEnd={`url(#arrow-${feature.id})`}
-						/>
-					</svg>
+					</div>
 				</div>
 			)}
 
